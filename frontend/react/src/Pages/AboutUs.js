@@ -2,8 +2,8 @@ import React from 'react'
 
 function AboutUs() {
   return (
-    <div>
-      
+    <div style={{textAlign:'center', paddingTop:"300px"}}>
+      AboutUs
     </div>
   )
 }

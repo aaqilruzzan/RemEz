@@ -2,8 +2,8 @@ import React from 'react'
 
 function Signup() {
   return (
-    <div>
-      
+    <div style={{textAlign:'center', paddingTop:"300px"}}>
+      Signup
     </div>
   )
 }
