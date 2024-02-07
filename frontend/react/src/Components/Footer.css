@@ -1,0 +1,66 @@
+/* Footer.css */
+
+.footer-container {
+    color: azure;
+    box-sizing: border-box;
+    padding: 40px;
+    background-color: #202021;
+    position: relative;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    overflow-x: hidden;
+  }
+  
+  .footer-content {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin-bottom: 28px;
+  }
+  
+  .left-section,
+  .right-section {
+    /* Add any additional styling for left and right sections */
+    flex-basis: 50%; /* Take up half the width on larger screens */
+    text-align: center; /* Center text */
+  }
+  
+  .right-section {
+    text-align: center; /* Center the button */
+  }
+  .right-section button{
+    background-color: #009fe3;
+    color: #ffffff; /* Text color */
+  padding: 5px 10px; /* Adjust padding as needed */
+  border: none;
+  border-radius: 2px; /* Optional: Add border-radius for rounded corners */
+  cursor: pointer;
+  font-size: 12px; /* Adjust font size as needed */
+   
+  }
+  
+  .center-section {
+    text-align: center;
+    flex-basis: 100%; /* Take up full width on smaller screens */
+  }
+  
+  .divider {
+    border-top: 1px solid #ccc;
+    margin: 10px 0;
+  }
+  
+  /* Media query for smaller screens */
+  @media (max-width: 368px) {
+    .footer-content {
+      
+      align-items: center;
+    }
+  
+    .left-section,
+    .right-section {
+      flex-basis: 100%; /* Take up full width on smaller screens */
+      text-align: center; /* Center text on smaller screens */
+    }
+  }
+  

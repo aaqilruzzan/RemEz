@@ -5,10 +5,10 @@
     padding: 30px 170px  30px 170px;
     box-shadow: 0 0.5px 0.5px rgba(0, 0, 0, 0.1);
     
-    /*position: fixed;
+   /*
     position: fixed;
     width: 100%; /* Set the width to 100% of the viewport 
-    z-index: 1000;*/
+    z-index: 1000;   */ 
 }
 
 .NavbarWrapper{
@@ -89,9 +89,11 @@
             display: inline;
             position: relative;
             left: 25%;
+            
         }
         .NavLogo{
             margin: 0;
             transition: 0.2s ease-in-out;
         }
+        
 }
