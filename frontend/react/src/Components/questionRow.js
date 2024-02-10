@@ -1,4 +1,4 @@
-function questionRow(props) {
+function QuestionRow(props) {
   // props are question, accuracy, time taken
   // include the ui code from Progress.js accordingly
   let linearwidth = props.accuracy + "%";
@@ -34,4 +34,4 @@ function questionRow(props) {
   );
 }
 
-export default questionRow;
+export default QuestionRow;
