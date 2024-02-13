@@ -28,7 +28,11 @@ export default function ProgressTracker() {
         </div>
       </div>
 
-      {progress && progress === "View all Progress" ? <AllProgress /> : null}
+      {progress && progress === "View all Progress" ? (
+        <AllProgress />
+      ) : (
+        <PerCollectionPro />
+      )}
     </>
   );
 }
