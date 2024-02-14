@@ -2,7 +2,7 @@ import React from "react";
 import { CircularProgressbar } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 import LinearProgress from "@material-ui/core/LinearProgress";
-import QuestionRow from "./QuestionRow";
+import QuestionRow from "./questionRow";
 
 function perCollectionPro() {
   return (
