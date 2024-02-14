@@ -1,1 +1,0 @@
-The react frontend with all the styling and components and the relevant logic should be in this folderw45e4rtr
