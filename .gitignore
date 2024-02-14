@@ -1,0 +1,18 @@
+# Dependency directories
+node_modules/
+
+# Environment configuration files
+.env
+
+# Build output directories
+dist/
+build/
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Editor directories and files
+.idea/
+*.sublime-project
+*.sublime-workspace
