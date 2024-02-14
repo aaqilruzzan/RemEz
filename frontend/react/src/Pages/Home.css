@@ -130,3 +130,213 @@
   
   
   }
+
+
+
+
+
+  /*Quiz Hub*/
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 28px;
+}
+.title {
+  text-align: center;
+  margin: 65px;
+}
+.question {
+  margin-bottom: 40px;
+}
+.question p {
+  cursor: pointer;
+  margin-bottom: 20px;
+  font-size: 16px;
+}
+.question textarea {
+  width: 100%;
+  padding: 10px;
+  border: 2px solid #ccc;
+  transition: border-color 0.5s;
+  border-radius: 10px;
+  font-size: 16px;
+  color: initial;
+  
+}
+
+.question textarea:hover,
+.question textarea:active {
+  border-color: rgb(9, 124, 247);
+   
+}
+.question textarea:focus {
+  outline: none;
+  border-color: rgb(9, 124, 247);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*under quiz hub*/
+
+.main-container {
+  display: flex;
+  
+  align-items: center;
+  justify-content: center;
+  padding: 50px;
+  padding-bottom: 50px;
+}
+
+.photo img {
+  max-width: 95%;
+  height: auto;
+  padding: 10px;
+  padding: 0 100px 0 0 ;
+  
+}
+
+.buttons-container {
+  display: flex;
+  flex-direction: row; /* By default, buttons are displayed side by side */
+  padding: 20px;
+}
+
+.button-wrapper {
+  margin: 10px;
+  padding-bottom: 100px;
+}
+
+.btn {
+  width: 100%;
+  padding: 15px;
+  border: none;
+  background-color: #24B693;
+  color: white;
+  cursor: pointer;
+  border-radius: 3px;
+}
+.btn1 {
+  width: 100%;
+  padding: 15px;
+  border: none;
+  background-color: #111B47;
+  color: white;
+  cursor: pointer;
+  border-radius: 3px;
+}
+
+/* Media query for responsiveness */
+@media screen and (max-width: 600px) {
+  .main-container {
+    padding: 0 10px; 
+    flex-direction: column;
+
+  }
+
+  .buttons-container {
+    flex-direction: row; 
+    align-items: center; 
+  }
+
+  .photo img {
+    
+    max-width: 95%;
+    padding: 10px;
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+body.active-modal {
+  overflow-y: hidden;
+}
+
+.btn {
+  
+  display: block;
+  
+
+
+
+  width: 100%;
+  padding: 15px;
+  border: none;
+  background-color: #24B693;
+  color: white;
+  cursor: pointer;
+  border-radius: 3px;
+}
+
+.modal, .overlay {
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  position: fixed;
+}
+
+.overlay {
+  background: rgba(49,49,49,0.8);
+}
+.modal-content {
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  line-height: 1.4;
+  background: #f1f1f1;
+  padding: 14px 28px;
+  border-radius: 3px;
+  max-width: 600px;
+  min-width: 300px;
+}
+.modal .modal-content p{
+  justify-content: center;
+  margin-left: 25%;
+}
+
+.close-modal {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  padding: 7px 9px;
+  background-color: red;
+  color: white;
+  outline: none;
+  border-radius: 3px;
+}
+.head2{
+  color: #24B693;
+  margin: 50px;
+  margin-left: 35%;
+  justify-content: center;
+}

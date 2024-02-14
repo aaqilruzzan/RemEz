@@ -9,16 +9,19 @@ import ContactUs from './Pages/ContactUs';
 import AboutUs from './Pages/AboutUs';
 import SignIn from './Pages/SignIn';
 import Signup from './Pages/Signup';
+import Footer from './Components/Footer';
 
 
 function App() {
   const[clicked,isClicked] = useState(false)
   return (
-    <Router>
-      <Navbar clicked={clicked} isClicked={isClicked}/>
-      {clicked? <Menu/>: null}
+    <div className="App">
+      
+      <Router>
+        <Navbar clicked={clicked} isClicked={isClicked}/>
+        {clicked? <Menu/>: null}
 
-      <Routes>
+       <Routes>
         <Route exact path='' element={<Home/>}/>
         <Route exact path='contact-us' element={<ContactUs/>}/>
         <Route exact path='about-us' element={<AboutUs/>}/>
@@ -26,8 +29,11 @@ function App() {
         <Route exact path='sign-up' element={<Signup/>}/>
         
        </Routes>
-      
-    </Router>
+       
+      </Router>
+
+      <Footer/>
+    </div>
   );
 }
 
