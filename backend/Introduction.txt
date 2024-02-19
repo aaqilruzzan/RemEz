@@ -1,1 +1,0 @@
-Express backend, Mongodb setup and all backend operations are executed in this folder
