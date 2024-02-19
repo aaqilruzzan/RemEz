@@ -22,6 +22,11 @@ function Navbar({ clicked, isClicked }) {
           </NavLink>
         </li>
         <li className="NavElements">
+          <NavLink to="/" className="Link">
+            Quiz
+          </NavLink>
+        </li>
+        <li className="NavElements">
           <NavLink to="/progress" className="Link">
             Track Progress
           </NavLink>
@@ -38,12 +43,7 @@ function Navbar({ clicked, isClicked }) {
         </li>
         <li className="NavButton">
           <NavLink to="/sign-up" className="Link">
-            Sign up
-          </NavLink>
-        </li>
-        <li className="NavElements">
-          <NavLink to="/sign-in" className="Link">
-            Sign In
+            Log Out
           </NavLink>
         </li>
       </ul>
