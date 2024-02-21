@@ -10,6 +10,7 @@ import AboutUs from "./Pages/AboutUs";
 import SignIn from "./Pages/SignIn";
 import Signup from "./Pages/Signup";
 import Progress from "./Pages/Progress";
+import Quiz from "./Pages/Quiz";
 
 function App() {
   const [clicked, isClicked] = useState(false);
@@ -21,6 +22,7 @@ function App() {
       <Routes>
         <Route exact path="" element={<Home />} />
         <Route exact path="progress" element={<Progress />} />
+        <Route exact path="quiz" element={<Quiz />} />
         <Route exact path="contact-us" element={<ContactUs />} />
         <Route exact path="about-us" element={<AboutUs />} />
         <Route exact path="sign-in" element={<SignIn />} />
