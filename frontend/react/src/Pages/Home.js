@@ -1,10 +1,43 @@
 import React, { useState } from "react";
 import "./Home.css";
+import axios from "axios";
 
 function Home() {
   const [modal, setModal] = useState(false);
+  const [selectedFile, setSelectedFile] = useState(null); // State to hold the selected file
   const toggleModal = () => {
     setModal(!modal);
+  };
+
+  const handleFileChange = (event) => {
+    setSelectedFile(event.target.files[0]); // Update the state with the selected file
+  };
+
+  const uploadFile = async () => {
+    if (!selectedFile) {
+      alert("Please select a file first!");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("file", selectedFile); // 'file' is the field name expected by your backend
+
+    try {
+      const response = await axios.post(
+        "http://localhost:8000/upload",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      console.log("File uploaded successfully:", response.data);
+      alert("File uploaded successfully!");
+    } catch (error) {
+      console.error("Error uploading file:", error);
+      alert("Error uploading file!");
+    }
   };
 
   if (modal) {
@@ -54,7 +87,26 @@ function Home() {
             step toward generating quizzes and exploring knowledge – start by
             uploading your PDFs now!
           </p>
-          <button className="custom-button2">Upload File</button>
+          <button
+            className="custom-button2"
+            onClick={() => document.getElementById("fileInput").click()}
+          >
+            Upload PDF
+          </button>
+          <input
+            type="file"
+            id="fileInput"
+            accept=".pdf"
+            style={{ display: "none" }}
+            onChange={handleFileChange}
+          />
+          <button
+            hidden={!selectedFile}
+            onClick={uploadFile}
+            className="custom-button3"
+          >
+            Submit PDF
+          </button>
         </div>
 
         <div className="second-column">

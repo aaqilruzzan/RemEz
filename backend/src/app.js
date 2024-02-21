@@ -1,8 +1,22 @@
 import express from "express";
 import mongoose from "mongoose";
+import cors from "cors";
+import routes from "./routes/index.js";
 
 const app = express();
 
+app.use(
+  cors({
+    origin: "http://localhost:3000",
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+  })
+);
+app.options("*", cors());
+
+app.use(express.json());
+
+// routes
+app.use(routes);
 // Database connection function
 async function connectDatabase() {
   const connectionParams = {
