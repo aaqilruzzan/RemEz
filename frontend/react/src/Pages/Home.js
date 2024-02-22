@@ -1,12 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import "./Home.css";
 import axios from "axios";
-import { Navigate, useNavigate } from "react-router";
+import { useNavigate } from "react-router";
 
 function Home() {
   const [selectedFile, setSelectedFile] = useState(null); // State to hold the selected file
   const Navigate = useNavigate();
-
+  const uploadSectionRef = useRef(null);
   const handleFileChange = (event) => {
     setSelectedFile(event.target.files[0]); // Update the state with the selected file
   };
@@ -39,6 +39,10 @@ function Home() {
     }
   };
 
+  const scrollToUpload = () => {
+    uploadSectionRef.current.scrollIntoView({ behavior: "smooth" }); // Step 3: Use scrollIntoView to navigate
+  };
+
   return (
     <>
       <div className="home-container">
@@ -57,7 +61,9 @@ function Home() {
             designed for seamless exploration. Join us in unlocking knowledge,
             ten quiz at a time!"
           </p>
-          <button className="custom-button">Let's Start</button>
+          <button className="custom-button" onClick={scrollToUpload}>
+            Let's Start
+          </button>
         </div>
         <div className="second-column">
           <img
@@ -68,7 +74,7 @@ function Home() {
         </div>
       </div>
 
-      <div className="home-container">
+      <div className="home-container" ref={uploadSectionRef}>
         <div className="first-column">
           <h1>Upload Your File !!</h1>
           <p>
