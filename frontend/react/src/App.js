@@ -25,8 +25,8 @@ function App() {
         <Route exact path="quiz" element={<Quiz />} />
         <Route exact path="contact-us" element={<ContactUs />} />
         <Route exact path="about-us" element={<AboutUs />} />
-        <Route exact path="sign-in" element={<SignIn />} />
-        <Route exact path="sign-up" element={<Signup />} />
+        <Route exact path="signin" element={<SignIn />} />
+        <Route exact path="signup" element={<Signup />} />
       </Routes>
     </Router>
   );
