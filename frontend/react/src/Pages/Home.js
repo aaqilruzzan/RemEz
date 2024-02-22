@@ -1,14 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import "./Home.css";
 import axios from "axios";
+import { useNavigate } from "react-router";
 
 function Home() {
-  const [modal, setModal] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null); // State to hold the selected file
-  const toggleModal = () => {
-    setModal(!modal);
-  };
-
+  const Navigate = useNavigate();
+  const uploadSectionRef = useRef(null);
   const handleFileChange = (event) => {
     setSelectedFile(event.target.files[0]); // Update the state with the selected file
   };
@@ -33,6 +31,7 @@ function Home() {
         }
       );
       console.log("File uploaded successfully:", response.data);
+      Navigate("/quiz");
       alert("File uploaded successfully!");
     } catch (error) {
       console.error("Error uploading file:", error);
@@ -40,11 +39,9 @@ function Home() {
     }
   };
 
-  if (modal) {
-    document.body.classList.add("active-modal");
-  } else {
-    document.body.classList.remove("active-modal");
-  }
+  const scrollToUpload = () => {
+    uploadSectionRef.current.scrollIntoView({ behavior: "smooth" }); // Step 3: Use scrollIntoView to navigate
+  };
 
   return (
     <>
@@ -64,7 +61,9 @@ function Home() {
             designed for seamless exploration. Join us in unlocking knowledge,
             ten quiz at a time!"
           </p>
-          <button className="custom-button">Let's Start</button>
+          <button className="custom-button" onClick={scrollToUpload}>
+            Let's Start
+          </button>
         </div>
         <div className="second-column">
           <img
@@ -75,7 +74,7 @@ function Home() {
         </div>
       </div>
 
-      <div className="home-container">
+      <div className="home-container" ref={uploadSectionRef}>
         <div className="first-column">
           <h1>Upload Your File !!</h1>
           <p>
@@ -117,201 +116,6 @@ function Home() {
           />
         </div>
       </div>
-
-      <div class="container">
-        <div class="question">
-          <p>
-            <b>Question 1: What is your favorite color?</b>
-          </p>
-          <textarea
-            rows="10"
-            cols="70"
-            placeholder="Enter Your Answer"
-          ></textarea>
-        </div>
-
-        <div class="button-wrapper">
-          <button className="btn" onClick={toggleModal}>
-            Submit Answer
-          </button>
-        </div>
-
-        <div class="question">
-          <p>
-            <b>Question 2: What is your favorite animal?</b>
-          </p>
-          <textarea
-            rows="10"
-            cols="70"
-            placeholder="Enter Your Answer"
-          ></textarea>
-        </div>
-
-        <div class="button-wrapper">
-          <button className="btn" onClick={toggleModal}>
-            Submit Answer
-          </button>
-        </div>
-
-        <div class="question">
-          <p>
-            <b>Question 3: What is your favorite food?</b>
-          </p>
-          <textarea
-            rows="10"
-            cols="70"
-            placeholder="Enter Your Answer"
-          ></textarea>
-        </div>
-
-        <div class="button-wrapper">
-          <button className="btn" onClick={toggleModal}>
-            Submit Answer
-          </button>
-        </div>
-
-        <div class="question">
-          <p>
-            <b>Question 4: What is your favorite food?</b>
-          </p>
-          <textarea
-            rows="10"
-            cols="70"
-            placeholder="Enter Your Answer"
-          ></textarea>
-        </div>
-        <div class="button-wrapper">
-          <button className="btn" onClick={toggleModal}>
-            Submit Answer
-          </button>
-        </div>
-
-        <div class="question">
-          <p>
-            <b>Question 5: What is your favorite food?</b>
-          </p>
-          <textarea
-            rows="10"
-            cols="70"
-            placeholder="Enter Your Answer"
-          ></textarea>
-        </div>
-        <div class="button-wrapper">
-          <button className="btn" onClick={toggleModal}>
-            Submit Answer
-          </button>
-        </div>
-
-        <div class="question">
-          <p>
-            <b>Question 6: What is your favorite food?</b>
-          </p>
-          <textarea
-            rows="10"
-            cols="70"
-            placeholder="Enter Your Answer"
-          ></textarea>
-        </div>
-        <div class="button-wrapper">
-          <button className="btn" onClick={toggleModal}>
-            Submit Answer
-          </button>
-        </div>
-
-        <div class="question">
-          <p>
-            <b>Question 7: What is your favorite food?</b>
-          </p>
-          <textarea
-            rows="10"
-            cols="70"
-            placeholder="Enter Your Answer"
-          ></textarea>
-        </div>
-        <div class="button-wrapper">
-          <button className="btn" onClick={toggleModal}>
-            Submit Answer
-          </button>
-        </div>
-
-        <div class="question">
-          <p>
-            <b>Question 8: What is your favorite food?</b>
-          </p>
-          <textarea
-            rows="10"
-            cols="70"
-            placeholder="Enter Your Answer"
-          ></textarea>
-        </div>
-        <div class="button-wrapper">
-          <button className="btn" onClick={toggleModal}>
-            Submit Answer
-          </button>
-        </div>
-
-        <div class="question">
-          <p>
-            <b>Question 9: What is your favorite food?</b>
-          </p>
-          <textarea
-            rows="10"
-            cols="70"
-            placeholder="Enter Your Answer"
-          ></textarea>
-        </div>
-        <div class="button-wrapper">
-          <button className="btn" onClick={toggleModal}>
-            Submit Answer
-          </button>
-        </div>
-
-        <div class="question">
-          <p>
-            <b>Question 10: What is your favorite food?</b>
-          </p>
-          <textarea
-            rows="10"
-            cols="70"
-            placeholder="Enter Your Answer"
-          ></textarea>
-        </div>
-        <div class="button-wrapper">
-          <button className="btn" onClick={toggleModal}>
-            Submit Answer
-          </button>
-        </div>
-      </div>
-
-      <div class="main-container">
-        <div class="photo">
-          <img src="homePage3.png" alt="Your Photo" />
-        </div>
-        <div class="buttons-container">
-          <div class="button-wrapper">
-            <button className="btn" onClick={toggleModal}>
-              Submit Answer
-            </button>
-          </div>
-
-          <div class="button-wrapper">
-            <button class="btn1">Download Q&A</button>
-          </div>
-        </div>
-      </div>
-
-      {modal && (
-        <div className="modal">
-          <div className="overlay"></div>
-          <div className="modal-content">
-            <h2 className="head2">Quiz Hub</h2>
-            <p>Accuracy Rating : 75%</p>
-            <button className="close-modal" onClick={toggleModal}>
-              CLOSE
-            </button>
-          </div>
-        </div>
-      )}
     </>
   );
 }

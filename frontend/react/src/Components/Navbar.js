@@ -22,7 +22,7 @@ function Navbar({ clicked, isClicked }) {
           </NavLink>
         </li>
         <li className="NavElements">
-          <NavLink to="/" className="Link">
+          <NavLink to="/quiz" className="Link">
             Quiz
           </NavLink>
         </li>

@@ -1,10 +1,5 @@
-import mongoose from "mongoose";
 import multer from "multer";
 import PdfDetails from "../../models/pdf.js";
-
-// MongoDB connection setup
-const mongoUrl =
-  "mongodb+srv://REMEZ:REMEZ@cluster01.qrulfpd.mongodb.net/?retryWrites=true&w=majority";
 
 // Function encapsulating file upload and MongoDB operations
 const handlePdfUpload = (req, res) => {
