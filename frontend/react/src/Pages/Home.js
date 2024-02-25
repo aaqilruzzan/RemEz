@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import "./Home.css";
 
+
 function Home() {
 
   const [modal,setModal]= useState(false);
@@ -219,7 +220,6 @@ function Home() {
 
     </div>
    )}
-
 
 
 

@@ -4,9 +4,11 @@
     display: flex;
     flex-direction: column;
     padding-top: 65px;
-    padding-left: 5%;
+    padding-left: 9%;
     padding-Right: 5%;
     padding-bottom: 5%;
+    background-image: url('C:\Users\Naseem\Desktop\RemEz\RemEz\frontend\react\public\shapes3.png');
+    background-repeat:repeat-y;
     
   }
   .first-column p {
@@ -37,6 +39,33 @@
     margin-bottom: 100px; 
     
   
+  }
+  
+
+  .photo img {
+    animation: fors 6s infinite alternate; /* Run the animation once and stop at the end */
+  }
+  
+  @keyframes fors {
+    0% {
+      transform: translateY(20px); /* Start position */
+    }
+    100% {
+      transform: translateY(-5px); /* End position */
+    }
+  }
+
+  .image {
+    animation: moveUpDown 3s infinite alternate; /* Move up and down infinitely */
+  }
+  
+  @keyframes moveUpDown {
+    0% {
+      transform: translateY(100px); /* Start position */
+    }
+    100% {
+      transform: translateY(-20px); /* End position */
+    }
   }
   
   /* Home.css */
@@ -141,6 +170,8 @@
   max-width: 800px;
   margin: 0 auto;
   padding: 28px;
+  background-image: url('C:\Users\Naseem\Desktop\RemEz\RemEz\frontend\react\public\shapes3.png');
+  
 }
 .title {
   text-align: center;

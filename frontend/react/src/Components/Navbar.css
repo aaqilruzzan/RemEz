@@ -4,10 +4,10 @@
     background-color: #ffffff;
     padding: 30px 170px  30px 170px;
     box-shadow: 0 0.5px 0.5px rgba(0, 0, 0, 0.1);
-    
-    /*position: fixed;
+    /*
     position: fixed;
-    width: 100%; /* Set the width to 100% of the viewport 
+    position: fixed;
+    width: 100%; 
     z-index: 1000;*/
 }
 
@@ -40,9 +40,10 @@
 
 .NavButton{
     float: right;
-    background-color:rgb(10, 0, 41);
+    background-color:#c0d4ff;
     padding: 7px 30px 7px 30px;
     margin: -8px 2px 1px 2px;
+    font-weight: bold;
 
 }
 .NavButton:hover{
@@ -77,10 +78,11 @@
 }
 @media screen and (max-width:1090px){
     .Nav{
-        padding: 25px 0px  25px 25px;
+        padding: 25px 0%  25px 25px;
     }
         .NavElements{
-            display: none;
+            display:none;
+            
         }
         .NavButton{
             display: none;
@@ -88,7 +90,7 @@
         .Icon{
             display: inline;
             position: relative;
-            left: 25%;
+            left: 15%;
         }
         .NavLogo{
             margin: 0;

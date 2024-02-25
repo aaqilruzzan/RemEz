@@ -17,8 +17,9 @@ function Navbar({clicked, isClicked}) {
         <li className='NavElements'><NavLink to="/" className='Link'>Home</NavLink></li>
         <li className='NavElements'><NavLink to="/about-us" className='Link'>About us</NavLink></li>
         <li className='NavElements'><NavLink to="/contact-us" className='Link'>Contact Us</NavLink></li>
-        <li className='NavButton'><NavLink to="/sign-up"className='Link'>Sign up</NavLink></li>
+        
         <li className='NavElements'><NavLink to="/sign-in" className='Link'>Sign In</NavLink></li>
+        <li className='NavButton'><NavLink to="/sign-up"className='Link'>Sign up</NavLink></li>
 
       </ul>
       {!clicked ? (
