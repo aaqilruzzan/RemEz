@@ -1,11 +1,20 @@
 import "./Home.css";
 import { useEffect, useState } from "react";
+import Question from "../Components/Question";
 
 function Quiz() {
   const [modal, setModal] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [topic, setTopic] = useState("");
   const [loaded, setLoaded] = useState(false);
+  const [quizloaded, setQuizLoaded] = useState(false);
+  const [activeTime, setActiveTime] = useState({});
+  const questions = [
+    "What is your favorite color?",
+    "What is your favorite food?",
+    "What is your favorite animal?",
+  ];
+
   const toggleModal = () => {
     setModal(!modal);
   };
@@ -20,6 +29,50 @@ function Quiz() {
   } else {
     document.body.classList.remove("active-modal");
   }
+
+  useEffect(() => {
+    // Ensuring this effect runs only after the content has loaded
+    if (!loaded) return;
+    let startTimer;
+    let stopTimer;
+
+    const textareas = document.querySelectorAll("textarea");
+
+    const attachEvents = () => {
+      textareas.forEach((textarea, index) => {
+        let startTime; // Declaring startTime outside to make it accessible to both startTimer and stopTimer
+
+        startTimer = () => {
+          startTime = Date.now(); // Initializing startTime when the textarea gains focus
+        };
+
+        stopTimer = () => {
+          const endTime = Date.now(); // Capturing the time when the textarea loses focus
+          const timeSpent = endTime - startTime; // Calculate the duration
+          // Updating the state with the new time, adding it to the existing time for this index
+          setActiveTime((prevTimes) => ({
+            ...prevTimes,
+            [index + 1]: (prevTimes[index + 1] || 0) + timeSpent,
+          }));
+        };
+
+        // Attaching the startTimer function to the focus event
+        textarea.addEventListener("focus", startTimer);
+        // Attaching the stopTimer function to the blur event
+        textarea.addEventListener("blur", stopTimer);
+      });
+    };
+
+    attachEvents();
+    // Returning a cleanup function to remove the event listeners
+
+    return () => {
+      textareas.forEach((textarea) => {
+        textarea.removeEventListener("focus", startTimer);
+        textarea.removeEventListener("blur", stopTimer);
+      });
+    };
+  }, [loaded]);
 
   useEffect(() => {
     setShowModal(true);
@@ -83,7 +136,7 @@ function Quiz() {
       {loaded ? (
         <>
           <div class="container">
-            <div class="question">
+            {/* <div class="question">
               <p>
                 <b>Question 1: What is your favorite color?</b>
               </p>
@@ -92,159 +145,21 @@ function Quiz() {
                 cols="70"
                 placeholder="Enter Your Answer"
               ></textarea>
-            </div>
-
-            <div class="button-wrapper">
-              <button className="btn" onClick={toggleModal}>
-                Submit Answer
-              </button>
-            </div>
-
-            <div class="question">
-              <p>
-                <b>Question 2: What is your favorite animal?</b>
-              </p>
-              <textarea
-                rows="10"
-                cols="70"
-                placeholder="Enter Your Answer"
-              ></textarea>
-            </div>
-
-            <div class="button-wrapper">
-              <button className="btn" onClick={toggleModal}>
-                Submit Answer
-              </button>
-            </div>
-
-            <div class="question">
-              <p>
-                <b>Question 3: What is your favorite food?</b>
-              </p>
-              <textarea
-                rows="10"
-                cols="70"
-                placeholder="Enter Your Answer"
-              ></textarea>
-            </div>
-
-            <div class="button-wrapper">
-              <button className="btn" onClick={toggleModal}>
-                Submit Answer
-              </button>
-            </div>
-
-            <div class="question">
-              <p>
-                <b>Question 4: What is your favorite food?</b>
-              </p>
-              <textarea
-                rows="10"
-                cols="70"
-                placeholder="Enter Your Answer"
-              ></textarea>
-            </div>
-            <div class="button-wrapper">
-              <button className="btn" onClick={toggleModal}>
-                Submit Answer
-              </button>
-            </div>
-
-            <div class="question">
-              <p>
-                <b>Question 5: What is your favorite food?</b>
-              </p>
-              <textarea
-                rows="10"
-                cols="70"
-                placeholder="Enter Your Answer"
-              ></textarea>
-            </div>
-            <div class="button-wrapper">
-              <button className="btn" onClick={toggleModal}>
-                Submit Answer
-              </button>
-            </div>
-
-            <div class="question">
-              <p>
-                <b>Question 6: What is your favorite food?</b>
-              </p>
-              <textarea
-                rows="10"
-                cols="70"
-                placeholder="Enter Your Answer"
-              ></textarea>
-            </div>
-            <div class="button-wrapper">
-              <button className="btn" onClick={toggleModal}>
-                Submit Answer
-              </button>
-            </div>
-
-            <div class="question">
-              <p>
-                <b>Question 7: What is your favorite food?</b>
-              </p>
-              <textarea
-                rows="10"
-                cols="70"
-                placeholder="Enter Your Answer"
-              ></textarea>
-            </div>
-            <div class="button-wrapper">
-              <button className="btn" onClick={toggleModal}>
-                Submit Answer
-              </button>
-            </div>
-
-            <div class="question">
-              <p>
-                <b>Question 8: What is your favorite food?</b>
-              </p>
-              <textarea
-                rows="10"
-                cols="70"
-                placeholder="Enter Your Answer"
-              ></textarea>
-            </div>
-            <div class="button-wrapper">
-              <button className="btn" onClick={toggleModal}>
-                Submit Answer
-              </button>
-            </div>
-
-            <div class="question">
-              <p>
-                <b>Question 9: What is your favorite food?</b>
-              </p>
-              <textarea
-                rows="10"
-                cols="70"
-                placeholder="Enter Your Answer"
-              ></textarea>
-            </div>
-            <div class="button-wrapper">
-              <button className="btn" onClick={toggleModal}>
-                Submit Answer
-              </button>
-            </div>
-
-            <div class="question">
-              <p>
-                <b>Question 10: What is your favorite food?</b>
-              </p>
-              <textarea
-                rows="10"
-                cols="70"
-                placeholder="Enter Your Answer"
-              ></textarea>
-            </div>
-            <div class="button-wrapper">
-              <button className="btn" onClick={toggleModal}>
-                Submit Answer
-              </button>
-            </div>
+            </div> */}
+            {questions.map((question, index) => (
+              <>
+                <Question key={index} question={question} number={index + 1} />
+                <div className="question-time">
+                  Time spent: {Math.round((activeTime[index + 1] || 0) / 1000)}{" "}
+                  seconds
+                </div>
+                <div class="button-wrapper">
+                  <button className="btn" onClick={toggleModal}>
+                    Submit Answer
+                  </button>
+                </div>
+              </>
+            ))}
           </div>
 
           <div class="main-container">
