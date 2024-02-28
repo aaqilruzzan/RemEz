@@ -1,13 +1,30 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import PerCollectionPro from "../Components/PerCollectionPro";
 import AllProgress from "../Components/AllProgress";
+import axios from "axios";
 
 export default function ProgressTracker() {
   const [progress, setProgress] = useState(" ");
+  const [topics, setTopics] = useState([]);
 
   const handleChange = (e) => {
     setProgress(e.target.value);
   };
+
+  useEffect(() => {
+    const fetchTopics = async () => {
+      try {
+        const response = await axios.get("http://localhost:8000/getnames");
+        setTopics(response.data);
+      } catch (error) {
+        console.error("Error fetching topics:", error);
+      }
+    };
+
+    fetchTopics();
+  }, []);
+
+  console.log(topics);
   return (
     <>
       <div className="flex items-center justify-center ">
@@ -17,9 +34,9 @@ export default function ProgressTracker() {
             onChange={handleChange}
           >
             <option>View all Progress</option>
-            <option>History</option>
-            <option>Economics</option>
-            <option>Medicine</option>
+            {topics.map((topic, index) => (
+              <option key={index}>{topic}</option>
+            ))}
 
             <option selected disabled>
               Select topic to view progress

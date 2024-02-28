@@ -1,6 +1,8 @@
 import "./Home.css";
 import { useEffect, useState } from "react";
 import Question from "../Components/Question";
+import AccessTimeIcon from "@mui/icons-material/AccessTime";
+import axios from "axios";
 
 function Quiz() {
   const [modal, setModal] = useState(false);
@@ -78,6 +80,22 @@ function Quiz() {
     setShowModal(true);
   }, []);
 
+  const handleQuizSubmit = async () => {
+    try {
+      const response = await axios.post("http://localhost:8000/savesubject", {
+        name: topic,
+        times: activeTime,
+        questions: questions,
+      });
+      if (response.status == 201) {
+        alert("Quiz submitted successfully!");
+      }
+    } catch (error) {
+      console.error("Error saving subject:", error);
+      alert("Error saving subject!");
+    }
+  };
+
   return (
     <>
       {showModal ? (
@@ -149,9 +167,20 @@ function Quiz() {
             {questions.map((question, index) => (
               <>
                 <Question key={index} question={question} number={index + 1} />
-                <div className="question-time">
-                  Time spent: {Math.round((activeTime[index + 1] || 0) / 1000)}{" "}
-                  seconds
+
+                <div class="bg-white shadow-lg rounded-lg p-6 space-y-4">
+                  <div class="flex items-center space-x-4">
+                    <div class="p-2 bg-purple-200 rounded-full">
+                      <AccessTimeIcon />
+                    </div>
+                    <div>
+                      <div class="text-gray-600 text-sm">Total Time Spent</div>
+                      <div class="text-gray-900 text-2xl font-semibold">
+                        {Math.round((activeTime[index + 1] || 0) / 1000)}{" "}
+                        seconds
+                      </div>
+                    </div>
+                  </div>
                 </div>
                 <div class="button-wrapper">
                   <button className="btn" onClick={toggleModal}>
@@ -168,7 +197,7 @@ function Quiz() {
             </div>
             <div class="buttons-container">
               <div class="button-wrapper">
-                <button className="btn" onClick={toggleModal}>
+                <button className="btn" onClick={handleQuizSubmit}>
                   Finish Quiz
                 </button>
               </div>
