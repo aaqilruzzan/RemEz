@@ -2,10 +2,12 @@ import React, { useEffect, useState } from "react";
 import PerCollectionPro from "../Components/PerCollectionPro";
 import AllProgress from "../Components/AllProgress";
 import axios from "axios";
+import SelectTopic from "../Components/SelectTopic";
 
 export default function ProgressTracker() {
-  const [progress, setProgress] = useState(" ");
+  const [progress, setProgress] = useState("");
   const [topics, setTopics] = useState([]);
+  const [selectedTopic, setSelectedTopic] = useState("");
 
   const handleChange = (e) => {
     setProgress(e.target.value);
@@ -24,7 +26,6 @@ export default function ProgressTracker() {
     fetchTopics();
   }, []);
 
-  console.log(topics);
   return (
     <>
       <div className="flex items-center justify-center ">
@@ -45,10 +46,12 @@ export default function ProgressTracker() {
         </div>
       </div>
 
-      {progress && progress === "View all Progress" ? (
+      {progress === "" ? (
+        <SelectTopic />
+      ) : progress === "View all Progress" ? (
         <AllProgress />
       ) : (
-        <PerCollectionPro />
+        <PerCollectionPro topic={progress} />
       )}
     </>
   );

@@ -6,8 +6,9 @@ const subjectSchema = new Schema({
     required: true,
   },
   questions: {
-    type: [String], // Array of strings
-    required: false,
+    type: Map,
+    of: String,
+    required: true,
   },
   systemAnswers: {
     type: [String], // Array of strings

@@ -1,10 +1,44 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { CircularProgressbar } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 import LinearProgress from "@material-ui/core/LinearProgress";
 import QuestionRow from "./questionRow";
+import axios from "axios";
 
-function perCollectionPro() {
+function PerCollectionPro(props) {
+  const [loaded, setLoaded] = useState(false);
+  const [questions, setQuestions] = useState({});
+  const [times, setTimes] = useState({});
+
+  useEffect(() => {
+    const fetchProgress = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:8000/getquestions/${props.topic}`
+        );
+        setQuestions(response.data[0]);
+      } catch (error) {
+        console.error("Error fetching questions:", error);
+      }
+
+      try {
+        const response = await axios.get(
+          `http://localhost:8000/gettimes/${props.topic}`
+        );
+        setTimes(response.data[0]);
+      } catch (error) {
+        console.error("Error fetching times:", error);
+      }
+
+      setLoaded(true);
+    };
+
+    fetchProgress();
+  }, []);
+
+  if (!loaded) {
+    return <div>Loading...</div>;
+  }
   return (
     <div class="min-h-screen bg-gray-50/50">
       <div class="p-4 xl:ml-10">
@@ -162,26 +196,13 @@ function perCollectionPro() {
                     </tr>
                   </thead>
                   <tbody>
-                    <QuestionRow
-                      question="What is the capital of France?"
-                      timeTaken="10s"
-                      accuracy="10"
-                    />
-                    <QuestionRow
-                      question="What is the capital of France?"
-                      timeTaken="10s"
-                      accuracy="30"
-                    />
-                    <QuestionRow
-                      question="What is the capital of France?"
-                      timeTaken="10s"
-                      accuracy="40"
-                    />
-                    <QuestionRow
-                      question="What is the capital of France?"
-                      timeTaken="10s"
-                      accuracy="60"
-                    />
+                    {Object.keys(questions).map((key) => (
+                      <QuestionRow
+                        question={questions[key]}
+                        timeTaken={Math.round(times[key] / 1000) + "s"}
+                        accuracy={Math.floor(Math.random() * 100)}
+                      ></QuestionRow>
+                    ))}
                   </tbody>
                 </table>
               </div>
@@ -192,4 +213,4 @@ function perCollectionPro() {
     </div>
   );
 }
-export default perCollectionPro;
+export default PerCollectionPro;

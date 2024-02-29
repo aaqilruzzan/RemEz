@@ -41,12 +41,29 @@ const getNames = async (req, res) => {
 };
 
 const getTimes = async (req, res) => {
+  const { name } = req.params; // Extracting the name from request parameters
+
   try {
-    const times = await subject.find({}, "times -_id");
+    const result = await subject.find({ name: name }, "times -_id"); // Query documents by name
+
+    const times = result.map((subject) => subject.times);
     res.status(200).json(times);
   } catch (error) {
     res.status(404).json({ message: error.message });
   }
 };
 
-export { saveData, getNames, getTimes };
+const getQuestions = async (req, res) => {
+  const { name } = req.params; // Extracting the name from request parameters
+
+  try {
+    const result = await subject.find({ name: name }, "questions -_id"); // Query documents by name
+
+    const questions = result.map((subject) => subject.questions);
+    res.status(200).json(questions);
+  } catch (error) {
+    res.status(404).json({ message: error.message });
+  }
+};
+
+export { saveData, getNames, getTimes, getQuestions };

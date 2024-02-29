@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import Question from "../Components/Question";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import axios from "axios";
-
+import React from "react";
 function Quiz() {
   const [modal, setModal] = useState(false);
   const [showModal, setShowModal] = useState(false);
@@ -11,11 +11,11 @@ function Quiz() {
   const [loaded, setLoaded] = useState(false);
   const [quizloaded, setQuizLoaded] = useState(false);
   const [activeTime, setActiveTime] = useState({});
-  const questions = [
-    "What is your favorite color?",
-    "What is your favorite food?",
-    "What is your favorite animal?",
-  ];
+  const questions = {
+    1: "What is your favorite color?",
+    2: "What is your favorite food?",
+    3: "What is your favorite animal?",
+  };
 
   const toggleModal = () => {
     setModal(!modal);
@@ -154,40 +154,34 @@ function Quiz() {
       {loaded ? (
         <>
           <div class="container">
-            {/* <div class="question">
-              <p>
-                <b>Question 1: What is your favorite color?</b>
-              </p>
-              <textarea
-                rows="10"
-                cols="70"
-                placeholder="Enter Your Answer"
-              ></textarea>
-            </div> */}
-            {questions.map((question, index) => (
-              <>
-                <Question key={index} question={question} number={index + 1} />
+            {Object.keys(questions).map((key) => (
+              <React.Fragment key={key}>
+                <Question
+                  question={questions[key]}
+                  number={parseInt(key, 10)}
+                />
 
-                <div class="bg-white shadow-lg rounded-lg p-6 space-y-4">
-                  <div class="flex items-center space-x-4">
-                    <div class="p-2 bg-purple-200 rounded-full">
+                <div className="bg-white shadow-lg rounded-lg p-6 space-y-4">
+                  <div className="flex items-center space-x-4">
+                    <div className="p-2 bg-purple-200 rounded-full">
                       <AccessTimeIcon />
                     </div>
                     <div>
-                      <div class="text-gray-600 text-sm">Total Time Spent</div>
-                      <div class="text-gray-900 text-2xl font-semibold">
-                        {Math.round((activeTime[index + 1] || 0) / 1000)}{" "}
-                        seconds
+                      <div className="text-gray-600 text-sm">
+                        Total Time Spent
+                      </div>
+                      <div className="text-gray-900 text-2xl font-semibold">
+                        {Math.round((activeTime[key] || 0) / 1000)} seconds
                       </div>
                     </div>
                   </div>
                 </div>
-                <div class="button-wrapper">
+                <div className="button-wrapper">
                   <button className="btn" onClick={toggleModal}>
                     Submit Answer
                   </button>
                 </div>
-              </>
+              </React.Fragment>
             ))}
           </div>
 
