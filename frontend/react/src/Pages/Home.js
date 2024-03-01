@@ -61,9 +61,7 @@ function Home() {
             designed for seamless exploration. Join us in unlocking knowledge,
             ten quiz at a time!"
           </p>
-          <button className="custom-button" onClick={scrollToUpload}>
-            Let's Start
-          </button>
+          <button className="custom-button">Let's Start</button>
         </div>
         <div className="second-column">
           <img
@@ -73,6 +71,7 @@ function Home() {
           />
         </div>
       </div>
+      
 
       <div className="home-container" ref={uploadSectionRef}>
         <div className="first-column">
