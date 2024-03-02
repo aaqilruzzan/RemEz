@@ -20,10 +20,10 @@ function App() {
 
     useEffect(() => {
         const timeout = setTimeout(() => {
-            setShowWelcomeVideo(false); // Hide the welcome video after 7 seconds
-        }, 7000); // 7 seconds in milliseconds
+            setShowWelcomeVideo(false); 
+        }, 7000); 
 
-        return () => clearTimeout(timeout); // Cleanup function to clear the timeout
+        return () => clearTimeout(timeout); 
     }, []);
 
 
@@ -31,7 +31,7 @@ function App() {
     <Router>
       <Navbar clicked={clicked} isClicked={isClicked} />
       {clicked ? <Menu /> : null}
-      {showWelcomeVideo && <WelcomeVideo />} {/* Show WelcomeVideo if it's the first visit */}
+      {showWelcomeVideo && <WelcomeVideo />} 
 
       <Routes>
         <Route exact path="" element={<Home />} />
