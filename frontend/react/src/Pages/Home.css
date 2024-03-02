@@ -47,28 +47,28 @@
 
 
 .photo img {
-  animation: fors 6s infinite alternate; /* Run the animation once and stop at the end */
+  animation: fors 6s infinite alternate; 
 }
 
 @keyframes fors {
   0% {
-    transform: translateY(20px); /* Start position */
+    transform: translateY(20px); 
   }
   100% {
-    transform: translateY(-5px); /* End position */
+    transform: translateY(-5px); 
   }
 }
 
 .image {
-  animation: moveUpDown 3s infinite alternate; /* Move up and down infinitely */
+  animation: moveUpDown 3s infinite alternate; 
 }
 
 @keyframes moveUpDown {
   0% {
-    transform: translateY(100px); /* Start position */
+    transform: translateY(100px); 
   }
   100% {
-    transform: translateY(-20px); /* End position */
+    transform: translateY(-20px); 
   }
 }
 
@@ -173,9 +173,9 @@
 /*Quiz Hub*/
 
 .container {
-max-width: 800px;
-margin: 0 auto;
-padding: 28px;
+max-width: 920px;
+margin: 50px auto;
+padding: 50px;
 background-image: url('C:\Users\Naseem\Desktop\RemEz\RemEz\frontend\react\public\shapes3.png');
 
 }

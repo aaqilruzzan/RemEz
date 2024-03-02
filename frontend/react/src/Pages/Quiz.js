@@ -88,7 +88,7 @@ function Quiz() {
                 <b>Question 1: What is your favorite color?</b>
               </p>
               <textarea
-                rows="10"
+                rows="8"
                 cols="70"
                 placeholder="Enter Your Answer"
               ></textarea>
@@ -105,7 +105,7 @@ function Quiz() {
                 <b>Question 2: What is your favorite animal?</b>
               </p>
               <textarea
-                rows="10"
+                rows="8"
                 cols="70"
                 placeholder="Enter Your Answer"
               ></textarea>
@@ -122,7 +122,7 @@ function Quiz() {
                 <b>Question 3: What is your favorite food?</b>
               </p>
               <textarea
-                rows="10"
+                rows="8"
                 cols="70"
                 placeholder="Enter Your Answer"
               ></textarea>
@@ -139,7 +139,7 @@ function Quiz() {
                 <b>Question 4: What is your favorite food?</b>
               </p>
               <textarea
-                rows="10"
+                rows="8"
                 cols="70"
                 placeholder="Enter Your Answer"
               ></textarea>
@@ -155,7 +155,7 @@ function Quiz() {
                 <b>Question 5: What is your favorite food?</b>
               </p>
               <textarea
-                rows="10"
+                rows="8"
                 cols="70"
                 placeholder="Enter Your Answer"
               ></textarea>
@@ -171,7 +171,7 @@ function Quiz() {
                 <b>Question 6: What is your favorite food?</b>
               </p>
               <textarea
-                rows="10"
+                rows="8"
                 cols="70"
                 placeholder="Enter Your Answer"
               ></textarea>
@@ -187,7 +187,7 @@ function Quiz() {
                 <b>Question 7: What is your favorite food?</b>
               </p>
               <textarea
-                rows="10"
+                rows="8"
                 cols="70"
                 placeholder="Enter Your Answer"
               ></textarea>
@@ -203,7 +203,7 @@ function Quiz() {
                 <b>Question 8: What is your favorite food?</b>
               </p>
               <textarea
-                rows="10"
+                rows="8"
                 cols="70"
                 placeholder="Enter Your Answer"
               ></textarea>
@@ -219,7 +219,7 @@ function Quiz() {
                 <b>Question 9: What is your favorite food?</b>
               </p>
               <textarea
-                rows="10"
+                rows="8"
                 cols="70"
                 placeholder="Enter Your Answer"
               ></textarea>
@@ -235,7 +235,7 @@ function Quiz() {
                 <b>Question 10: What is your favorite food?</b>
               </p>
               <textarea
-                rows="10"
+                rows="8"
                 cols="70"
                 placeholder="Enter Your Answer"
               ></textarea>
