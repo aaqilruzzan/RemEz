@@ -6,10 +6,12 @@ const WelcomeVideo = () => {
 
     return (
         <div className="welcome-video-container">
-            <video autoPlay muted loop width="680" height="400" overflow="hidden">
-                <source src="/loading.mp4" type="video/mp4" />
-                Your browser does not support the video tag.
-            </video>
+            
+                <video autoPlay muted loop width="680" height="400">
+                    <source src="/loading.mp4" type="video/mp4" />
+                    Your browser does not support the video tag.
+                </video>
+            
         </div>
     );
 };

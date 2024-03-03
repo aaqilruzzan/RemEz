@@ -61,7 +61,7 @@ function Home() {
             designed for seamless exploration. Join us in unlocking knowledge,
             ten quiz at a time!"
           </p>
-          <button className="custom-button">Let's Start</button>
+          <button className="custom-button" onClick={scrollToUpload}>Let's Start</button>
         </div>
         <div className="second-column">
           <img
@@ -75,7 +75,7 @@ function Home() {
 
       <div className="home-container" ref={uploadSectionRef}>
         <div className="first-column">
-          <h1>Upload Your File !!</h1>
+          <h1 id="upload">Upload Your File !!</h1>
           <p>
             Welcome to our intuitive file upload feature! Seamlessly upload your
             PDFs by simply dragging and dropping them into the designated area.
