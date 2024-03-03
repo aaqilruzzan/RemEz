@@ -13,6 +13,7 @@ import Progress from "./Pages/Progress";
 import Quiz from "./Pages/Quiz";
 import Footer from "./Components/Footer";
 import WelcomeVideo from "./Components/WelcomeVideo";
+import MouseIcon from './Components/MouseIcon';
 
 function App() {
   const [clicked, isClicked] = useState(false);
@@ -32,7 +33,7 @@ function App() {
       <Navbar clicked={clicked} isClicked={isClicked} />
       {clicked ? <Menu /> : null}
       {showWelcomeVideo && <WelcomeVideo />} 
-
+      <MouseIcon />
       <Routes>
         <Route exact path="" element={<Home />} />
         <Route exact path="progress" element={<Progress />} />

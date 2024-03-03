@@ -10,9 +10,12 @@ function Navbar({ clicked, isClicked }) {
   };
   return (
     <div className="Nav">
+      
       <ul className="NavbarWrapper">
+      
         <li className="NavLogo">
           <Link to="/" className="Link">
+            
             Quiz Generator
           </Link>
         </li>
