@@ -15,12 +15,14 @@ const subjectSchema = new Schema({
     required: false,
   },
   userAnswers: {
-    type: [String], // Array of strings
-    required: false,
+    type: Map,
+    of: String,
+    required: true,
   },
   similarityScores: {
-    type: [Number], // Array of numbers
-    required: false,
+    type: Map,
+    of: Number,
+    required: true,
   },
   times: {
     type: Map,

@@ -2,7 +2,7 @@ import subject from "../../models/subject.js";
 
 const saveData = async (req, res) => {
   //   const { name, questions, systemAnswers, userAnswers, similarityScores, times } = req.body;
-  const { name, times, questions } = req.body;
+  const { name, times, questions, userAnswers, similarityScores } = req.body;
   //   const newSubject = new Subject({
   //     name,
   //     questions,
@@ -16,6 +16,8 @@ const saveData = async (req, res) => {
     name,
     times,
     questions,
+    userAnswers,
+    similarityScores,
   });
 
   try {
@@ -40,30 +42,42 @@ const getNames = async (req, res) => {
   }
 };
 
-const getTimes = async (req, res) => {
+const getTimesAndScores = async (req, res) => {
   const { name } = req.params; // Extracting the name from request parameters
 
   try {
-    const result = await subject.find({ name: name }, "times -_id"); // Query documents by name
+    const result = await subject.find(
+      { name: name },
+      "times similarityScores -_id"
+    ); // Query documents by name
 
-    const times = result.map((subject) => subject.times);
-    res.status(200).json(times);
+    const timesAndScores = result.map((subject) => ({
+      times: subject.times,
+      similarityScores: subject.similarityScores,
+    }));
+    res.status(200).json(timesAndScores);
   } catch (error) {
     res.status(404).json({ message: error.message });
   }
 };
 
-const getQuestions = async (req, res) => {
+const getQuestionsAnswers = async (req, res) => {
   const { name } = req.params; // Extracting the name from request parameters
 
   try {
-    const result = await subject.find({ name: name }, "questions -_id"); // Query documents by name
+    const result = await subject.find(
+      { name: name },
+      "questions userAnswers -_id"
+    ); // Querying documents by name and include userAnswers in the selection
 
-    const questions = result.map((subject) => subject.questions);
-    res.status(200).json(questions);
+    const questionsAndAnswers = result.map((subject) => ({
+      questions: subject.questions,
+      userAnswers: subject.userAnswers,
+    }));
+    res.status(200).json(questionsAndAnswers);
   } catch (error) {
     res.status(404).json({ message: error.message });
   }
 };
 
-export { saveData, getNames, getTimes, getQuestions };
+export { saveData, getNames, getTimesAndScores, getQuestionsAnswers };

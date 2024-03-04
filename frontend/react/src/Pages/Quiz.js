@@ -16,6 +16,8 @@ function Quiz() {
     2: "What is your favorite food?",
     3: "What is your favorite animal?",
   };
+  const [userAnswers, setUserAnswers] = useState({});
+  const [similarityScore, setSimilarityScore] = useState({});
 
   const toggleModal = () => {
     setModal(!modal);
@@ -86,6 +88,8 @@ function Quiz() {
         name: topic,
         times: activeTime,
         questions: questions,
+        userAnswers: userAnswers,
+        similarityScores: similarityScore,
       });
       if (response.status == 201) {
         alert("Quiz submitted successfully!");
@@ -94,6 +98,29 @@ function Quiz() {
       console.error("Error saving subject:", error);
       alert("Error saving subject!");
     }
+  };
+
+  const handleAnswerSubmit = async (questionId) => {
+    const answerElement = document.getElementById(questionId);
+    const answerValue = answerElement.value;
+
+    if (answerValue === "") {
+      alert("Please answer the question before submitting");
+      return;
+    }
+
+    const similarityScore = Math.round(Math.random() * 100);
+
+    // Saving the answer in the `answers` state object
+    setUserAnswers((prevAnswers) => ({
+      ...prevAnswers,
+      [questionId]: answerValue,
+    }));
+
+    setSimilarityScore((prevsimilarityScore) => ({
+      ...prevsimilarityScore,
+      [questionId]: similarityScore,
+    }));
   };
 
   return (
@@ -158,10 +185,12 @@ function Quiz() {
               <React.Fragment key={key}>
                 <Question
                   question={questions[key]}
+                  id={key}
+                  handleAnswerSubmit={handleAnswerSubmit}
                   number={parseInt(key, 10)}
                 />
 
-                <div className="bg-white shadow-lg rounded-lg p-6 space-y-4">
+                <div className="bg-white shadow-lg rounded-lg p-6 space-y-10 mb-10">
                   <div className="flex items-center space-x-4">
                     <div className="p-2 bg-purple-200 rounded-full">
                       <AccessTimeIcon />
@@ -175,11 +204,6 @@ function Quiz() {
                       </div>
                     </div>
                   </div>
-                </div>
-                <div className="button-wrapper">
-                  <button className="btn" onClick={toggleModal}>
-                    Submit Answer
-                  </button>
                 </div>
               </React.Fragment>
             ))}
