@@ -2,6 +2,8 @@ import express from "express";
 import mongoose from "mongoose";
 import cors from "cors";
 import routes from "./routes/index.js";
+import routes from "./routes/user.js";
+
 
 const app = express();
 
@@ -27,6 +29,7 @@ app.use(express.json());
 
 // routes
 app.use(routes);
+app.use('/api/user', userRouts);
 // Database connection function
 async function connectDatabase() {
   const connectionParams = {
