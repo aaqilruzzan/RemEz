@@ -1,0 +1,108 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    max-width: 500px;
+    margin: auto;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    box-sizing: border-box;
+}
+
+.header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 9px;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.input, form {
+    display: flex;
+    flex-direction: column;
+}
+
+.input label, .input input, button {
+    margin: 10px 0;
+}
+
+.input input, button {
+    padding: 8px;
+}
+
+button {
+    background-color: darkslategray;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: rgb(19, 18, 15);
+}
+
+.table {
+    width: 100%;
+    margin-top: 20px;
+    border-collapse: collapse;
+    table-layout: fixed; /* Add this to control column widths */
+}
+
+th, td {
+    padding: 10px;
+    background-color: bisque;
+    border: 1px solid #cc8282;
+    text-align: left;
+    word-wrap: break-word; /* Ensures text wraps within the cell */
+}
+
+td {
+    max-width: 0; /* Ensures table cells do not overflow */
+    overflow: hidden;
+    text-overflow: ellipsis; /* Adds an ellipsis for text that overflows */
+    white-space: nowrap; /* Keeps the text on a single line till it overflows */
+}
+
+/* Style for expanding cell content on hover */
+td:hover {
+    white-space: normal;
+    overflow: visible;
+    cursor: pointer;
+}
+
+@media (max-width: 768px) {
+    .container {
+        width: 90%;
+        padding: 15px;
+    }
+
+    .input label, .input input, button {
+        margin: 5px 0;
+    }
+
+    th, td {
+        padding: 5px;
+    }
+
+    /* Add horizontal scrolling to the table on smaller screens */
+    .table-container {
+        overflow-x: auto; /* Allows the table to scroll horizontally */
+    }
+}
+
+@media (max-width: 480px) {
+    .header .text {
+        font-size: 18px;
+    }
+
+    .input input, button {
+        padding: 10px;
+    }
+
+    th, td {
+        padding: 8px;
+    }
+}
+

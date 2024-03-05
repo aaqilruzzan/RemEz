@@ -11,6 +11,8 @@ import SignIn from "./Pages/SignIn";
 import Signup from "./Pages/Signup";
 import Progress from "./Pages/Progress";
 import Quiz from "./Pages/Quiz";
+import Reminder from "./Components/Reminder";
+import { NotesWrapper } from "./Components/NotesWrapper";
 
 function App() {
   const [clicked, isClicked] = useState(false);
@@ -27,6 +29,9 @@ function App() {
         <Route exact path="about-us" element={<AboutUs />} />
         <Route exact path="signin" element={<SignIn />} />
         <Route exact path="signup" element={<Signup />} />
+        <Route exact path="reminder" element={<Reminder />} />
+        <Route exact path="noteswrapper" element={<NotesWrapper />} />
+        
       </Routes>
     </Router>
   );
