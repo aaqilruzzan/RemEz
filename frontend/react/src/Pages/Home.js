@@ -3,6 +3,8 @@ import "./Home.css";
 import axios from "axios";
 import { useNavigate } from "react-router";
 
+
+
 function Home() {
   const [selectedFile, setSelectedFile] = useState(null); // State to hold the selected file
   const Navigate = useNavigate();
@@ -115,6 +117,7 @@ function Home() {
           />
         </div>
       </div>
+      
     </>
   );
 }
