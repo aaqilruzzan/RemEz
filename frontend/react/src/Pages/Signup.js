@@ -1,5 +1,11 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { useState } from "react"; 
+
+const signup = () => {
+  const [email, setEmail] = useState('')
+  const [passsword, setPassword] = useState('')
+}
 
 function SignUp() {
   return (
