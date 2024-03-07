@@ -2,6 +2,7 @@ import "./Home.css";
 import { useEffect, useState } from "react";
 import Question from "../Components/Question";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
+import SpeedIcon from "@mui/icons-material/Speed";
 import axios from "axios";
 import React from "react";
 import { useQuestions } from "../Context/QuestionsContext";
@@ -91,6 +92,7 @@ function Quiz() {
         questions: questions,
         userAnswers: userAnswers,
         similarityScores: similarityScore,
+        systemAnswers: answers,
       });
       if (response.status == 201) {
         alert("Quiz submitted successfully!");
@@ -110,7 +112,19 @@ function Quiz() {
       return;
     }
 
-    const similarityScore = Math.round(Math.random() * 100);
+    try {
+      const response = await axios.post(
+        "http://localhost:5000/calculatesimilarity",
+        {
+          userAnswer: answerValue,
+          modelAnswer: answers[questionId],
+        }
+      );
+      var similarityScore = response.data.similarityScore;
+    } catch (error) {
+      console.error("Error calculating similarity:", error);
+      alert("Error calculating similarity!");
+    }
 
     // Saving the answer in the `answers` state object
     setUserAnswers((prevAnswers) => ({
@@ -192,16 +206,31 @@ function Quiz() {
                 />
 
                 <div className="bg-white shadow-lg rounded-lg p-6 space-y-10 mb-10">
-                  <div className="flex items-center space-x-4">
-                    <div className="p-2 bg-purple-200 rounded-full">
-                      <AccessTimeIcon />
-                    </div>
-                    <div>
-                      <div className="text-gray-600 text-sm">
-                        Total Time Spent
+                  <div className="flex items-center justify-evenly space-x-4">
+                    <div className="flex justify-center gap-2">
+                      <div className="p-2 bg-purple-200 rounded-full ">
+                        <AccessTimeIcon />
                       </div>
-                      <div className="text-gray-900 text-2xl font-semibold">
-                        {Math.round((activeTime[key] || 0) / 1000)} seconds
+                      <div>
+                        <div className="text-gray-600 text-sm">
+                          Total Time Spent
+                        </div>
+                        <div className="text-gray-900 text-2xl font-semibold">
+                          {Math.round((activeTime[key] || 0) / 1000)} seconds
+                        </div>
+                      </div>
+                    </div>
+                    <div className="flex justify-center gap-2">
+                      <div className="p-2 bg-purple-200 rounded-full">
+                        <SpeedIcon />
+                      </div>
+                      <div>
+                        <div className="text-gray-600 text-sm">
+                          Accuracy Rating
+                        </div>
+                        <div className="text-gray-900 text-2xl font-semibold">
+                          {similarityScore[key] ? similarityScore[key] : "--"}%
+                        </div>
                       </div>
                     </div>
                   </div>
