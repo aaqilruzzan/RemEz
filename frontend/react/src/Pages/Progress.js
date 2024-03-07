@@ -33,6 +33,7 @@ export default function ProgressTracker() {
           <select
             className="w-full p-2.5 text-gray-500 bg-white border rounded-md shadow-sm outline-none appearance-none focus:border-indigo-600"
             onChange={handleChange}
+            value={progress}
           >
             <option>View all Progress</option>
             {topics.map((topic, index) => (
@@ -51,7 +52,7 @@ export default function ProgressTracker() {
       ) : progress === "View all Progress" ? (
         <AllProgress />
       ) : (
-        <PerCollectionPro topic={progress} />
+        <PerCollectionPro key={progress} topic={progress} />
       )}
     </>
   );

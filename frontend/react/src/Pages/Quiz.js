@@ -4,18 +4,19 @@ import Question from "../Components/Question";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import axios from "axios";
 import React from "react";
+import { useQuestions } from "../Context/QuestionsContext";
+import { useAnswers } from "../Context/AnswersContext";
 function Quiz() {
   const [modal, setModal] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [topic, setTopic] = useState("");
   const [loaded, setLoaded] = useState(false);
-  const [quizloaded, setQuizLoaded] = useState(false);
+
+  const { questions, setQuestions } = useQuestions();
+  const { answers, setAnswers } = useAnswers();
+
   const [activeTime, setActiveTime] = useState({});
-  const questions = {
-    1: "What is your favorite color?",
-    2: "What is your favorite food?",
-    3: "What is your favorite animal?",
-  };
+
   const [userAnswers, setUserAnswers] = useState({});
   const [similarityScore, setSimilarityScore] = useState({});
 

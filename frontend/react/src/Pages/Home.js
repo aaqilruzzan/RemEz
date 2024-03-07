@@ -1,12 +1,15 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import "./Home.css";
 import axios from "axios";
 import { useNavigate } from "react-router";
-
+import { useQuestions } from "../Context/QuestionsContext";
+import { useAnswers } from "../Context/AnswersContext";
 function Home() {
   const [selectedFile, setSelectedFile] = useState(null); // State to hold the selected file
   const Navigate = useNavigate();
   const uploadSectionRef = useRef(null);
+  const { questions, setQuestions } = useQuestions();
+  const { answers, setAnswers } = useAnswers();
   const handleFileChange = (event) => {
     setSelectedFile(event.target.files[0]); // Update the state with the selected file
   };
@@ -22,7 +25,7 @@ function Home() {
 
     try {
       const response = await axios.post(
-        "http://localhost:8000/upload",
+        "http://localhost:5000/upload",
         formData,
         {
           headers: {
@@ -31,8 +34,10 @@ function Home() {
         }
       );
       console.log("File uploaded successfully:", response.data);
-      Navigate("/quiz");
+      await setQuestions(response.data.questions);
+      await setAnswers(response.data.answers);
       alert("File uploaded successfully!");
+      Navigate("/quiz");
     } catch (error) {
       console.error("Error uploading file:", error);
       alert("Error uploading file!");
