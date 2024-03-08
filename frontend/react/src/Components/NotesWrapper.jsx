@@ -42,23 +42,23 @@ export const NotesWrapper = () => {
   };
 
   return (
-    <div className="TodoWrapper">
-      
-      <NotesForm addTodo={addTodo} />
-      {/* display todos */}
-      {todos.map((todo) =>
-        todo.isEditing ? (
-          <NotesEditForm editTodo={editnote} note={todo} />
-        ) : (
-          <Notes
-            key={todo.id}
-            note={todo}
-            deleteTodo={deleteTodo}
-            editTodo={editTodo}
-            toggleComplete={toggleComplete}
-          />
-        )
-      )}
+    <div className="container"> {/* Apply the container class here */}
+      <div className="TodoWrapper">
+        <NotesForm addTodo={addTodo} />
+        {todos.map((todo) =>
+          todo.isEditing ? (
+            <NotesEditForm key={todo.id} editTodo={editnote} note={todo} />
+          ) : (
+            <Notes
+              key={todo.id}
+              note={todo}
+              deleteTodo={deleteTodo}
+              editTodo={editTodo}
+              toggleComplete={toggleComplete}
+            />
+          )
+        )}
+      </div>
     </div>
   );
 };

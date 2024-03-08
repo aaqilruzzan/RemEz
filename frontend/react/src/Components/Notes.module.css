@@ -1,29 +1,20 @@
 
-* {
-  
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-body {
-  
+.container {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 20px; /* Added padding for smaller screens */
-}
-
-.App {
-  text-align: center;
-  max-width: 90%; /* Limit max width and center content */
+  flex-direction: column;
+  max-width: 500px;
   margin: auto;
+  background-color: #ccd4e6;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  box-sizing: border-box;
 }
 
 
 
 .TodoWrapper {
-  background: #313233;
+  background: #191b1d;
   padding: 2rem;
   border-radius: 5px;
   width: 100%; /* Use full width of its container */
@@ -52,7 +43,7 @@ body {
 
 .todo-btn {
   background: #746b86;
-  color: #fff;
+  color: #c0a1a1;
   border: none;
   padding: 0.55rem;
   cursor: pointer;
