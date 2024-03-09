@@ -1,16 +1,14 @@
 import subject from "../../models/subject.js";
 
 const saveData = async (req, res) => {
-  //   const { name, questions, systemAnswers, userAnswers, similarityScores, times } = req.body;
-  const { name, times, questions, userAnswers, similarityScores } = req.body;
-  //   const newSubject = new Subject({
-  //     name,
-  //     questions,
-  //     systemAnswers,
-  //     userAnswers,
-  //     similarityScores,
-  //     times,
-  //   });
+  const {
+    name,
+    times,
+    questions,
+    userAnswers,
+    similarityScores,
+    systemAnswers,
+  } = req.body;
 
   const newSubject = new subject({
     name,
@@ -18,6 +16,7 @@ const saveData = async (req, res) => {
     questions,
     userAnswers,
     similarityScores,
+    systemAnswers,
   });
 
   try {

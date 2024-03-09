@@ -11,8 +11,9 @@ const subjectSchema = new Schema({
     required: true,
   },
   systemAnswers: {
-    type: [String], // Array of strings
-    required: false,
+    type: Map,
+    of: String,
+    required: true,
   },
   userAnswers: {
     type: Map,

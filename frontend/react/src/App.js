@@ -11,23 +11,29 @@ import SignIn from "./Pages/SignIn";
 import Signup from "./Pages/Signup";
 import Progress from "./Pages/Progress";
 import Quiz from "./Pages/Quiz";
+import { QuestionsProvider } from "./Context/QuestionsContext";
+import { AnswersProvider } from "./Context/AnswersContext";
 
 function App() {
   const [clicked, isClicked] = useState(false);
   return (
     <Router>
-      <Navbar clicked={clicked} isClicked={isClicked} />
-      {clicked ? <Menu /> : null}
+      <QuestionsProvider>
+        <AnswersProvider>
+          <Navbar clicked={clicked} isClicked={isClicked} />
+          {clicked ? <Menu /> : null}
 
-      <Routes>
-        <Route exact path="" element={<Home />} />
-        <Route exact path="progress" element={<Progress />} />
-        <Route exact path="quiz" element={<Quiz />} />
-        <Route exact path="contact-us" element={<ContactUs />} />
-        <Route exact path="about-us" element={<AboutUs />} />
-        <Route exact path="signin" element={<SignIn />} />
-        <Route exact path="signup" element={<Signup />} />
-      </Routes>
+          <Routes>
+            <Route exact path="" element={<Home />} />
+            <Route exact path="quiz" element={<Quiz />} />
+            <Route exact path="progress" element={<Progress />} />
+            <Route exact path="contact-us" element={<ContactUs />} />
+            <Route exact path="about-us" element={<AboutUs />} />
+            <Route exact path="signin" element={<SignIn />} />
+            <Route exact path="signup" element={<Signup />} />
+          </Routes>
+        </AnswersProvider>
+      </QuestionsProvider>
     </Router>
   );
 }
