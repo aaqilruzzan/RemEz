@@ -1,4 +1,4 @@
-import logo from "./logo.svg";
+
 import "./App.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Navbar from "./Components/Navbar";
@@ -11,8 +11,8 @@ import SignIn from "./Pages/SignIn";
 import Signup from "./Pages/Signup";
 import Progress from "./Pages/Progress";
 import Quiz from "./Pages/Quiz";
-import Reminder from "./Components/Reminder";
-import { NotesWrapper } from "./Components/NotesWrapper";
+import Reminder from "./Components/ReminderForm/Reminder";
+import { NotesWrapper } from "./Components/NotesForm/NotesWrapper";
 
 function App() {
   const [clicked, isClicked] = useState(false);
