@@ -25,9 +25,17 @@ const subjectSchema = new Schema({
     of: Number,
     required: true,
   },
+  averageSimilarityScore: {
+    type: Number,
+    required: true,
+  },
   times: {
     type: Map,
     of: Number,
+    required: true,
+  },
+  completedRound: {
+    type: Boolean,
     required: true,
   },
 });

@@ -86,6 +86,15 @@ function Quiz() {
   }, []);
 
   const handleQuizSubmit = async () => {
+    const averageSimilarityScore =
+      Object.values(similarityScore).reduce((a, b) => a + b, 0) /
+      Object.keys(similarityScore).length;
+
+    const completedRound =
+      Object.keys(questions).length === Object.keys(userAnswers).length
+        ? true
+        : false;
+
     try {
       const response = await axios.post(`${API_URL}/savesubject`, {
         name: topic,
@@ -93,7 +102,9 @@ function Quiz() {
         questions: questions,
         userAnswers: userAnswers,
         similarityScores: similarityScore,
+        averageSimilarityScore: Math.round(averageSimilarityScore),
         systemAnswers: answers,
+        completedRound: completedRound,
       });
       if (response.status == 201) {
         alert("Quiz submitted successfully!");

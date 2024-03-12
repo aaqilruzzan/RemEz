@@ -7,7 +7,9 @@ const saveData = async (req, res) => {
     questions,
     userAnswers,
     similarityScores,
+    averageSimilarityScore,
     systemAnswers,
+    completedRound,
   } = req.body;
 
   const newSubject = new subject({
@@ -16,7 +18,9 @@ const saveData = async (req, res) => {
     questions,
     userAnswers,
     similarityScores,
+    averageSimilarityScore,
     systemAnswers,
+    completedRound,
   });
 
   try {
@@ -79,4 +83,62 @@ const getQuestionsAnswers = async (req, res) => {
   }
 };
 
-export { saveData, getNames, getTimesAndScores, getQuestionsAnswers };
+const getData = async (req, res) => {
+  const { name } = req.params;
+  try {
+    const result = await subject.find({ name: name });
+    res.status(200).json(result);
+  } catch (error) {
+    res.status(404).json({ message: error.message });
+  }
+};
+
+const getAllProgressData = async (req, res) => {
+  try {
+    // Start an aggregation pipeline
+    const aggregatePipeline = [
+      {
+        $project: {
+          _id: 0, // Exclude the _id field
+          name: 1, // Include the name field
+          averageSimilarityScore: 1, // Include the averageSimilarityScore field
+          completedRound: 1, // Include the completedRound field for conditional counting
+        },
+      },
+      {
+        $group: {
+          _id: null, // Group by null to aggregate over the entire collection
+          names: { $push: "$name" }, // Collect all names into an array
+          averageSimilarityScores: { $push: "$averageSimilarityScore" }, // Collect all averageSimilarityScores into an array
+          completedRounds: {
+            // Count documents where completedRound is true
+            $sum: {
+              $cond: [{ $eq: ["$completedRound", true] }, 1, 0],
+            },
+          },
+        },
+      },
+    ];
+
+    // Execute the aggregation pipeline
+    const [result] = await subject.aggregate(aggregatePipeline);
+
+    // Destructure the result to extract the arrays and the count
+    const { names, averageSimilarityScores, completedRounds } = result || {};
+
+    // Send the response with the collected data
+    res.status(200).json({ names, averageSimilarityScores, completedRounds });
+  } catch (error) {
+    // Handle any errors that occur during the process
+    res.status(404).json({ message: error.message });
+  }
+};
+
+export {
+  saveData,
+  getNames,
+  getTimesAndScores,
+  getQuestionsAnswers,
+  getData,
+  getAllProgressData,
+};

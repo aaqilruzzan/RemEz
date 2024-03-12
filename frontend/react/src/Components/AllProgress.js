@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 import { CircularProgressbar } from "react-circular-progressbar";
 import {
   Chart,
@@ -14,19 +15,47 @@ import { Bar } from "react-chartjs-2";
 Chart.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
 const AllProgress = () => {
+  const [topics, setTopics] = useState([]);
+  const API_URL = process.env.REACT_APP_BACKEND_URL || "http://localhost:8000";
+  const [loaded, setLoaded] = useState(false);
+  const [averageSimilarityScores, setAverageSimilarityScores] = useState([]);
+  const [completedRounds, setCompletedRounds] = useState(0);
+
+  useEffect(() => {
+    const fetchAllProgressData = async () => {
+      try {
+        const response = await axios.get(`${API_URL}/getallprogressdata`);
+        setTopics(response.data.names);
+        setAverageSimilarityScores(response.data.averageSimilarityScores);
+        setCompletedRounds(response.data.completedRounds);
+
+        setLoaded(true);
+      } catch (error) {
+        console.error("Error fetching topics:", error);
+      }
+    };
+
+    fetchAllProgressData();
+  }, []);
+
+  if (!loaded) {
+    return <div>Loading...</div>;
+  }
+
+  const totalrounds = topics.length;
+
+  const completionRate = (completedRounds / totalrounds) * 100;
+
+  const completionTailwindClass =
+    completionRate > 50 ? "text-green-500" : "text-red-500";
+
   // Static data for the bar chart
   const data = {
-    labels: ["History", "Economics", "Medicine", "Maths", "Science"],
+    labels: topics,
     datasets: [
       {
         label: "Marks",
-        data: [
-          Math.floor(Math.random() * 100),
-          Math.floor(Math.random() * 100),
-          Math.floor(Math.random() * 100),
-          Math.floor(Math.random() * 100),
-          Math.floor(Math.random() * 100),
-        ], // Random marks for each subject
+        data: averageSimilarityScores,
         backgroundColor: [
           "rgba(255, 99, 132, 0.6)",
           "rgba(54, 162, 235, 0.6)",
@@ -107,12 +136,15 @@ const AllProgress = () => {
                 Rounds Completed
               </p>
               <h4 class="block antialiased tracking-normal font-sans text-2xl font-semibold leading-snug text-blue-gray-900">
-                3/5
+                {`${completedRounds}/${totalrounds}`}
               </h4>
             </div>
             <div class="border-t border-blue-gray-50 p-4">
               <p class="block antialiased font-sans text-base leading-relaxed font-normal text-blue-gray-600 text-center">
-                <strong class="text-green-500">60%</strong>&nbsp;completion rate
+                <strong
+                  class={completionTailwindClass}
+                >{`${completionRate} %`}</strong>
+                &nbsp;completion rate
               </p>
             </div>
           </div>
