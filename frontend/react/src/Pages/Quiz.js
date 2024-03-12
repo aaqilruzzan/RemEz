@@ -20,6 +20,7 @@ function Quiz() {
 
   const [userAnswers, setUserAnswers] = useState({});
   const [similarityScore, setSimilarityScore] = useState({});
+  const API_URL = process.env.REACT_APP_BACKEND_URL || "http://localhost:8000";
 
   const toggleModal = () => {
     setModal(!modal);
@@ -86,7 +87,7 @@ function Quiz() {
 
   const handleQuizSubmit = async () => {
     try {
-      const response = await axios.post("http://localhost:8000/savesubject", {
+      const response = await axios.post(`${API_URL}/savesubject`, {
         name: topic,
         times: activeTime,
         questions: questions,
