@@ -2,6 +2,8 @@ import express from "express";
 import mongoose from "mongoose";
 import cors from "cors";
 import routes from "./routes/index.js";
+import quizRoutes from './routes/quizRoutes.js';
+
 
 const app = express();
 
@@ -27,6 +29,8 @@ app.use(express.json());
 
 // routes
 app.use(routes);
+
+app.use('/quiz', quizRoutes);
 // Database connection function
 async function connectDatabase() {
   const connectionParams = {

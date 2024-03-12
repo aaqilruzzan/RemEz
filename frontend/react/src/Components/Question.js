@@ -1,4 +1,13 @@
 const Question = (props) => {
+  function Question({ question, id, handleAnswerSubmit }) {
+  return (
+    <div>
+      <p>{question}</p>
+      <textarea id={`answer-${id}`} />
+      <button onClick={() => handleAnswerSubmit(id)}>Submit Answer</button>
+    </div>
+  );
+}
   return (
     <>
       <div class="question">

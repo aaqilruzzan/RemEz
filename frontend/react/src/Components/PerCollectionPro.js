@@ -60,6 +60,7 @@ function PerCollectionPro(props) {
   const noOfAnswers = Object.keys(userAnswers).length;
 
   return (
+    
     <div class="min-h-screen bg-gray-50/50">
       <div class="p-4 xl:ml-10">
         <nav class="block w-full max-w-full bg-transparent text-white shadow-none rounded-xl transition-all px-0 py-1">

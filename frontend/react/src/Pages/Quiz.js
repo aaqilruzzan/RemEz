@@ -1,15 +1,14 @@
-import "./Home.css";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Question from "../Components/Question";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import axios from "axios";
-import React from "react";
+import { jsPDF } from "jspdf";
+
 function Quiz() {
   const [modal, setModal] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [topic, setTopic] = useState("");
   const [loaded, setLoaded] = useState(false);
-  const [quizloaded, setQuizLoaded] = useState(false);
   const [activeTime, setActiveTime] = useState({});
   const questions = {
     1: "What is your favorite color?",
@@ -100,27 +99,21 @@ function Quiz() {
     }
   };
 
-  const handleAnswerSubmit = async (questionId) => {
-    const answerElement = document.getElementById(questionId);
-    const answerValue = answerElement.value;
-
-    if (answerValue === "") {
-      alert("Please answer the question before submitting");
-      return;
-    }
-
-    const similarityScore = Math.round(Math.random() * 100);
-
-    // Saving the answer in the `answers` state object
+  const handleAnswerSubmit = (questionId, answer) => {
     setUserAnswers((prevAnswers) => ({
       ...prevAnswers,
-      [questionId]: answerValue,
+      [questionId]: answer,
     }));
+  };
 
-    setSimilarityScore((prevsimilarityScore) => ({
-      ...prevsimilarityScore,
-      [questionId]: similarityScore,
-    }));
+  
+  
+
+  const handleDownload = () => {
+    var doc= new jsPDF('landscape', 'px', 'a4', 'false');
+   
+    doc.text(120,30,"Questions & Answers");
+    doc.save('Questions & Answers.pdf');
   };
 
   return (
@@ -149,7 +142,7 @@ function Quiz() {
                 <div className="relative p-6 flex-auto">
                   <input
                     type="text"
-                    class="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none bg-white text-gray-800 focus:ring-1 focus:ring-blue-500"
+                    className="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none bg-white text-gray-800 focus:ring-1 focus:ring-blue-500"
                     placeholder="Enter your topic"
                     onChange={(e) => setTopic(e.target.value)}
                   />
@@ -180,7 +173,7 @@ function Quiz() {
 
       {loaded ? (
         <>
-          <div class="container">
+          <div className="container">
             {Object.keys(questions).map((key) => (
               <React.Fragment key={key}>
                 <Question
@@ -209,19 +202,18 @@ function Quiz() {
             ))}
           </div>
 
-          <div class="main-container">
-            <div class="photo">
-              <img src="homePage3.png" alt="Your Photo" />
-            </div>
-            <div class="buttons-container">
-              <div class="button-wrapper">
+          <div className="main-container">
+            <div className="buttons-container">
+              <div className="button-wrapper">
                 <button className="btn" onClick={handleQuizSubmit}>
                   Finish Quiz
                 </button>
               </div>
 
-              <div class="button-wrapper">
-                <button class="btn1">Download Q&A</button>
+              <div className="button-wrapper">
+                <button className="btn1" onClick={handleDownload}>
+                  Download Q&A
+                </button>
               </div>
             </div>
           </div>
@@ -243,4 +235,10 @@ function Quiz() {
     </>
   );
 }
+
 export default Quiz;
+
+
+
+
+
