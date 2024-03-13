@@ -2,11 +2,28 @@ import "./Home.css";
 import { useEffect, useState } from "react";
 import Achievements from "./Achievements";
 import "./Achievements.css";
+import Question from "../Components/Question";
+import AccessTimeIcon from "@mui/icons-material/AccessTime";
+import SpeedIcon from "@mui/icons-material/Speed";
+import axios from "axios";
+import React from "react";
+import { useQuestions } from "../Context/QuestionsContext";
+import { useAnswers } from "../Context/AnswersContext";
 function Quiz() {
   const [modal, setModal] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [topic, setTopic] = useState("");
   const [loaded, setLoaded] = useState(false);
+
+  const { questions, setQuestions } = useQuestions();
+  const { answers, setAnswers } = useAnswers();
+
+  const [activeTime, setActiveTime] = useState({});
+
+  const [userAnswers, setUserAnswers] = useState({});
+  const [similarityScore, setSimilarityScore] = useState({});
+  const API_URL = process.env.REACT_APP_BACKEND_URL || "http://localhost:8000";
+
   const toggleModal = () => {
     setModal(!modal);
   };
@@ -23,8 +40,106 @@ function Quiz() {
   }
 
   useEffect(() => {
+    // Ensuring this effect runs only after the content has loaded
+    if (!loaded) return;
+    let startTimer;
+    let stopTimer;
+
+    const textareas = document.querySelectorAll("textarea");
+
+    const attachEvents = () => {
+      textareas.forEach((textarea, index) => {
+        let startTime; // Declaring startTime outside to make it accessible to both startTimer and stopTimer
+
+        startTimer = () => {
+          startTime = Date.now(); // Initializing startTime when the textarea gains focus
+        };
+
+        stopTimer = () => {
+          const endTime = Date.now(); // Capturing the time when the textarea loses focus
+          const timeSpent = endTime - startTime; // Calculate the duration
+          // Updating the state with the new time, adding it to the existing time for this index
+          setActiveTime((prevTimes) => ({
+            ...prevTimes,
+            [index + 1]: (prevTimes[index + 1] || 0) + timeSpent,
+          }));
+        };
+
+        // Attaching the startTimer function to the focus event
+        textarea.addEventListener("focus", startTimer);
+        // Attaching the stopTimer function to the blur event
+        textarea.addEventListener("blur", stopTimer);
+      });
+    };
+
+    attachEvents();
+    // Returning a cleanup function to remove the event listeners
+
+    return () => {
+      textareas.forEach((textarea) => {
+        textarea.removeEventListener("focus", startTimer);
+        textarea.removeEventListener("blur", stopTimer);
+      });
+    };
+  }, [loaded]);
+
+  useEffect(() => {
     setShowModal(true);
   }, []);
+
+  const handleQuizSubmit = async () => {
+    try {
+      const response = await axios.post(`${API_URL}/savesubject`, {
+        name: topic,
+        times: activeTime,
+        questions: questions,
+        userAnswers: userAnswers,
+        similarityScores: similarityScore,
+        systemAnswers: answers,
+      });
+      if (response.status == 201) {
+        alert("Quiz submitted successfully!");
+      }
+    } catch (error) {
+      console.error("Error saving subject:", error);
+      alert("Error saving subject!");
+    }
+  };
+
+  const handleAnswerSubmit = async (questionId) => {
+    const answerElement = document.getElementById(questionId);
+    const answerValue = answerElement.value;
+
+    if (answerValue === "") {
+      alert("Please answer the question before submitting");
+      return;
+    }
+
+    try {
+      const response = await axios.post(
+        "http://localhost:5000/calculatesimilarity",
+        {
+          userAnswer: answerValue,
+          modelAnswer: answers[questionId],
+        }
+      );
+      var similarityScore = response.data.similarityScore;
+    } catch (error) {
+      console.error("Error calculating similarity:", error);
+      alert("Error calculating similarity!");
+    }
+
+    // Saving the answer in the `answers` state object
+    setUserAnswers((prevAnswers) => ({
+      ...prevAnswers,
+      [questionId]: answerValue,
+    }));
+
+    setSimilarityScore((prevsimilarityScore) => ({
+      ...prevsimilarityScore,
+      [questionId]: similarityScore,
+    }));
+  };
 
   return (
     <>
@@ -84,168 +199,47 @@ function Quiz() {
       {loaded ? (
         <>
           <div class="container">
-            <div class="question">
-              <p>
-                <b>Question 1: What is your favorite color?</b>
-              </p>
-              <textarea
-                rows="8"
-                cols="70"
-                placeholder="Enter Your Answer"
-              ></textarea>
-            </div>
+            {Object.keys(questions).map((key) => (
+              <React.Fragment key={key}>
+                <Question
+                  question={questions[key]}
+                  id={key}
+                  handleAnswerSubmit={handleAnswerSubmit}
+                  number={parseInt(key, 10)}
+                />
 
-            <div class="button-wrapper">
-              <button className="btn" onClick={toggleModal}>
-                Submit Answer
-              </button>
-            </div>
-
-            <div class="question">
-              <p>
-                <b>Question 2: What is your favorite animal?</b>
-              </p>
-              <textarea
-                rows="8"
-                cols="70"
-                placeholder="Enter Your Answer"
-              ></textarea>
-            </div>
-
-            <div class="button-wrapper">
-              <button className="btn" onClick={toggleModal}>
-                Submit Answer
-              </button>
-            </div>
-
-            <div class="question">
-              <p>
-                <b>Question 3: What is your favorite food?</b>
-              </p>
-              <textarea
-                rows="8"
-                cols="70"
-                placeholder="Enter Your Answer"
-              ></textarea>
-            </div>
-
-            <div class="button-wrapper">
-              <button className="btn" onClick={toggleModal}>
-                Submit Answer
-              </button>
-            </div>
-
-            <div class="question">
-              <p>
-                <b>Question 4: What is your favorite food?</b>
-              </p>
-              <textarea
-                rows="8"
-                cols="70"
-                placeholder="Enter Your Answer"
-              ></textarea>
-            </div>
-            <div class="button-wrapper">
-              <button className="btn" onClick={toggleModal}>
-                Submit Answer
-              </button>
-            </div>
-
-            <div class="question">
-              <p>
-                <b>Question 5: What is your favorite food?</b>
-              </p>
-              <textarea
-                rows="8"
-                cols="70"
-                placeholder="Enter Your Answer"
-              ></textarea>
-            </div>
-            <div class="button-wrapper">
-              <button className="btn" onClick={toggleModal}>
-                Submit Answer
-              </button>
-            </div>
-
-            <div class="question">
-              <p>
-                <b>Question 6: What is your favorite food?</b>
-              </p>
-              <textarea
-                rows="8"
-                cols="70"
-                placeholder="Enter Your Answer"
-              ></textarea>
-            </div>
-            <div class="button-wrapper">
-              <button className="btn" onClick={toggleModal}>
-                Submit Answer
-              </button>
-            </div>
-
-            <div class="question">
-              <p>
-                <b>Question 7: What is your favorite food?</b>
-              </p>
-              <textarea
-                rows="8"
-                cols="70"
-                placeholder="Enter Your Answer"
-              ></textarea>
-            </div>
-            <div class="button-wrapper">
-              <button className="btn" onClick={toggleModal}>
-                Submit Answer
-              </button>
-            </div>
-
-            <div class="question">
-              <p>
-                <b>Question 8: What is your favorite food?</b>
-              </p>
-              <textarea
-                rows="8"
-                cols="70"
-                placeholder="Enter Your Answer"
-              ></textarea>
-            </div>
-            <div class="button-wrapper">
-              <button className="btn" onClick={toggleModal}>
-                Submit Answer
-              </button>
-            </div>
-
-            <div class="question">
-              <p>
-                <b>Question 9: What is your favorite food?</b>
-              </p>
-              <textarea
-                rows="8"
-                cols="70"
-                placeholder="Enter Your Answer"
-              ></textarea>
-            </div>
-            <div class="button-wrapper">
-              <button className="btn" onClick={toggleModal}>
-                Submit Answer
-              </button>
-            </div>
-
-            <div class="question">
-              <p>
-                <b>Question 10: What is your favorite food?</b>
-              </p>
-              <textarea
-                rows="8"
-                cols="70"
-                placeholder="Enter Your Answer"
-              ></textarea>
-            </div>
-            <div class="button-wrapper">
-              <button className="btn" onClick={toggleModal}>
-                Submit Answer
-              </button>
-            </div>
+                <div className="bg-white shadow-lg rounded-lg p-6 space-y-10 mb-10">
+                  <div className="flex items-center justify-evenly space-x-4">
+                    <div className="flex justify-center gap-2">
+                      <div className="p-2 bg-purple-200 rounded-full ">
+                        <AccessTimeIcon />
+                      </div>
+                      <div>
+                        <div className="text-gray-600 text-sm">
+                          Total Time Spent
+                        </div>
+                        <div className="text-gray-900 text-2xl font-semibold">
+                          {Math.round((activeTime[key] || 0) / 1000)} seconds
+                        </div>
+                      </div>
+                    </div>
+                    <div className="flex justify-center gap-2">
+                      <div className="p-2 bg-purple-200 rounded-full">
+                        <SpeedIcon />
+                      </div>
+                      <div>
+                        <div className="text-gray-600 text-sm">
+                          Accuracy Rating
+                        </div>
+                        <div className="text-gray-900 text-2xl font-semibold">
+                          {similarityScore[key] ? similarityScore[key] : "--"}%
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </React.Fragment>
+            ))}
           </div>
 
           <div class="main-container">
@@ -254,7 +248,7 @@ function Quiz() {
             </div>
             <div class="buttons-container">
               <div class="button-wrapper">
-                <button className="btn" onClick={toggleModal}>
+                <button className="btn" onClick={handleQuizSubmit}>
                   Finish Quiz
                 </button>
               </div>

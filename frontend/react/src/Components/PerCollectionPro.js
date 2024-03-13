@@ -1,10 +1,65 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { CircularProgressbar } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 import LinearProgress from "@material-ui/core/LinearProgress";
 import QuestionRow from "./questionRow";
+import axios from "axios";
 
-function perCollectionPro() {
+function PerCollectionPro(props) {
+  const [loaded, setLoaded] = useState(false);
+  const [questions, setQuestions] = useState({});
+  const [times, setTimes] = useState({});
+  const [userAnswers, setUserAnswers] = useState({});
+  const [accuracy, setAccuracy] = useState({});
+  const API_URL = process.env.REACT_APP_BACKEND_URL || "http://localhost:8000";
+
+  useEffect(() => {
+    const fetchProgress = async () => {
+      try {
+        const response = await axios.get(
+          `${API_URL}/getquestionsanswers/${props.topic}`
+        );
+        setQuestions(response.data[0].questions);
+        setUserAnswers(response.data[0].userAnswers);
+      } catch (error) {
+        console.error("Error fetching questions:", error);
+      }
+
+      try {
+        const response = await axios.get(
+          `${API_URL}/gettimesscores/${props.topic}`
+        );
+        setTimes(response.data[0].times);
+        setAccuracy(response.data[0].similarityScores);
+      } catch (error) {
+        console.error("Error fetching times:", error);
+      }
+
+      setLoaded(true);
+    };
+
+    fetchProgress();
+  }, []);
+
+  if (!loaded) {
+    return <div>Loading...</div>;
+  }
+
+  // Calculating total active time
+  const totalActiveTimeMs = Object.values(times).reduce(
+    (acc, time) => acc + time,
+    0
+  ); // Sum in milliseconds
+  const totalActiveTimeSecs = Math.round(totalActiveTimeMs / 1000); // Converting to seconds
+  const totalActiveMinutes = Math.floor(totalActiveTimeSecs / 60); // Total minutes
+  const totalActiveSeconds = totalActiveTimeSecs % 60; // Remaining seconds
+  const totalActiveTimeFormatted = `${totalActiveMinutes}m ${totalActiveSeconds}s`; // Formatting as "Xm Ys"
+  const averageAccuracy =
+    Object.values(accuracy).reduce((a, b) => a + b, 0) /
+    Object.keys(accuracy).length;
+
+  const noOfAnswers = Object.keys(userAnswers).length;
+
   return (
     <div class="min-h-screen bg-gray-50/50">
       <div class="p-4 xl:ml-3">
@@ -33,12 +88,36 @@ function perCollectionPro() {
               </div>
               <div class="flex justify-center p-1">
                 <div className="w-20 my-3">
-                  <CircularProgressbar value={40} text={`${40}%`} />
+                  <CircularProgressbar
+                    value={averageAccuracy}
+                    text={`${Math.round(averageAccuracy)}%`}
+                  />
                 </div>
               </div>
               <div class="border-t border-blue-gray-50 p-4">
                 <p class="block antialiased font-sans text-base leading-relaxed font-normal text-blue-gray-600 text-center">
-                  <strong class="text-green-500">Passed</strong>&nbsp;, Grade: S
+                  {/* <strong class="text-green-500">Passed</strong>&nbsp;, Grade: S */}
+                  {averageAccuracy >= 75 ? (
+                    <>
+                      <strong className="text-green-500">Passed</strong>
+                      &nbsp;Grade: A
+                    </>
+                  ) : averageAccuracy >= 65 ? (
+                    <>
+                      <strong className="text-green-500">Passed</strong>
+                      &nbsp;Grade: B
+                    </>
+                  ) : averageAccuracy >= 50 ? (
+                    <>
+                      <strong className="text-green-500">Passed </strong>
+                      &nbsp;Grade: C
+                    </>
+                  ) : (
+                    <>
+                      <strong className="text-red-500">Failed</strong>
+                      &nbsp;Grade: D
+                    </>
+                  )}
                 </p>
               </div>
             </div>
@@ -51,7 +130,7 @@ function perCollectionPro() {
                   Total active time
                 </p>
                 <h4 class="block antialiased tracking-normal font-sans text-2xl font-semibold leading-snug text-blue-gray-900">
-                  23m 45s
+                  {totalActiveTimeFormatted}
                 </h4>
               </div>
               <div class="border-t border-blue-gray-50 p-4">
@@ -121,7 +200,7 @@ function perCollectionPro() {
                         d="M4.5 12.75l6 6 9-13.5"
                       ></path>
                     </svg>
-                    <strong>10 done</strong> in this round
+                    <strong>{noOfAnswers} done</strong> in this round
                   </p>
                 </div>
                 <button
@@ -172,26 +251,14 @@ function perCollectionPro() {
                     </tr>
                   </thead>
                   <tbody>
-                    <QuestionRow
-                      question="What is the capital of France?"
-                      timeTaken="10s"
-                      accuracy="10"
-                    />
-                    <QuestionRow
-                      question="What is the capital of France?"
-                      timeTaken="10s"
-                      accuracy="30"
-                    />
-                    <QuestionRow
-                      question="What is the capital of France?"
-                      timeTaken="10s"
-                      accuracy="40"
-                    />
-                    <QuestionRow
-                      question="What is the capital of France?"
-                      timeTaken="10s"
-                      accuracy="60"
-                    />
+                    {Object.keys(questions).map((key) => (
+                      <QuestionRow
+                        question={questions[key]}
+                        timeTaken={Math.round(times[key] / 1000) + "s"}
+                        accuracy={accuracy[key]}
+                        userAnswer={userAnswers[key] || "No answer provided"}
+                      ></QuestionRow>
+                    ))}
                   </tbody>
                 </table>
               </div>
@@ -202,4 +269,4 @@ function perCollectionPro() {
     </div>
   );
 }
-export default perCollectionPro;
+export default PerCollectionPro;

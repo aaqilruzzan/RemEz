@@ -1,7 +1,10 @@
+import React, { useState } from "react";
+
 function QuestionRow(props) {
   // props are question, accuracy, time taken
   // include the ui code from Progress.js accordingly
   let linearwidth = props.accuracy + "%";
+  const [showAnswer, setShowAnswer] = useState(false);
   return (
     <tr>
       <td class="py-3 px-5 border-b border-blue-gray-50">
@@ -29,6 +32,31 @@ function QuestionRow(props) {
             ></div>
           </div>
         </div>
+        <div
+          className="mt-2 flex items-center cursor-pointer"
+          onClick={() => setShowAnswer(!showAnswer)}
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-4 w-4"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d={showAnswer ? "M19 9l-7 7-7-7" : "M9 5l7 7-7 7"}
+            />
+          </svg>
+          <span className="ml-2 text-xs text-blue-gray-600">Your Answer</span>
+        </div>
+        {showAnswer && (
+          <p className="text-xs text-blue-gray-600 mt-1">
+            {props.userAnswer || "No answer provided"}
+          </p>
+        )}
       </td>
     </tr>
   );
