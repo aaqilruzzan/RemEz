@@ -10,13 +10,10 @@ function Navbar({ clicked, isClicked }) {
   };
   return (
     <div className="Nav">
-      
       <ul className="NavbarWrapper">
-      
         <li className="NavLogo">
           <Link to="/" className="Link">
-            
-            Quiz Generator
+            RemEz
           </Link>
         </li>
         <li className="NavElements">

@@ -1,38 +1,31 @@
-
-
 .home-container {
   display: flex;
   flex-direction: column;
-  padding-top: 70px;
+  padding-top: 30px;
   padding-left: 9%;
-  padding-Right: 5%;
+  padding-right: 5%;
   padding-bottom: 5%;
-  background-image: url('C:\Users\Naseem\Desktop\RemEz\RemEz\frontend\react\public\shapes3.png');
-  background-repeat:repeat-y;
- 
+  background-image: url("../../public/shapes3.png");
+
+  background-repeat: repeat-y;
 }
 .first-column p {
-  padding-bottom: 15px; 
+  padding-bottom: 15px;
   text-align: justify;
-  
 }
-.first-column h1{
+.first-column h1 {
   padding-bottom: 30px;
   font-size: 32px;
   font-weight: bold;
 }
 
 .first-column {
-  
-  padding: 0px 50px 0 0; 
-  
+  padding: 0px 50px 0 0;
 }
 .second-column {
-  
   display: flex;
   flex-direction: column;
-  align-items: center; 
-  
+  align-items: center;
 }
 
 .image {
@@ -40,68 +33,62 @@
   max-width: 619px;
   max-height: 474px;
   margin-bottom: 100px;
-  margin:0px 0px 0px 60px;
-  
-
+  margin: 0px 0px 0px 60px;
 }
 
-
 .photo img {
-  animation: fors 6s infinite alternate; 
+  animation: fors 6s infinite alternate;
 }
 
 @keyframes fors {
   0% {
-    transform: translateY(20px); 
+    transform: translateY(20px);
   }
   100% {
-    transform: translateY(-5px); 
+    transform: translateY(-5px);
   }
 }
 
 .image {
-  animation: moveUpDown 3s infinite alternate; 
+  animation: moveUpDown 3s infinite alternate;
 }
 
 @keyframes moveUpDown {
   0% {
-    transform: translateY(100px); 
+    transform: translateY(100px);
   }
   100% {
-    transform: translateY(-20px); 
+    transform: translateY(-20px);
   }
 }
 
 /* Home.css */
 
 .custom-button {
-  background-color: #009fe3; 
-  color: #ffffff; 
-  padding: 10px 20px; 
+  background-color: #009fe3;
+  color: #ffffff;
+  padding: 10px 20px;
   border: none;
-  border-radius: 5px; 
+  border-radius: 5px;
   cursor: pointer;
-  font-size: 16px; 
-  margin-top: 20px; 
-  
+  font-size: 16px;
+  margin-top: 20px;
 }
-.custom-button:hover{
-  background-color:#000000 ;
+.custom-button:hover {
+  background-color: #000000;
 }
 
-.custom-button2{
-  background-color: #111B47; 
-  color: #ffffff; 
-  padding: 8px 18px; 
+.custom-button2 {
+  background-color: #111b47;
+  color: #ffffff;
+  padding: 8px 18px;
   border: none;
-  border-radius: 2px; 
+  border-radius: 2px;
   cursor: pointer;
-  font-size: 12px; 
-  margin-top: 20px; 
+  font-size: 12px;
+  margin-top: 20px;
   font-weight: bold;
 }
-
-
 
 @media (min-width: 900px) {
   .home-container {
@@ -111,267 +98,208 @@
   .first-column {
     width: 40%;
     order: 1;
-   
   }
 
   .second-column {
     width: 40%;
     order: 2;
-    
   }
-
-  
 }
 
 @media (min-width: 1000px) {
-
-  .first-column{
-    margin-top: 30px; 
+  .first-column {
+    margin-top: 30px;
     padding: 0 65px 0 45px;
     width: 48%;
   }
   .second-column {
     width: 45%;
     padding: 0 0 0 95px;
-    
   }
   .image {
     max-width: 500px;
     max-height: 474px;
-    
-    margin-bottom: 10px; 
-  
+
+    margin-bottom: 10px;
   }
-  
-  
-  
 }
 
 @media (min-width: 300px) {
-
   .image {
     max-width: 420px;
     max-height: 474px;
-   
-    margin-bottom: 10px; 
-    
-  
-  }
-  
 
-  .custom-button{
-     margin-bottom: 45px;
+    margin-bottom: 10px;
   }
 
-
+  .custom-button {
+    margin-bottom: 45px;
+  }
 }
-
-
-
-
 
 /*Quiz Hub*/
 
 .container {
-max-width: 920px;
-margin: 50px auto;
-padding: 15px;
-background-image: url('C:\Users\Naseem\Desktop\RemEz\RemEz\frontend\react\public\shapes3.png');
-
+  max-width: 920px;
+  margin: 50px auto;
+  padding: 15px;
+  background-image: url("../../public/shapes3.png");
 }
 .title {
-text-align: center;
-margin: 65px;
+  text-align: center;
+  margin: 65px;
 }
 .question {
-margin-bottom: 40px;
+  margin-bottom: 40px;
 }
 .question p {
-cursor: pointer;
-margin-bottom: 20px;
-font-size: 16px;
+  cursor: pointer;
+  margin-bottom: 20px;
+  font-size: 16px;
 }
 .question textarea {
-width: 100%;
-padding: 10px;
-border: 2px solid #ccc;
-transition: border-color 0.5s;
-border-radius: 10px;
-font-size: 16px;
-color: initial;
-
+  width: 100%;
+  padding: 10px;
+  border: 2px solid #ccc;
+  transition: border-color 0.5s;
+  border-radius: 10px;
+  font-size: 16px;
+  color: initial;
 }
 
 .question textarea:hover,
 .question textarea:active {
-border-color: rgb(9, 124, 247);
- 
+  border-color: rgb(9, 124, 247);
 }
 .question textarea:focus {
-outline: none;
-border-color: rgb(9, 124, 247);
+  outline: none;
+  border-color: rgb(9, 124, 247);
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 /*under quiz hub*/
 
 .main-container {
-display: flex;
+  display: flex;
 
-align-items: center;
-justify-content: center;
-padding: 50px;
-padding-bottom: 50px;
+  align-items: center;
+  justify-content: center;
+  padding: 50px;
+  padding-bottom: 50px;
 }
 
 .photo img {
-max-width: 95%;
-height: auto;
-padding: 10px;
-padding: 0 100px 0 0 ;
-
+  max-width: 95%;
+  height: auto;
+  padding: 10px;
+  padding: 0 100px 0 0;
 }
 
 .buttons-container {
-display: flex;
-flex-direction: row; 
+  display: flex;
+  flex-direction: row;
 }
 
 .button-wrapper {
-margin: 10px;
-padding-bottom: 100px;
+  margin: 10px;
+  padding-bottom: 100px;
 }
 
 .btn {
-width: 100%;
-padding: 15px;
-border: none;
-background-color: #24B693;
-color: white;
-cursor: pointer;
-border-radius: 3px;
+  width: 100%;
+  padding: 15px;
+  border: none;
+  background-color: #24b693;
+  color: white;
+  cursor: pointer;
+  border-radius: 3px;
 }
 .btn1 {
-width: 100%;
-padding: 15px;
-border: none;
-background-color: #111B47;
-color: white;
-cursor: pointer;
-border-radius: 3px;
+  width: 100%;
+  padding: 15px;
+  border: none;
+  background-color: #111b47;
+  color: white;
+  cursor: pointer;
+  border-radius: 3px;
 }
-
 
 @media screen and (max-width: 600px) {
-.main-container {
-  padding: 0 10px; 
-  flex-direction: column;
+  .main-container {
+    padding: 0 10px;
+    flex-direction: column;
+  }
 
+  .buttons-container {
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .photo img {
+    max-width: 95%;
+    padding: 10px;
+  }
 }
-
-.buttons-container {
-  flex-direction: row; 
-  align-items: center; 
-}
-
-.photo img {
-  
-  max-width: 95%;
-  padding: 10px;
-}
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 body.active-modal {
-overflow-y: hidden;
+  overflow-y: hidden;
 }
 
 .btn {
+  display: block;
 
-display: block;
-
-
-
-
-width: 100%;
-padding: 15px;
-border: none;
-background-color: #24B693;
-color: white;
-cursor: pointer;
-border-radius: 3px;
+  width: 100%;
+  padding: 15px;
+  border: none;
+  background-color: #24b693;
+  color: white;
+  cursor: pointer;
+  border-radius: 3px;
 }
 
-.modal, .overlay {
-width: 100vw;
-height: 100vh;
-top: 0;
-left: 0;
-right: 0;
-bottom: 0;
-position: fixed;
+.modal,
+.overlay {
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  position: fixed;
 }
 
 .overlay {
-background: rgba(49,49,49,0.8);
+  background: rgba(49, 49, 49, 0.8);
 }
 .modal-content {
-position: absolute;
-top: 40%;
-left: 50%;
-transform: translate(-50%, -50%);
-line-height: 1.4;
-background: #f1f1f1;
-padding: 14px 28px;
-border-radius: 3px;
-max-width: 600px;
-min-width: 300px;
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  line-height: 1.4;
+  background: #f1f1f1;
+  padding: 14px 28px;
+  border-radius: 3px;
+  max-width: 600px;
+  min-width: 300px;
 }
-.modal .modal-content p{
-justify-content: center;
-margin-left: 25%;
+.modal .modal-content p {
+  justify-content: center;
+  margin-left: 25%;
 }
 
 .close-modal {
-position: absolute;
-top: 10px;
-right: 10px;
-padding: 7px 9px;
-background-color: red;
-color: white;
-outline: none;
-border-radius: 3px;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  padding: 7px 9px;
+  background-color: red;
+  color: white;
+  outline: none;
+  border-radius: 3px;
 }
-.head2{
-color: #24B693;
-margin: 50px;
-margin-left: 35%;
-justify-content: center;}
+.head2 {
+  color: #24b693;
+  margin: 50px;
+  margin-left: 35%;
+  justify-content: center;
+}

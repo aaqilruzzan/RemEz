@@ -1,6 +1,6 @@
 import "./Home.css";
 import { useEffect, useState } from "react";
-import Achievements from './Achievements';
+import Achievements from "./Achievements";
 import "./Achievements.css";
 function Quiz() {
   const [modal, setModal] = useState(false);
@@ -279,8 +279,6 @@ function Quiz() {
           )}
         </>
       ) : null}
-
-<Achievements />
     </>
   );
 }
