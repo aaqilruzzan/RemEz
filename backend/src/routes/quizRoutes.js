@@ -1,5 +1,5 @@
 import express from 'express';
-import { saveData, getNames, getTimesAndScores, getQuestionsAnswers } from '../subjects/data.js'; 
+import { saveData, getNames, getTimesAndScores, getQuestionsAnswers } from '../controllers/subjects/data.js'; 
 
 const router = express.Router();
 

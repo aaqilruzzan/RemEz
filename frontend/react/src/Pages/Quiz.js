@@ -108,74 +108,81 @@ function Quiz() {
 
   const handleDownload = async () => {
     console.log("Initiating download for topic:", topic); // Debugging log to confirm function initiation
-  
+
     // Ensure topic is not empty
     if (!topic) {
-      console.error("Topic is empty. Please select a valid topic before downloading.");
+      console.error(
+        "Topic is empty. Please select a valid topic before downloading."
+      );
       return;
     }
-  
+
     try {
       // Fetching questions and answers for the specified topic
-      const response = await fetch(`http://localhost:8000/quiz/qa/${encodeURIComponent(topic)}`);
-      
-      
+      const response = await fetch(
+        `http://localhost:8000/quiz/qa/${encodeURIComponent(topic)}`
+      );
+
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
-  
+
       const data = await response.json();
-      console.log("Data received from server:", data); 
-  
+      console.log("Data received from server:", data);
+
       // Initialize jsPDF
-      const doc = new jsPDF('landscape', 'px', 'a4');
+      const doc = new jsPDF("landscape", "px", "a4");
       let yOffset = 20; // Start yOffset at 20 to ensure the first line of text is within page margins
-  
+
       // Iterating over each item (topic) in the fetched data
-      data.forEach((item, index) => {
-        // Set font size for topic title and add topic title text
-        doc.setFontSize(16);
-        doc.text(20, yOffset, `Topic ${index + 1}: ${topic}`);
-        yOffset += 30; // Increase yOffset for spacing before questions
-  
-        // Iterating over each question and corresponding user answer within the item
-        item.questions.forEach((question, qIndex) => {
-          // Set font size for questions and add question text
-          doc.setFontSize(12);
-          doc.text(20, yOffset, `Question ${qIndex + 1}: ${question}`);
-          yOffset += 20; // Increase yOffset for spacing before user answer
-  
-          // Add user answer text
-          doc.text(20, yOffset, `User Answer: ${item.userAnswers[qIndex]}`);
-          yOffset += 40; // Increase yOffset for spacing before next question or topic
-  
-          // Check if yOffset exceeds page height and add a new page if necessary
-          if (yOffset > 800) { // Assuming 800 as approximate max height for landscape A4
-            doc.addPage();
-            yOffset = 20; // Reset yOffset for the new page
-          }
-        });
-  
-        yOffset += 20; // Additional spacing before the next topic
+
+      // Set font size for topic title and add topic title text
+      doc.setFontSize(16);
+      doc.text(20, yOffset, `Topic : ${topic}`);
+      yOffset += 30; // Increase yOffset for spacing before questions
+
+      // Iterating over each question and corresponding user answer within the item
+      // Assuming data[0].questions is an object where each key is a question identifier
+      Object.keys(data[0].questions).forEach((key) => {
+        // Get the question text using the key
+        const question = data[0].questions[key];
+
+        // Set font size for questions and add question text
+        doc.setFontSize(12);
+        doc.text(20, yOffset, `Question ${key}: ${question}`);
+        yOffset += 20; // Increase yOffset for spacing before user answer
+
+        // Add user answer text
+        // Assuming you have an equivalent structure for userAnswers
+        // doc.text(20, yOffset, `User Answer: ${data[0].userAnswers[key]}`);
+        // yOffset += 40; // Increase yOffset for spacing before next question or topic
+
+        // Check if yOffset exceeds page height and add a new page if necessary
+        if (yOffset > 800) {
+          // Assuming 800 as approximate max height for landscape A4
+          doc.addPage();
+          yOffset = 20; // Reset yOffset for the new page
+        }
       });
-  
+
+
       // Save the PDF with a filename based on the topic
       doc.save(`Questions & Answers - ${topic}.pdf`);
     } catch (error) {
-      console.error('Error fetching data or generating PDF:', error);
+      console.error("Error fetching data or generating PDF:", error);
     }
   };
+
+  /*
   
-  
-  
-/*
+
   const handleDownload = () => {
     var doc= new jsPDF('landscape', 'px', 'a4', 'false');
    
     doc.text(120,30,"Questions & Answers");
     doc.save('Questions & Answers.pdf');
-  };
-*/
+  };*/
+
   return (
     <>
       {showModal ? (
@@ -297,8 +304,3 @@ function Quiz() {
 }
 
 export default Quiz;
-
-
-
-
-
