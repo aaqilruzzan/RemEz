@@ -99,9 +99,12 @@ const AllProgress = () => {
 
   return (
     <>
-      <div class="mt-12 ml-10">
+      <div class="mt-12 ml-3">
         <div class="mb-12 grid gap-y-10 gap-x-6 md:grid-cols-2 xl:grid-cols-4">
           <div class="relative flex flex-col bg-clip-border rounded-xl bg-white text-gray-700 shadow-md">
+            <div class="bg-clip-border mx-4 rounded-xl overflow-hidden shadow-lg absolute -mt-4 grid h-16 w-16 place-items-center">
+              <img src="book.png" alt="book" />
+            </div>
             <div class="p-4 text-right">
               <p class="block antialiased font-sans text-sm leading-normal font-normal text-blue-gray-600">
                 Rounds Completed
@@ -117,9 +120,12 @@ const AllProgress = () => {
             </div>
           </div>
           <div class="relative flex flex-col bg-clip-border rounded-xl bg-white text-gray-700 shadow-md">
+            <div class="bg-clip-border mx-4 rounded-xl overflow-hidden shadow-lg absolute -mt-4 grid h-16 w-16 place-items-center">
+              <img src="time.png" alt="time" />
+            </div>
             <div class="p-4 text-right">
               <p class="block antialiased font-sans text-sm leading-normal font-normal text-blue-gray-600">
-                Average answer time per question
+                Average answer time per <br></br>question
               </p>
               <h4 class="block antialiased tracking-normal font-sans text-2xl font-semibold leading-snug text-blue-gray-900">
                 23m 45s
@@ -132,18 +138,28 @@ const AllProgress = () => {
               </p>
             </div>
           </div>
+          <div class="relative flex flex-col bg-clip-border rounded-xl bg-white text-gray-700 shadow-md">
+            <div class="bg-clip-border mx-4 rounded-xl overflow-hidden shadow-lg absolute -mt-4 grid h-16 w-16 place-items-center">
+              <img src="idea.png" alt="idea" />
+            </div>
+            <div class="p-4 text-right">
+              <p class="block antialiased font-sans text-sm leading-normal font-normal text-blue-gray-600">
+                Rounds Completed
+              </p>
+              <h4 class="block antialiased tracking-normal font-sans text-2xl font-semibold leading-snug text-blue-gray-900">
+                3/5
+              </h4>
+            </div>
+            <div class="border-t border-blue-gray-50 p-4">
+              <p class="block antialiased font-sans text-base leading-relaxed font-normal text-blue-gray-600 text-center">
+                <strong class="text-green-500">60%</strong>&nbsp;completion rate
+              </p>
+            </div>
+          </div>
 
           <div class="relative flex flex-col bg-clip-border rounded-xl bg-white text-gray-700 shadow-md">
-            <div class="bg-clip-border mx-4 rounded-xl overflow-hidden bg-gradient-to-tr from-orange-600 to-orange-400 text-white shadow-orange-500/40 shadow-lg absolute -mt-4 grid h-16 w-16 place-items-center">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-                fill="currentColor"
-                aria-hidden="true"
-                class="w-6 h-6 text-white"
-              >
-                <path d="M18.375 2.25c-1.035 0-1.875.84-1.875 1.875v15.75c0 1.035.84 1.875 1.875 1.875h.75c1.035 0 1.875-.84 1.875-1.875V4.125c0-1.036-.84-1.875-1.875-1.875h-.75zM9.75 8.625c0-1.036.84-1.875 1.875-1.875h.75c1.036 0 1.875.84 1.875 1.875v11.25c0 1.035-.84 1.875-1.875 1.875h-.75a1.875 1.875 0 01-1.875-1.875V8.625zM3 13.125c0-1.036.84-1.875 1.875-1.875h.75c1.036 0 1.875.84 1.875 1.875v6.75c0 1.035-.84 1.875-1.875 1.875h-.75A1.875 1.875 0 013 19.875v-6.75z"></path>
-              </svg>
+            <div class="bg-clip-border mx-4 rounded-xl overflow-hidden shadow-lg absolute -mt-4 grid h-16 w-16 place-items-center">
+              <img src="trophy.png" alt="trophy" />
             </div>
             <div class="p-4 text-right">
               <p class="block antialiased font-sans text-sm leading-normal font-normal text-blue-gray-600">
