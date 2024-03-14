@@ -4,6 +4,7 @@ import "react-circular-progressbar/dist/styles.css";
 import LinearProgress from "@material-ui/core/LinearProgress";
 import QuestionRow from "./questionRow";
 import axios from "axios";
+import { useLoading } from "../Context/LoadingContext";
 
 function PerCollectionPro(props) {
   const [loaded, setLoaded] = useState(false);
@@ -11,9 +12,11 @@ function PerCollectionPro(props) {
   const [times, setTimes] = useState({});
   const [userAnswers, setUserAnswers] = useState({});
   const [accuracy, setAccuracy] = useState({});
+  const { loading, setLoading } = useLoading();
   const API_URL = process.env.REACT_APP_BACKEND_URL || "http://localhost:8000";
 
   useEffect(() => {
+    setLoading(true);
     const fetchProgress = async () => {
       try {
         const response = await axios.get(
@@ -35,13 +38,13 @@ function PerCollectionPro(props) {
         console.error("Error fetching times:", error);
       }
 
-      setLoaded(true);
+      setLoading(false);
     };
 
     fetchProgress();
   }, []);
 
-  if (!loaded) {
+  if (loading) {
     return <div>Loading...</div>;
   }
 

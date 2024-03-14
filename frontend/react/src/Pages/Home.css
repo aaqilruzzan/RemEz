@@ -90,6 +90,19 @@
   font-weight: bold;
 }
 
+.custom-button3 {
+  background-color: #111b47;
+  color: #ffffff;
+  padding: 8px 18px;
+  border: none;
+  border-radius: 2px;
+  cursor: pointer;
+  font-size: 12px;
+  margin-top: 20px;
+  margin-left: 10px;
+  font-weight: bold;
+}
+
 @media (min-width: 900px) {
   .home-container {
     flex-direction: row;

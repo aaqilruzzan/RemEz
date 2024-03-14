@@ -15,18 +15,11 @@ import WelcomeVideo from "./Components/WelcomeVideo";
 import MouseIcon from "./Components/MouseIcon";
 import { QuestionsProvider } from "./Context/QuestionsContext";
 import { AnswersProvider } from "./Context/AnswersContext";
+import { useLoading } from "./Context/LoadingContext";
 
 function App() {
   const [clicked, isClicked] = useState(false);
-  const [showWelcomeVideo, setShowWelcomeVideo] = useState(true);
-
-  useEffect(() => {
-    const timeout = setTimeout(() => {
-      setShowWelcomeVideo(false);
-    }, 7000);
-
-    return () => clearTimeout(timeout);
-  }, []);
+  const { loading } = useLoading();
 
   return (
     <Router>
@@ -34,7 +27,7 @@ function App() {
         <AnswersProvider>
           <Navbar clicked={clicked} isClicked={isClicked} />
           {clicked ? <Menu /> : null}
-          {showWelcomeVideo && <WelcomeVideo />}
+          {loading && <WelcomeVideo />}
           <MouseIcon />
           <Routes>
             <Route exact path="" element={<Home />} />

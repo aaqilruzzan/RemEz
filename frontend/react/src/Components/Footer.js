@@ -5,7 +5,7 @@ function Footer() {
   return (
     <div className="footer-container">
       <div className="center-section">
-        <p>©2024 RemEz</p>
+        <p>© 2024 BrainWave. All rights reserved.</p>
       </div>
     </div>
   );
