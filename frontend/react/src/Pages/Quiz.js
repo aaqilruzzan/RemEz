@@ -1,22 +1,25 @@
 import React, { useEffect, useState } from "react";
 import Question from "../Components/Question";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
+import SpeedIcon from "@mui/icons-material/Speed";
 import axios from "axios";
 import { jsPDF } from "jspdf";
-
+import { useQuestions } from "../Context/QuestionsContext";
+import { useAnswers } from "../Context/AnswersContext";
 function Quiz() {
   const [modal, setModal] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [topic, setTopic] = useState("");
   const [loaded, setLoaded] = useState(false);
+
+  const { questions, setQuestions } = useQuestions();
+  const { answers, setAnswers } = useAnswers();
+
   const [activeTime, setActiveTime] = useState({});
-  const questions = {
-    1: "What is your favorite color?",
-    2: "What is your favorite food?",
-    3: "What is your favorite animal?",
-  };
+
   const [userAnswers, setUserAnswers] = useState({});
   const [similarityScore, setSimilarityScore] = useState({});
+  const API_URL = process.env.REACT_APP_BACKEND_URL || "http://localhost:8000";
 
   const toggleModal = () => {
     setModal(!modal);
@@ -83,12 +86,13 @@ function Quiz() {
 
   const handleQuizSubmit = async () => {
     try {
-      const response = await axios.post("http://localhost:8000/savesubject", {
+      const response = await axios.post(`${API_URL}/savesubject`, {
         name: topic,
         times: activeTime,
         questions: questions,
         userAnswers: userAnswers,
         similarityScores: similarityScore,
+        systemAnswers: answers,
       });
       if (response.status == 201) {
         alert("Quiz submitted successfully!");
@@ -99,10 +103,38 @@ function Quiz() {
     }
   };
 
-  const handleAnswerSubmit = (questionId, answer) => {
+  const handleAnswerSubmit = async (questionId) => {
+    const answerElement = document.getElementById(questionId);
+    const answerValue = answerElement.value;
+
+    if (answerValue === "") {
+      alert("Please answer the question before submitting");
+      return;
+    }
+
+    try {
+      const response = await axios.post(
+        "http://localhost:5000/calculatesimilarity",
+        {
+          userAnswer: answerValue,
+          modelAnswer: answers[questionId],
+        }
+      );
+      var similarityScore = response.data.similarityScore;
+    } catch (error) {
+      console.error("Error calculating similarity:", error);
+      alert("Error calculating similarity!");
+    }
+
+    // Saving the answer in the answers state object
     setUserAnswers((prevAnswers) => ({
       ...prevAnswers,
-      [questionId]: answer,
+      [questionId]: answerValue,
+    }));
+
+    setSimilarityScore((prevsimilarityScore) => ({
+      ...prevsimilarityScore,
+      [questionId]: similarityScore,
     }));
   };
 
@@ -122,6 +154,7 @@ function Quiz() {
       const response = await fetch(
         `http://localhost:8000/quiz/qa/${encodeURIComponent(topic)}`
       );
+      
 
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
@@ -173,15 +206,6 @@ function Quiz() {
     }
   };
 
-  /*
-  
-
-  const handleDownload = () => {
-    var doc= new jsPDF('landscape', 'px', 'a4', 'false');
-   
-    doc.text(120,30,"Questions & Answers");
-    doc.save('Questions & Answers.pdf');
-  };*/
 
   return (
     <>
@@ -251,16 +275,31 @@ function Quiz() {
                 />
 
                 <div className="bg-white shadow-lg rounded-lg p-6 space-y-10 mb-10">
-                  <div className="flex items-center space-x-4">
-                    <div className="p-2 bg-purple-200 rounded-full">
-                      <AccessTimeIcon />
-                    </div>
-                    <div>
-                      <div className="text-gray-600 text-sm">
-                        Total Time Spent
+                  <div className="flex items-center justify-evenly space-x-4">
+                    <div className="flex justify-center gap-2">
+                      <div className="p-2 bg-purple-200 rounded-full ">
+                        <AccessTimeIcon />
                       </div>
-                      <div className="text-gray-900 text-2xl font-semibold">
-                        {Math.round((activeTime[key] || 0) / 1000)} seconds
+                      <div>
+                        <div className="text-gray-600 text-sm">
+                          Total Time Spent
+                        </div>
+                        <div className="text-gray-900 text-2xl font-semibold">
+                          {Math.round((activeTime[key] || 0) / 1000)} seconds
+                        </div>
+                      </div>
+                    </div>
+                    <div className="flex justify-center gap-2">
+                      <div className="p-2 bg-purple-200 rounded-full">
+                        <SpeedIcon />
+                      </div>
+                      <div>
+                        <div className="text-gray-600 text-sm">
+                          Accuracy Rating
+                        </div>
+                        <div className="text-gray-900 text-2xl font-semibold">
+                          {similarityScore[key] ? similarityScore[key] : "--"}%
+                        </div>
                       </div>
                     </div>
                   </div>

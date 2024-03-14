@@ -51,6 +51,9 @@ async function connectDatabase() {
 // Connect to database
 connectDatabase();
 
-app.listen(8000, () => {
+const PORT = process.env.PORT || 8000;
+app.listen(PORT, () => {
   console.log("Server is running on port 8000");
 });
+
+export default app;

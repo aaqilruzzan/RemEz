@@ -15,10 +15,11 @@ export default function ProgressTracker() {
     setProgress(e.target.value);
   };
 
+  const API_URL = process.env.REACT_APP_BACKEND_URL || "http://localhost:8000";
   useEffect(() => {
     const fetchTopics = async () => {
       try {
-        const response = await axios.get("http://localhost:8000/getnames");
+        const response = await axios.get(`${API_URL}/getnames`);
         setTopics(response.data);
       } catch (error) {
         console.error("Error fetching topics:", error);
@@ -43,6 +44,7 @@ export default function ProgressTracker() {
           <select
             className="w-full p-2.5 text-gray-500 bg-white border rounded-md shadow-sm outline-none appearance-none focus:border-indigo-600"
             onChange={handleChange}
+            value={progress}
           >
             <option>View all Progress</option>
             {topics.map((topic, index) => (
@@ -61,7 +63,7 @@ export default function ProgressTracker() {
       ) : progress === "View all Progress" ? (
         <AllProgress />
       ) : (
-        <PerCollectionPro topic={progress} />
+        <PerCollectionPro key={progress} topic={progress} />
       )}
     </>
   );
