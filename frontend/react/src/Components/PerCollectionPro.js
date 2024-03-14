@@ -4,6 +4,7 @@ import "react-circular-progressbar/dist/styles.css";
 import LinearProgress from "@material-ui/core/LinearProgress";
 import QuestionRow from "./questionRow";
 import axios from "axios";
+import { jsPDF } from "jspdf";
 
 function PerCollectionPro(props) {
   const [loaded, setLoaded] = useState(false);
@@ -41,9 +42,58 @@ function PerCollectionPro(props) {
     fetchProgress();
   }, []);
 
+ 
   if (!loaded) {
     return <div>Loading...</div>;
   }
+
+  const handleDownload = async () => {
+    console.log("Initiating download for topic:", props.topic); // Debugging log to confirm function initiation
+
+    // Ensure topic is not empty
+    if (!props.topic) {
+      console.error(
+        "Topic is empty. Please select a valid topic before downloading."
+      );
+      return;
+    }
+
+    try {
+     
+    
+      // Initialize jsPDF
+      const doc = new jsPDF("landscape", "px", "a4");
+      let yOffset = 20; // Start yOffset at 20 to ensure the first line of text is within page margins
+
+      doc.setFontSize(16);
+      doc.text(20, yOffset, `Topic : ${props.topic}`);
+      yOffset += 30;
+
+      // Assuming data[0].questions is an object where each key is a question identifier
+      Object.keys(questions).forEach((key) => {
+        // Get the question text using the key
+        const question = questions[key];
+        const answer = userAnswers[key]===undefined?"No Answer Provided":userAnswers[key]; 
+
+        doc.setFontSize(12);
+        doc.text(20, yOffset, `Question ${key}: ${question}`);
+        yOffset += 20;
+        doc.text(20, yOffset, `answer ${key}: ${answer}`);
+        yOffset += 20;
+        // Check if yOffset exceeds page height and add a new page if necessary
+        if (yOffset > 800) {
+          doc.addPage();
+          yOffset = 20;
+        }
+      });
+
+      doc.save(`Questions & Answers - ${props.topic}.pdf`);
+    } catch (error) {
+      console.error("Error fetching data or generating PDF:", error);
+    }
+  };
+
+
 
   // Calculating total active time
   const totalActiveTimeMs = Object.values(times).reduce(
@@ -61,7 +111,6 @@ function PerCollectionPro(props) {
   const noOfAnswers = Object.keys(userAnswers).length;
 
   return (
-    
     <div class="min-h-screen bg-gray-50/50">
       <div class="p-4 xl:ml-10">
         <nav class="block w-full max-w-full bg-transparent text-white shadow-none rounded-xl transition-all px-0 py-1">
@@ -251,7 +300,9 @@ function PerCollectionPro(props) {
                       ></QuestionRow>
                     ))}
                   </tbody>
+                  
                 </table>
+                <button className="btn1" onClick={handleDownload}>Download Q&A</button>
               </div>
             </div>
           </div>
