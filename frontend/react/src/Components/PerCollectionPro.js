@@ -11,12 +11,13 @@ function PerCollectionPro(props) {
   const [times, setTimes] = useState({});
   const [userAnswers, setUserAnswers] = useState({});
   const [accuracy, setAccuracy] = useState({});
+  const API_URL = process.env.REACT_APP_BACKEND_URL || "http://localhost:8000";
 
   useEffect(() => {
     const fetchProgress = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:8000/getquestionsanswers/${props.topic}`
+          `${API_URL}/getquestionsanswers/${props.topic}`
         );
         setQuestions(response.data[0].questions);
         setUserAnswers(response.data[0].userAnswers);
@@ -26,7 +27,7 @@ function PerCollectionPro(props) {
 
       try {
         const response = await axios.get(
-          `http://localhost:8000/gettimesscores/${props.topic}`
+          `${API_URL}/gettimesscores/${props.topic}`
         );
         setTimes(response.data[0].times);
         setAccuracy(response.data[0].similarityScores);
