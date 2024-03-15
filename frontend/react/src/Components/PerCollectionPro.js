@@ -62,12 +62,17 @@ function PerCollectionPro(props) {
      
     
       // Initialize jsPDF
-      const doc = new jsPDF("landscape", "px", "a4");
+      const doc = new jsPDF("portrait", "px", "a4");
       let yOffset = 20; // Start yOffset at 20 to ensure the first line of text is within page margins
 
-      doc.setFontSize(16);
-      doc.text(20, yOffset, `Topic : ${props.topic}`);
-      yOffset += 30;
+      const pageWidth = doc.internal.pageSize.getWidth();
+
+      doc.setTextColor('009FE3');
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(22);
+      doc.text(`Topic : ${props.topic}`, pageWidth / 2, yOffset, { align: 'center' });
+      yOffset += 50;
+      doc.setTextColor(0, 0, 0);
 
       // Assuming data[0].questions is an object where each key is a question identifier
       Object.keys(questions).forEach((key) => {
@@ -76,17 +81,25 @@ function PerCollectionPro(props) {
         const answer = userAnswers[key]===undefined?"No Answer Provided":userAnswers[key]; 
         const questionAccuracy = accuracy[key] ? `${Math.round(accuracy[key])}%` : "N/A";
 
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(16);
+        doc.text(50, yOffset, `Question ${key}: ${question}`);
+        yOffset += 20;
+        doc.setFont("helvetica", "normal");
+
+        doc.setFontSize(16);
+        doc.text(50, yOffset, `Answer ${key}: ${answer}`);
+        yOffset += 20;
+
         doc.setFontSize(12);
-        doc.text(20, yOffset, `Question ${key}: ${question}`);
-        yOffset += 20;
-        doc.text(20, yOffset, `answer ${key}: ${answer}`);
-        yOffset += 20;
-        doc.text(20, yOffset, `Accuracy ${key}: ${questionAccuracy}`);
-        yOffset += 20;
+        doc.text(50, yOffset, `Accuracy ${key}: ${questionAccuracy}`);
+        yOffset += 40;
+
+       
         // Check if yOffset exceeds page height and add a new page if necessary
-        if (yOffset > 800) {
+        if (yOffset > 600) {
           doc.addPage();
-          yOffset = 20;
+          yOffset = 40;
         }
       });
 
