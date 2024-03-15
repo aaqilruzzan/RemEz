@@ -4,12 +4,15 @@ import axios from "axios";
 import { useNavigate } from "react-router";
 import { useQuestions } from "../Context/QuestionsContext";
 import { useAnswers } from "../Context/AnswersContext";
+import { useUpload } from "../Context/PdfUploadContext";
+
 function Home() {
   const [selectedFile, setSelectedFile] = useState(null); // State to hold the selected file
   const Navigate = useNavigate();
   const uploadSectionRef = useRef(null);
-  const { questions, setQuestions } = useQuestions();
-  const { answers, setAnswers } = useAnswers();
+  const { setQuestions } = useQuestions();
+  const { setAnswers } = useAnswers();
+  const { setUploadedPdf } = useUpload();
   const handleFileChange = (event) => {
     setSelectedFile(event.target.files[0]); // Update the state with the selected file
   };
@@ -36,6 +39,7 @@ function Home() {
       console.log("File uploaded successfully:", response.data);
       await setQuestions(response.data.questions);
       await setAnswers(response.data.answers);
+      await setUploadedPdf(true);
       alert("File uploaded successfully!");
       Navigate("/quiz");
     } catch (error) {

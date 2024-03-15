@@ -9,19 +9,20 @@ import axios from "axios";
 import React from "react";
 import { useQuestions } from "../Context/QuestionsContext";
 import { useAnswers } from "../Context/AnswersContext";
+import { useUpload } from "../Context/PdfUploadContext";
+import NoPdf from "../Components/NoPdf";
+
 function Quiz() {
   const [modal, setModal] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [topic, setTopic] = useState("");
   const [loaded, setLoaded] = useState(false);
-
   const { questions, setQuestions } = useQuestions();
   const { answers, setAnswers } = useAnswers();
-
   const [activeTime, setActiveTime] = useState({});
-
   const [userAnswers, setUserAnswers] = useState({});
   const [similarityScore, setSimilarityScore] = useState({});
+  const { uploadedPdf } = useUpload();
   const API_URL = process.env.REACT_APP_BACKEND_URL || "http://localhost:8000";
 
   const toggleModal = () => {
@@ -40,8 +41,14 @@ function Quiz() {
   }
 
   useEffect(() => {
+    if (!uploadedPdf) {
+      return;
+    }
     // Ensuring this effect runs only after the content has loaded
-    if (!loaded) return;
+    if (!loaded) {
+      setShowModal(true);
+      return;
+    }
     let startTimer;
     let stopTimer;
 
@@ -82,10 +89,6 @@ function Quiz() {
       });
     };
   }, [loaded]);
-
-  useEffect(() => {
-    setShowModal(true);
-  }, []);
 
   const handleQuizSubmit = async () => {
     try {
@@ -143,6 +146,7 @@ function Quiz() {
 
   return (
     <>
+      {!uploadedPdf && <NoPdf />}
       {showModal ? (
         <>
           <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">

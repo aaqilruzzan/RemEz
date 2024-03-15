@@ -15,6 +15,7 @@ import WelcomeVideo from "./Components/WelcomeVideo";
 import MouseIcon from "./Components/MouseIcon";
 import { QuestionsProvider } from "./Context/QuestionsContext";
 import { AnswersProvider } from "./Context/AnswersContext";
+import { UploadProvider } from "./Context/PdfUploadContext";
 import { useLoading } from "./Context/LoadingContext";
 
 function App() {
@@ -25,20 +26,22 @@ function App() {
     <Router>
       <QuestionsProvider>
         <AnswersProvider>
-          <Navbar clicked={clicked} isClicked={isClicked} />
-          {clicked ? <Menu /> : null}
-          {loading && <WelcomeVideo />}
-          <MouseIcon />
-          <Routes>
-            <Route exact path="" element={<Home />} />
-            <Route exact path="quiz" element={<Quiz />} />
-            <Route exact path="progress" element={<Progress />} />
-            <Route exact path="contact-us" element={<ContactUs />} />
-            <Route exact path="about-us" element={<AboutUs />} />
-            <Route exact path="signin" element={<SignIn />} />
-            <Route exact path="signup" element={<Signup />} />
-          </Routes>
-          <Footer />
+          <UploadProvider>
+            <Navbar clicked={clicked} isClicked={isClicked} />
+            {clicked ? <Menu /> : null}
+            {loading && <WelcomeVideo />}
+            <MouseIcon />
+            <Routes>
+              <Route exact path="" element={<Home />} />
+              <Route exact path="quiz" element={<Quiz />} />
+              <Route exact path="progress" element={<Progress />} />
+              <Route exact path="contact-us" element={<ContactUs />} />
+              <Route exact path="about-us" element={<AboutUs />} />
+              <Route exact path="signin" element={<SignIn />} />
+              <Route exact path="signup" element={<Signup />} />
+            </Routes>
+            <Footer />
+          </UploadProvider>
         </AnswersProvider>
       </QuestionsProvider>
     </Router>
