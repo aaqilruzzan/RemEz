@@ -74,11 +74,14 @@ function PerCollectionPro(props) {
         // Get the question text using the key
         const question = questions[key];
         const answer = userAnswers[key]===undefined?"No Answer Provided":userAnswers[key]; 
+        const questionAccuracy = accuracy[key] ? `${Math.round(accuracy[key])}%` : "N/A";
 
         doc.setFontSize(12);
         doc.text(20, yOffset, `Question ${key}: ${question}`);
         yOffset += 20;
         doc.text(20, yOffset, `answer ${key}: ${answer}`);
+        yOffset += 20;
+        doc.text(20, yOffset, `Accuracy ${key}: ${questionAccuracy}`);
         yOffset += 20;
         // Check if yOffset exceeds page height and add a new page if necessary
         if (yOffset > 800) {
