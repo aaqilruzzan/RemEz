@@ -13,6 +13,7 @@ function PerCollectionPro(props) {
   const [userAnswers, setUserAnswers] = useState({});
   const [accuracy, setAccuracy] = useState({});
   const API_URL = process.env.REACT_APP_BACKEND_URL || "http://localhost:8000";
+  const [isHovered, setIsHovered] = useState(false);
 
   useEffect(() => {
     const fetchProgress = async () => {
@@ -321,10 +322,12 @@ function PerCollectionPro(props) {
                 <div className="flex justify-center mt-4">
                   <button
                     onClick={handleDownload}
+                    onMouseEnter={() => setIsHovered(true)} // Set hover state to true when mouse enters
+                    onMouseLeave={() => setIsHovered(false)}
                     style={{
                       width: "200px", // Set the button width
-                      margin:"15px",
-                      backgroundColor: "#0C7DFF",
+                      margin: "15px",
+                      backgroundColor: isHovered ? "#000000" : "#0C7DFF",
                       color: "white",
                       borderRadius: "20px", // Rounded corners
                       padding: "10px 20px", // Top & Bottom, Left & Right padding
