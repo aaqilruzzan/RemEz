@@ -42,7 +42,6 @@ function PerCollectionPro(props) {
     fetchProgress();
   }, []);
 
- 
   if (!loaded) {
     return <div>Loading...</div>;
   }
@@ -59,18 +58,18 @@ function PerCollectionPro(props) {
     }
 
     try {
-     
-    
       // Initialize jsPDF
       const doc = new jsPDF("portrait", "px", "a4");
       let yOffset = 20; // Start yOffset at 20 to ensure the first line of text is within page margins
 
       const pageWidth = doc.internal.pageSize.getWidth();
 
-      doc.setTextColor('009FE3');
+      doc.setTextColor("009FE3");
       doc.setFont("helvetica", "bold");
       doc.setFontSize(22);
-      doc.text(`Topic : ${props.topic}`, pageWidth / 2, yOffset, { align: 'center' });
+      doc.text(`Topic : ${props.topic}`, pageWidth / 2, yOffset, {
+        align: "center",
+      });
       yOffset += 50;
       doc.setTextColor(0, 0, 0);
 
@@ -78,8 +77,13 @@ function PerCollectionPro(props) {
       Object.keys(questions).forEach((key) => {
         // Get the question text using the key
         const question = questions[key];
-        const answer = userAnswers[key]===undefined?"No Answer Provided":userAnswers[key]; 
-        const questionAccuracy = accuracy[key] ? `${Math.round(accuracy[key])}%` : "N/A";
+        const answer =
+          userAnswers[key] === undefined
+            ? "No Answer Provided"
+            : userAnswers[key];
+        const questionAccuracy = accuracy[key]
+          ? `${Math.round(accuracy[key])}%`
+          : "N/A";
 
         doc.setFont("helvetica", "bold");
         doc.setFontSize(16);
@@ -95,7 +99,6 @@ function PerCollectionPro(props) {
         doc.text(50, yOffset, `Accuracy ${key}: ${questionAccuracy}`);
         yOffset += 40;
 
-       
         // Check if yOffset exceeds page height and add a new page if necessary
         if (yOffset > 600) {
           doc.addPage();
@@ -108,8 +111,6 @@ function PerCollectionPro(props) {
       console.error("Error fetching data or generating PDF:", error);
     }
   };
-
-
 
   // Calculating total active time
   const totalActiveTimeMs = Object.values(times).reduce(
@@ -316,9 +317,26 @@ function PerCollectionPro(props) {
                       ></QuestionRow>
                     ))}
                   </tbody>
-                  
                 </table>
-                <button className="btn1" onClick={handleDownload}>Download Q&A</button>
+                <div className="flex justify-center mt-4">
+                  <button
+                    onClick={handleDownload}
+                    style={{
+                      width: "200px", // Set the button width
+                      margin:"15px",
+                      backgroundColor: "#0C7DFF",
+                      color: "white",
+                      borderRadius: "20px", // Rounded corners
+                      padding: "10px 20px", // Top & Bottom, Left & Right padding
+                      fontSize: "16px", // Text size
+                      border: "none", // Remove default border
+                      cursor: "pointer", // Mouse pointer on hover
+                      boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)", // Optional: Adds a subtle shadow
+                    }}
+                  >
+                    Download Q&A
+                  </button>
+                </div>
               </div>
             </div>
           </div>
