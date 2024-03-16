@@ -5,6 +5,8 @@ import {
   getNames,
   getTimesAndScores,
   getQuestionsAnswers,
+  getData,
+  getAllProgressData,
 } from "../controllers/subjects/data.js";
 
 const router = Router();
@@ -14,5 +16,7 @@ router.post("/savesubject", saveData);
 router.get("/getnames", getNames);
 router.get("/gettimesscores/:name", getTimesAndScores);
 router.get("/getquestionsanswers/:name", getQuestionsAnswers);
+router.get("/getdata/:name", getData);
+router.get("/getallprogressdata", getAllProgressData);
 
 export default router;
