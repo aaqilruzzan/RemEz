@@ -95,6 +95,16 @@ function Quiz() {
         ? true
         : false;
 
+    /// Calculating total active time
+    const totalActiveTimeMs = Object.values(activeTime).reduce(
+      (acc, time) => acc + time,
+      0
+    ); // Sum in milliseconds
+    console.log(totalActiveTimeMs);
+    const totalActiveTimeSecs = Math.round(totalActiveTimeMs / 1000); // Converting to seconds
+
+    const noOfAnswers = Object.keys(userAnswers).length;
+
     try {
       const response = await axios.post(`${API_URL}/savesubject`, {
         name: topic,
@@ -105,6 +115,8 @@ function Quiz() {
         averageSimilarityScore: Math.round(averageSimilarityScore),
         systemAnswers: answers,
         completedRound: completedRound,
+        totalActiveTime: totalActiveTimeSecs,
+        noOfAnswers: noOfAnswers,
       });
       if (response.status == 201) {
         alert("Quiz submitted successfully!");

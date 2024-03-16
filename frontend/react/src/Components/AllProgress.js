@@ -20,6 +20,8 @@ const AllProgress = () => {
   const [loaded, setLoaded] = useState(false);
   const [averageSimilarityScores, setAverageSimilarityScores] = useState([]);
   const [completedRounds, setCompletedRounds] = useState(0);
+  const [totalAnswerCount, setTotalAnswerCount] = useState(0);
+  const [totalActiveTime, setTotalActiveTime] = useState(0);
 
   useEffect(() => {
     const fetchAllProgressData = async () => {
@@ -28,7 +30,8 @@ const AllProgress = () => {
         setTopics(response.data.names);
         setAverageSimilarityScores(response.data.averageSimilarityScores);
         setCompletedRounds(response.data.completedRounds);
-
+        setTotalAnswerCount(response.data.noOfAnswers);
+        setTotalActiveTime(response.data.totalActiveTime);
         setLoaded(true);
       } catch (error) {
         console.error("Error fetching topics:", error);
@@ -49,6 +52,12 @@ const AllProgress = () => {
   const completionTailwindClass =
     completionRate > 50 ? "text-green-500" : "text-red-500";
 
+  const averageAnswerTimeSeconds = totalActiveTime / totalAnswerCount;
+  // Converting average time into minutes and seconds
+  const minutes = Math.floor(averageAnswerTimeSeconds / 60);
+  const seconds = Math.round(averageAnswerTimeSeconds % 60); // Using Math.round to round to the nearest second
+  // Format the result as a string "minutes:seconds"
+  const formattedAverageTime = `${minutes}m ${seconds}s`;
   // Static data for the bar chart
   const data = {
     labels: topics,
@@ -97,11 +106,10 @@ const AllProgress = () => {
   };
   // A simple function to determine the grade based on the mark
   const getGrade = (mark) => {
-    if (mark >= 90) return "A";
-    if (mark >= 80) return "B";
-    if (mark >= 70) return "C";
-    if (mark >= 60) return "D";
-    return "F";
+    if (mark >= 75) return "A";
+    if (mark >= 65) return "B";
+    if (mark >= 50) return "C";
+    return "D";
   };
 
   //  a plugin to draw the text on the chart
@@ -154,13 +162,12 @@ const AllProgress = () => {
                 Average answer time per question
               </p>
               <h4 class="block antialiased tracking-normal font-sans text-2xl font-semibold leading-snug text-blue-gray-900">
-                23m 45s
+                {formattedAverageTime}
               </h4>
             </div>
             <div class="border-t border-blue-gray-50 p-4">
-              <p class="block antialiased font-sans text-base leading-relaxed font-normal text-blue-gray-600">
-                <strong class="text-green-500">+3%</strong>&nbsp;than the
-                previous round
+              <p class="block antialiased font-sans text-base leading-relaxed font-normal text-blue-gray-600 text-center">
+                Total answers provided: <strong>{totalAnswerCount}</strong>
               </p>
             </div>
           </div>
