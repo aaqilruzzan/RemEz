@@ -7,6 +7,11 @@ import axios from "axios";
 import React from "react";
 import { useQuestions } from "../Context/QuestionsContext";
 import { useAnswers } from "../Context/AnswersContext";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPenToSquare, faBell } from '@fortawesome/free-solid-svg-icons'
+import { useNavigate } from "react-router-dom";
+
+
 function Quiz() {
   const [modal, setModal] = useState(false);
   const [showModal, setShowModal] = useState(false);
@@ -21,6 +26,9 @@ function Quiz() {
   const [userAnswers, setUserAnswers] = useState({});
   const [similarityScore, setSimilarityScore] = useState({});
   const API_URL = process.env.REACT_APP_BACKEND_URL || "http://localhost:8000";
+
+  const navigate = useNavigate();
+
 
   const toggleModal = () => {
     setModal(!modal);
@@ -141,6 +149,10 @@ function Quiz() {
 
   return (
     <>
+      <div className="fixed top-[60px] right-4 z-50 flex gap-4 p-2 bg-gray-100 rounded-lg shadow-md">
+        <FontAwesomeIcon icon={faPenToSquare} className="cursor-pointer text-lg text-gray-700 hover:text-blue-500" onClick={() => navigate("/notes")} />
+        <FontAwesomeIcon icon={faBell} className="cursor-pointer text-lg text-gray-700 hover:text-blue-500" onClick={() => navigate("/reminders")} />
+      </div>
       {showModal ? (
         <>
           <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
