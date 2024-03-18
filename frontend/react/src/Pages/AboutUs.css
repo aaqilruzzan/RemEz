@@ -15,7 +15,7 @@
 }
 
 .main1{
-    background-image: url('C:\Users\Naseem\Desktop\m\navigation\public\shapes3.png');
+    background-image: url("../../public/shapes3.png");
 }
 
 .main{
@@ -87,7 +87,7 @@ h3{
 
 .main2{
     
-    background-image: url('C:\Users\Naseem\Desktop\m\navigation\public\shapes3.png');
+    background-image: url("../../public/shapes3.png");
     justify-content: center;
     align-items: center;
     text-align: center;
