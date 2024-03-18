@@ -3,8 +3,6 @@ import PerCollectionPro from "../Components/PerCollectionPro";
 import AllProgress from "../Components/AllProgress";
 import axios from "axios";
 import SelectTopic from "../Components/SelectTopic";
-import { jsPDF } from "jspdf";
-
 
 export default function ProgressTracker() {
   const [progress, setProgress] = useState("");
@@ -28,12 +26,6 @@ export default function ProgressTracker() {
 
     fetchTopics();
   }, []);
-
-
-  const handleDownload = () => {
-    var doc= new jsPDF('landscape', 'px', 'a4', 'false');
-    doc.save('Questions & Answers.pdf');
-  };
 
   return (
     <>
