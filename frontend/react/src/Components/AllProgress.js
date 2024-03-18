@@ -136,6 +136,7 @@ const AllProgress = () => {
 
   return (
     <>
+      
       <div class="mt-12 ml-10">
         <div class="mb-12 grid gap-y-10 gap-x-6 md:grid-cols-2 xl:grid-cols-4">
           <div class="relative flex flex-col bg-clip-border rounded-xl bg-white text-gray-700 shadow-md">
