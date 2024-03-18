@@ -5,7 +5,7 @@ function AboutUs() {
   return (
     <>
           <div className='main1'>
-          <h1>About Us</h1>
+          <h3 className='titles'>About Us</h3>
           <div  className='main'>
 
               
