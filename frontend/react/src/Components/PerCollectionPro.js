@@ -16,6 +16,7 @@ function PerCollectionPro(props) {
   const [prevTotalActiveTime, setPrevTotalActiveTime] = useState(0);
   const API_URL = process.env.REACT_APP_BACKEND_URL || "http://localhost:8000";
   const [isHovered, setIsHovered] = useState(false);
+  const [systemAnswers, setSystemAnswers] = useState(false);
   let changeInActiveTimePercentage;
   let changeInActiveTimeClass;
   let changeInActiveTimePercentageNo;
@@ -30,6 +31,7 @@ function PerCollectionPro(props) {
         setAccuracy(response.data.similarityScores);
         setAverageAccuracy(response.data.averageSimilarityScore);
         setPrevTotalActiveTime(response.data.prevTotalActiveTime);
+        setSystemAnswers(response.data.systemAnswers);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -46,7 +48,7 @@ function PerCollectionPro(props) {
 
   const handleDownload = async () => {
     console.log("Initiating download for topic:", props.topic); // Debugging log to confirm function initiation
-
+  
     // Ensure topic is not empty
     if (!props.topic) {
       console.error(
@@ -54,14 +56,17 @@ function PerCollectionPro(props) {
       );
       return;
     }
-
+  
     try {
       // Initialize jsPDF
       const doc = new jsPDF("portrait", "px", "a4");
       let yOffset = 20; // Start yOffset at 20 to ensure the first line of text is within page margins
-
+  
       const pageWidth = doc.internal.pageSize.getWidth();
-
+      const marginLeft = 50;
+      const marginRight = 50;
+      const maxLineWidth = pageWidth - marginLeft - marginRight;
+  
       doc.setTextColor("009FE3");
       doc.setFont("helvetica", "bold");
       doc.setFontSize(22);
@@ -70,45 +75,60 @@ function PerCollectionPro(props) {
       });
       yOffset += 50;
       doc.setTextColor(0, 0, 0);
-
-      // Assuming data[0].questions is an object where each key is a question identifier
+  
       Object.keys(questions).forEach((key) => {
-        // Get the question text using the key
         const question = questions[key];
-        const answer =
-          userAnswers[key] === undefined
-            ? "No Answer Provided"
-            : userAnswers[key];
-        const questionAccuracy = accuracy[key]
-          ? `${Math.round(accuracy[key])}%`
-          : "N/A";
-
+        const answer = userAnswers[key] === undefined ? "No Answer Provided" : userAnswers[key];
+        const modelAnswer = systemAnswers[key] ? systemAnswers[key] : "N/A";
+        const questionAccuracy = accuracy[key] ? `${Math.round(accuracy[key])}%` : "N/A";
+  
+        // Split text to ensure it fits within the page width
+        let questionText = doc.splitTextToSize(`Question ${key}: ${question}`, maxLineWidth);
+        let answerText = doc.splitTextToSize(`User Answer: ${answer}`, maxLineWidth);
+        let modelAnswerText = doc.splitTextToSize(`Model Answer: ${modelAnswer}`, maxLineWidth);
+        let accuracyText = doc.splitTextToSize(`Accuracy ${key}: ${questionAccuracy}`, maxLineWidth);
+  
+        // Add question text
         doc.setFont("helvetica", "bold");
         doc.setFontSize(16);
-        doc.text(50, yOffset, `Question ${key}: ${question}`);
-        yOffset += 20;
+        questionText.forEach((line) => {
+          doc.text(line, marginLeft, yOffset);
+          yOffset += 20; // Adjust line spacing
+        });
+  
+        // Add answer text
         doc.setFont("helvetica", "normal");
-
-        doc.setFontSize(16);
-        doc.text(50, yOffset, `Answer ${key}: ${answer}`);
-        yOffset += 20;
-
         doc.setFontSize(12);
-        doc.text(50, yOffset, `Accuracy ${key}: ${questionAccuracy}`);
-        yOffset += 40;
-
+        answerText.forEach((line) => {
+          doc.text(line, marginLeft, yOffset);
+          yOffset += 20; // Adjust line spacing
+        });
+  
+        // Add model answer text
+        modelAnswerText.forEach((line) => {
+          doc.text(line, marginLeft, yOffset);
+          yOffset += 20; // Adjust line spacing
+        });
+  
+        // Add accuracy text
+        accuracyText.forEach((line) => {
+          doc.text(line, marginLeft, yOffset);
+          yOffset += 40; // Adjust line spacing for the next question
+        });
+  
         // Check if yOffset exceeds page height and add a new page if necessary
         if (yOffset > 600) {
           doc.addPage();
           yOffset = 40;
         }
       });
-
+  
       doc.save(`Questions & Answers - ${props.topic}.pdf`);
     } catch (error) {
       console.error("Error fetching data or generating PDF:", error);
     }
   };
+  
 
   // Calculating total active time
   const totalActiveTimeMs = Object.values(times).reduce(
