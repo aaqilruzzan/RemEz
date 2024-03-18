@@ -61,7 +61,7 @@ export default function ProgressTracker() {
       {progress === "" ? (
         <SelectTopic />
       ) : progress === "View all Progress" ? (
-        <AllProgress />
+        <AllProgress key={progress} />
       ) : (
         <PerCollectionPro key={progress} topic={progress} />
       )}

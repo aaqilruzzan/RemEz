@@ -12,29 +12,26 @@ function PerCollectionPro(props) {
   const [times, setTimes] = useState({});
   const [userAnswers, setUserAnswers] = useState({});
   const [accuracy, setAccuracy] = useState({});
+  const [averageAccuracy, setAverageAccuracy] = useState(0);
+  const [prevTotalActiveTime, setPrevTotalActiveTime] = useState(0);
   const API_URL = process.env.REACT_APP_BACKEND_URL || "http://localhost:8000";
   const [isHovered, setIsHovered] = useState(false);
+  let changeInActiveTimePercentage;
+  let changeInActiveTimeClass;
+  let changeInActiveTimePercentageNo;
 
   useEffect(() => {
     const fetchProgress = async () => {
       try {
-        const response = await axios.get(
-          `${API_URL}/getquestionsanswers/${props.topic}`
-        );
-        setQuestions(response.data[0].questions);
-        setUserAnswers(response.data[0].userAnswers);
+        const response = await axios.get(`${API_URL}/getdata/${props.topic}`);
+        setQuestions(response.data.questions);
+        setUserAnswers(response.data.userAnswers);
+        setTimes(response.data.times);
+        setAccuracy(response.data.similarityScores);
+        setAverageAccuracy(response.data.averageSimilarityScore);
+        setPrevTotalActiveTime(response.data.prevTotalActiveTime);
       } catch (error) {
-        console.error("Error fetching questions:", error);
-      }
-
-      try {
-        const response = await axios.get(
-          `${API_URL}/gettimesscores/${props.topic}`
-        );
-        setTimes(response.data[0].times);
-        setAccuracy(response.data[0].similarityScores);
-      } catch (error) {
-        console.error("Error fetching times:", error);
+        console.error("Error fetching data:", error);
       }
 
       setLoaded(true);
@@ -122,9 +119,22 @@ function PerCollectionPro(props) {
   const totalActiveMinutes = Math.floor(totalActiveTimeSecs / 60); // Total minutes
   const totalActiveSeconds = totalActiveTimeSecs % 60; // Remaining seconds
   const totalActiveTimeFormatted = `${totalActiveMinutes}m ${totalActiveSeconds}s`; // Formatting as "Xm Ys"
-  const averageAccuracy =
-    Object.values(accuracy).reduce((a, b) => a + b, 0) /
-    Object.keys(accuracy).length;
+
+  if (prevTotalActiveTime != null) {
+    changeInActiveTimePercentageNo = Math.round(
+      ((totalActiveTimeSecs - prevTotalActiveTime) / prevTotalActiveTime) * 100
+    );
+
+    changeInActiveTimePercentage =
+      changeInActiveTimePercentageNo > 0
+        ? `+${changeInActiveTimePercentageNo} % compared to the previous round`
+        : `${changeInActiveTimePercentageNo} % compared to the previous round`;
+    changeInActiveTimeClass =
+      changeInActiveTimePercentageNo < 0 ? "text-green-500" : "text-red-500";
+  } else {
+    changeInActiveTimePercentage = "No previous round to compare";
+    changeInActiveTimeClass = "text-blue-500";
+  }
 
   const noOfAnswers = Object.keys(userAnswers).length;
 
@@ -155,7 +165,7 @@ function PerCollectionPro(props) {
                 <div className="w-20 my-3">
                   <CircularProgressbar
                     value={averageAccuracy}
-                    text={`${Math.round(averageAccuracy)}%`}
+                    text={`${averageAccuracy}%`}
                   />
                 </div>
               </div>
@@ -199,9 +209,10 @@ function PerCollectionPro(props) {
                 </h4>
               </div>
               <div class="border-t border-blue-gray-50 p-4">
-                <p class="block antialiased font-sans text-base leading-relaxed font-normal text-blue-gray-600">
-                  <strong class="text-green-500">+3%</strong>&nbsp;than the
-                  previous round
+                <p class="block antialiased font-sans text-base leading-relaxed font-normal text-blue-gray-600 text-center">
+                  <strong class={changeInActiveTimeClass}>
+                    {changeInActiveTimePercentage}
+                  </strong>
                 </p>
               </div>
             </div>
@@ -227,7 +238,7 @@ function PerCollectionPro(props) {
                 </h4>
               </div>
               <div class="border-t border-blue-gray-50 p-4">
-                <p class="block antialiased font-sans text-base leading-relaxed font-normal text-blue-gray-600">
+                <p class="block antialiased font-sans text-base leading-relaxed font-normal text-blue-gray-600 text-center">
                   <strong class="text-green-500">+5%</strong>&nbsp;than the
                   previous round
                 </p>
