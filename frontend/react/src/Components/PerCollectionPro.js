@@ -4,6 +4,7 @@ import "react-circular-progressbar/dist/styles.css";
 import LinearProgress from "@material-ui/core/LinearProgress";
 import QuestionRow from "./questionRow";
 import axios from "axios";
+import { useLoading } from "../Context/LoadingContext";
 import { jsPDF } from "jspdf";
 
 function PerCollectionPro(props) {
@@ -12,6 +13,7 @@ function PerCollectionPro(props) {
   const [times, setTimes] = useState({});
   const [userAnswers, setUserAnswers] = useState({});
   const [accuracy, setAccuracy] = useState({});
+  const { loading, setLoading } = useLoading();
   const [averageAccuracy, setAverageAccuracy] = useState(0);
   const [prevTotalActiveTime, setPrevTotalActiveTime] = useState(0);
   const API_URL = process.env.REACT_APP_BACKEND_URL || "http://localhost:8000";
@@ -22,6 +24,7 @@ function PerCollectionPro(props) {
   let changeInActiveTimePercentageNo;
 
   useEffect(() => {
+    setLoading(true);
     const fetchProgress = async () => {
       try {
         const response = await axios.get(`${API_URL}/getdata/${props.topic}`);
@@ -36,19 +39,19 @@ function PerCollectionPro(props) {
         console.error("Error fetching data:", error);
       }
 
-      setLoaded(true);
+      setLoading(false);
     };
 
     fetchProgress();
   }, []);
 
-  if (!loaded) {
+  if (loading) {
     return <div>Loading...</div>;
   }
 
   const handleDownload = async () => {
     console.log("Initiating download for topic:", props.topic); // Debugging log to confirm function initiation
-  
+
     // Ensure topic is not empty
     if (!props.topic) {
       console.error(
@@ -56,17 +59,17 @@ function PerCollectionPro(props) {
       );
       return;
     }
-  
+
     try {
       // Initialize jsPDF
       const doc = new jsPDF("portrait", "px", "a4");
       let yOffset = 20; // Start yOffset at 20 to ensure the first line of text is within page margins
-  
+
       const pageWidth = doc.internal.pageSize.getWidth();
       const marginLeft = 50;
       const marginRight = 50;
       const maxLineWidth = pageWidth - marginLeft - marginRight;
-  
+
       doc.setTextColor("009FE3");
       doc.setFont("helvetica", "bold");
       doc.setFontSize(22);
@@ -75,19 +78,36 @@ function PerCollectionPro(props) {
       });
       yOffset += 50;
       doc.setTextColor(0, 0, 0);
-  
+
       Object.keys(questions).forEach((key) => {
         const question = questions[key];
-        const answer = userAnswers[key] === undefined ? "No Answer Provided" : userAnswers[key];
+        const answer =
+          userAnswers[key] === undefined
+            ? "No Answer Provided"
+            : userAnswers[key];
         const modelAnswer = systemAnswers[key] ? systemAnswers[key] : "N/A";
-        const questionAccuracy = accuracy[key] ? `${Math.round(accuracy[key])}%` : "N/A";
-  
+        const questionAccuracy = accuracy[key]
+          ? `${Math.round(accuracy[key])}%`
+          : "N/A";
+
         // Split text to ensure it fits within the page width
-        let questionText = doc.splitTextToSize(`Question ${key}: ${question}`, maxLineWidth);
-        let answerText = doc.splitTextToSize(`User Answer: ${answer}`, maxLineWidth);
-        let modelAnswerText = doc.splitTextToSize(`Model Answer: ${modelAnswer}`, maxLineWidth);
-        let accuracyText = doc.splitTextToSize(`Accuracy ${key}: ${questionAccuracy}`, maxLineWidth);
-  
+        let questionText = doc.splitTextToSize(
+          `Question ${key}: ${question}`,
+          maxLineWidth
+        );
+        let answerText = doc.splitTextToSize(
+          `User Answer: ${answer}`,
+          maxLineWidth
+        );
+        let modelAnswerText = doc.splitTextToSize(
+          `Model Answer: ${modelAnswer}`,
+          maxLineWidth
+        );
+        let accuracyText = doc.splitTextToSize(
+          `Accuracy ${key}: ${questionAccuracy}`,
+          maxLineWidth
+        );
+
         // Add question text
         doc.setFont("helvetica", "bold");
         doc.setFontSize(16);
@@ -95,7 +115,7 @@ function PerCollectionPro(props) {
           doc.text(line, marginLeft, yOffset);
           yOffset += 20; // Adjust line spacing
         });
-  
+
         // Add answer text
         doc.setFont("helvetica", "normal");
         doc.setFontSize(12);
@@ -103,32 +123,31 @@ function PerCollectionPro(props) {
           doc.text(line, marginLeft, yOffset);
           yOffset += 20; // Adjust line spacing
         });
-  
+
         // Add model answer text
         modelAnswerText.forEach((line) => {
           doc.text(line, marginLeft, yOffset);
           yOffset += 20; // Adjust line spacing
         });
-  
+
         // Add accuracy text
         accuracyText.forEach((line) => {
           doc.text(line, marginLeft, yOffset);
           yOffset += 40; // Adjust line spacing for the next question
         });
-  
+
         // Check if yOffset exceeds page height and add a new page if necessary
         if (yOffset > 600) {
           doc.addPage();
           yOffset = 40;
         }
       });
-  
+
       doc.save(`Questions & Answers - ${props.topic}.pdf`);
     } catch (error) {
       console.error("Error fetching data or generating PDF:", error);
     }
   };
-  
 
   // Calculating total active time
   const totalActiveTimeMs = Object.values(times).reduce(
@@ -160,7 +179,7 @@ function PerCollectionPro(props) {
 
   return (
     <div class="min-h-screen bg-gray-50/50">
-      <div class="p-4 xl:ml-10">
+      <div class="p-4 xl:ml-3">
         <nav class="block w-full max-w-full bg-transparent text-white shadow-none rounded-xl transition-all px-0 py-1">
           <div class="flex flex-col-reverse justify-between gap-6 md:flex-row md:items-center">
             <div class="capitalize">
@@ -181,6 +200,9 @@ function PerCollectionPro(props) {
         <div class="mt-12">
           <div class="mb-12 grid gap-y-10 gap-x-6 md:grid-cols-2 xl:grid-cols-4">
             <div class="relative flex flex-col bg-clip-border rounded-xl bg-white text-gray-700 shadow-md">
+              <div class="bg-clip-border mx-4 rounded-xl overflow-hidden shadow-lg absolute -mt-4 grid h-16 w-16 place-items-center">
+                <img src="book.png" alt="book" />
+              </div>
               <div class="flex justify-center p-1">
                 <div className="w-20 my-3">
                   <CircularProgressbar
@@ -217,8 +239,8 @@ function PerCollectionPro(props) {
               </div>
             </div>
             <div class="relative flex flex-col bg-clip-border rounded-xl bg-white text-gray-700 shadow-md">
-              <div class="bg-clip-border  rounded-xl overflow-hidden  absolute -mt-4 grid h-16 w-16 place-items-center">
-                <LinearProgress variant="determinate" value={(40, 100)} />
+              <div class="bg-clip-border mx-4 rounded-xl overflow-hidden shadow-lg absolute -mt-4 grid h-16 w-16 place-items-center">
+                <img src="time.png" alt="time" />
               </div>
               <div class="p-4 text-right">
                 <p class="block antialiased font-sans text-sm leading-normal font-normal text-blue-gray-600">
@@ -238,16 +260,8 @@ function PerCollectionPro(props) {
             </div>
 
             <div class="relative flex flex-col bg-clip-border rounded-xl bg-white text-gray-700 shadow-md">
-              <div class="bg-clip-border mx-4 rounded-xl overflow-hidden bg-gradient-to-tr from-orange-600 to-orange-400 text-white shadow-orange-500/40 shadow-lg absolute -mt-4 grid h-16 w-16 place-items-center">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  fill="currentColor"
-                  aria-hidden="true"
-                  class="w-6 h-6 text-white"
-                >
-                  <path d="M18.375 2.25c-1.035 0-1.875.84-1.875 1.875v15.75c0 1.035.84 1.875 1.875 1.875h.75c1.035 0 1.875-.84 1.875-1.875V4.125c0-1.036-.84-1.875-1.875-1.875h-.75zM9.75 8.625c0-1.036.84-1.875 1.875-1.875h.75c1.036 0 1.875.84 1.875 1.875v11.25c0 1.035-.84 1.875-1.875 1.875h-.75a1.875 1.875 0 01-1.875-1.875V8.625zM3 13.125c0-1.036.84-1.875 1.875-1.875h.75c1.036 0 1.875.84 1.875 1.875v6.75c0 1.035-.84 1.875-1.875 1.875h-.75A1.875 1.875 0 013 19.875v-6.75z"></path>
-                </svg>
+              <div class="bg-clip-border mx-4 rounded-xl overflow-hidden shadow-lg absolute -mt-4 grid h-16 w-16 place-items-center">
+                <img src="trophy.png" alt="trophy" />
               </div>
               <div class="p-4 text-right">
                 <p class="block antialiased font-sans text-sm leading-normal font-normal text-blue-gray-600">

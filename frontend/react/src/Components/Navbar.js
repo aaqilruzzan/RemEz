@@ -13,7 +13,7 @@ function Navbar({ clicked, isClicked }) {
       <ul className="NavbarWrapper">
         <li className="NavLogo">
           <Link to="/" className="Link">
-            Quiz Generator
+            RemEz
           </Link>
         </li>
         <li className="NavElements">
