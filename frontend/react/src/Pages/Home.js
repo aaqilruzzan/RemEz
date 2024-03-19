@@ -5,14 +5,17 @@ import { useNavigate } from "react-router";
 import { useQuestions } from "../Context/QuestionsContext";
 import { useAnswers } from "../Context/AnswersContext";
 import { useUpload } from "../Context/PdfUploadContext";
+import { useLoading } from "../Context/LoadingContext";
 
 function Home() {
   const [selectedFile, setSelectedFile] = useState(null); // State to hold the selected file
+  const [questionCount, setQuestionCount] = useState(0);
   const Navigate = useNavigate();
   const uploadSectionRef = useRef(null);
   const { setQuestions } = useQuestions();
   const { setAnswers } = useAnswers();
   const { setUploadedPdf } = useUpload();
+  const { loading, setLoading } = useLoading();
   const handleFileChange = (event) => {
     setSelectedFile(event.target.files[0]); // Update the state with the selected file
   };
@@ -22,6 +25,7 @@ function Home() {
       alert("Please select a file first!");
       return;
     }
+    await setLoading(true);
 
     const formData = new FormData();
     formData.append("file", selectedFile); // 'file' is the field name expected by your backend
@@ -40,6 +44,7 @@ function Home() {
       await setQuestions(response.data.questions);
       await setAnswers(response.data.answers);
       await setUploadedPdf(true);
+      await setLoading(false);
       alert("File uploaded successfully!");
       Navigate("/quiz");
     } catch (error) {
@@ -48,8 +53,16 @@ function Home() {
     }
   };
 
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
   const scrollToUpload = () => {
     uploadSectionRef.current.scrollIntoView({ behavior: "smooth" }); // Step 3: Use scrollIntoView to navigate
+  };
+
+  const handleQuestionCountChange = (event) => {
+    setQuestionCount(event.target.value);
   };
 
   return (
@@ -93,11 +106,26 @@ function Home() {
             it's lectures, articles, or study materials, our drag-and-drop
             function makes the process smooth and hassle-free. Take the first
             step toward generating quizzes and exploring knowledge – start by
-            uploading your PDFs now!
+            uploading your PDFs now! <br />
+            <br /> Select the number of questions you want to generate:
           </p>
+
+          <div className="relative w-full lg:max-w-sm ">
+            <select
+              className="w-full p-2.5 text-gray-500 bg-white border rounded-md shadow-sm outline-none appearance-none focus:border-indigo-600"
+              onChange={handleQuestionCountChange}
+              value={questionCount}
+            >
+              <option>3</option>
+              <option>5</option>
+              <option>10</option>
+            </select>
+          </div>
+
           <button
             className="custom-button2"
             onClick={() => document.getElementById("fileInput").click()}
+            disabled={questionCount === 0 ? true : false}
           >
             Upload PDF
           </button>

@@ -347,12 +347,6 @@ function Quiz() {
                   Finish Quiz
                 </button>
               </div>
-
-              <div className="button-wrapper">
-                <button className="btn1" onClick={handleDownload}>
-                  Download Q&A
-                </button>
-              </div>
             </div>
           </div>
 
