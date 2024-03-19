@@ -259,7 +259,11 @@ function Quiz() {
                           Accuracy Rating
                         </div>
                         <div className="text-gray-900 text-2xl font-semibold">
-                          {similarityScore[key] ? similarityScore[key] : "--"}%
+                          {similarityScore[key] === 0
+                            ? "0%"
+                            : similarityScore[key] > 0
+                            ? `${similarityScore[key]}%`
+                            : "--%"}
                         </div>
                       </div>
                     </div>

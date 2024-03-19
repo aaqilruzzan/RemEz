@@ -11,6 +11,7 @@ import {
   Legend,
 } from "chart.js";
 import { Bar } from "react-chartjs-2";
+import { useLoading } from "../Context/LoadingContext";
 
 Chart.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
@@ -22,9 +23,11 @@ const AllProgress = () => {
   const [completedRounds, setCompletedRounds] = useState(0);
   const [totalAnswerCount, setTotalAnswerCount] = useState(0);
   const [totalActiveTime, setTotalActiveTime] = useState(0);
+  const { loading, setLoading } = useLoading();
 
   useEffect(() => {
     const fetchAllProgressData = async () => {
+      setLoading(true);
       try {
         const response = await axios.get(`${API_URL}/getallprogressdata`);
         setTopics(response.data.names);
@@ -32,7 +35,7 @@ const AllProgress = () => {
         setCompletedRounds(response.data.completedRounds);
         setTotalAnswerCount(response.data.noOfAnswers);
         setTotalActiveTime(response.data.totalActiveTime);
-        setLoaded(true);
+        setLoading(false);
       } catch (error) {
         console.error("Error fetching topics:", error);
       }
@@ -41,7 +44,7 @@ const AllProgress = () => {
     fetchAllProgressData();
   }, []);
 
-  if (!loaded) {
+  if (loading) {
     return <div>Loading...</div>;
   }
 
