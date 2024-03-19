@@ -19,30 +19,30 @@ function AboutUs() {
               <div className='card'>
                 <img alt="Gold" src="silver.png" className='card-image'></img>
                 <h2 className='card-title'>Anuda</h2>
-                <p className='card-text'>Correct Answer with Correct Time</p>
-                <p className='score'>point:2</p>
+                <p className='card-text'>Bachelor of Honors (B.Hons) degree in Software Engineering</p>
+                <p className='score'>IIT</p>
               </div>
 
               <div className='card'>
                 <img alt="Gold" src="platinum.png" className='card-image'></img>
                 <h2 className='card-title'>Ruwinda</h2>
-                <p className='card-text'>Correct Answer with Correct Time</p>
-                <p className='score'>point:2</p>
+                <p className='card-text'>Bachelor of Honors (B.Hons) degree in Software Engineering</p>
+                <p className='score'>IIT</p>
               </div>
 
 
               <div className='card'>
                 <img alt="Gold" src='gold1.png' className='card-image'></img>
                 <h2 className='card-title'>Aqeel</h2>
-                <p className='card-text'>Correct Answer with Correct Time</p>
-                <p className='score'>point:2</p>
+                <p className='card-text'>Bachelor of Honors (B.Hons) degree in Software Engineering</p>
+                <p className='score'>IIT</p>
               </div>
 
               <div className='card'>
                 <img alt="Gold" src="silver.png" className='card-image'></img>
                 <h2 className='card-title'>Shimar</h2>
-                <p className='card-text'>Correct Answer with Correct Time</p>
-                <p className='score'>point:2</p>
+                <p className='card-text'>Bachelor of Honors (B.Hons) degree in Software Engineering</p>
+                <p className='score'>IIT</p>
               </div>
 
 
