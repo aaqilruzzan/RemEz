@@ -2,8 +2,7 @@ import express from "express";
 import mongoose from "mongoose";
 import cors from "cors";
 import routes from "./routes/index.js";
-import quizRoutes from './routes/quizRoutes.js';
-
+import quizRoutes from "./routes/quizRoutes.js";
 
 const app = express();
 
@@ -12,6 +11,7 @@ const corsOptions = {
     const allowedOrigins = [
       "http://localhost:3000",
       "https://rem-ez.vercel.app",
+      "https://rem-ez-git-sdgp-20-achievements-ui-f-quills-projects-120d5fc2.vercel.app",
     ];
     if (!origin || allowedOrigins.indexOf(origin) !== -1) {
       callback(null, true); // Origin is allowed
@@ -30,7 +30,7 @@ app.use(express.json());
 // routes
 app.use(routes);
 
-app.use('/quiz', quizRoutes);
+app.use("/quiz", quizRoutes);
 // Database connection function
 async function connectDatabase() {
   const connectionParams = {
