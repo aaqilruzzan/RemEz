@@ -25,7 +25,6 @@ function Home() {
       alert("Please select a file first!");
       return;
     }
-    await setLoading(true);
 
     const formData = new FormData();
     formData.append("file", selectedFile); // 'file' is the field name expected by your backend
@@ -125,7 +124,6 @@ function Home() {
           <button
             className="custom-button2"
             onClick={() => document.getElementById("fileInput").click()}
-            disabled={questionCount === 0 ? true : false}
           >
             Upload PDF
           </button>
