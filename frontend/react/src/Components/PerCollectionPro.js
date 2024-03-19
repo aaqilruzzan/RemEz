@@ -5,6 +5,7 @@ import LinearProgress from "@material-ui/core/LinearProgress";
 import QuestionRow from "./questionRow";
 import axios from "axios";
 import { useLoading } from "../Context/LoadingContext";
+import { jsPDF } from "jspdf";
 
 function PerCollectionPro(props) {
   const [loaded, setLoaded] = useState(false);
@@ -16,6 +17,8 @@ function PerCollectionPro(props) {
   const [averageAccuracy, setAverageAccuracy] = useState(0);
   const [prevTotalActiveTime, setPrevTotalActiveTime] = useState(0);
   const API_URL = process.env.REACT_APP_BACKEND_URL || "http://localhost:8000";
+  const [isHovered, setIsHovered] = useState(false);
+  const [systemAnswers, setSystemAnswers] = useState(false);
   let changeInActiveTimePercentage;
   let changeInActiveTimeClass;
   let changeInActiveTimePercentageNo;
@@ -31,6 +34,7 @@ function PerCollectionPro(props) {
         setAccuracy(response.data.similarityScores);
         setAverageAccuracy(response.data.averageSimilarityScore);
         setPrevTotalActiveTime(response.data.prevTotalActiveTime);
+        setSystemAnswers(response.data.systemAnswers);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -44,6 +48,106 @@ function PerCollectionPro(props) {
   if (loading) {
     return <div>Loading...</div>;
   }
+
+  const handleDownload = async () => {
+    console.log("Initiating download for topic:", props.topic); // Debugging log to confirm function initiation
+
+    // Ensure topic is not empty
+    if (!props.topic) {
+      console.error(
+        "Topic is empty. Please select a valid topic before downloading."
+      );
+      return;
+    }
+
+    try {
+      // Initialize jsPDF
+      const doc = new jsPDF("portrait", "px", "a4");
+      let yOffset = 20; // Start yOffset at 20 to ensure the first line of text is within page margins
+
+      const pageWidth = doc.internal.pageSize.getWidth();
+      const marginLeft = 50;
+      const marginRight = 50;
+      const maxLineWidth = pageWidth - marginLeft - marginRight;
+
+      doc.setTextColor("009FE3");
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(22);
+      doc.text(`Topic : ${props.topic}`, pageWidth / 2, yOffset, {
+        align: "center",
+      });
+      yOffset += 50;
+      doc.setTextColor(0, 0, 0);
+
+      Object.keys(questions).forEach((key) => {
+        const question = questions[key];
+        const answer =
+          userAnswers[key] === undefined
+            ? "No Answer Provided"
+            : userAnswers[key];
+        const modelAnswer = systemAnswers[key] ? systemAnswers[key] : "N/A";
+        const questionAccuracy = accuracy[key]
+          ? `${Math.round(accuracy[key])}%`
+          : "N/A";
+
+        // Split text to ensure it fits within the page width
+        let questionText = doc.splitTextToSize(
+          `Question ${key}: ${question}`,
+          maxLineWidth
+        );
+        let answerText = doc.splitTextToSize(
+          `User Answer: ${answer}`,
+          maxLineWidth
+        );
+        let modelAnswerText = doc.splitTextToSize(
+          `Model Answer: ${modelAnswer}`,
+          maxLineWidth
+        );
+        let accuracyText = doc.splitTextToSize(
+          `Accuracy ${key}: ${questionAccuracy}`,
+          maxLineWidth
+        );
+
+        // Add question text
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(16);
+        questionText.forEach((line) => {
+          doc.text(line, marginLeft, yOffset);
+          yOffset += 20; // Adjust line spacing
+        });
+
+        // Add answer text
+        doc.setFont("helvetica", "normal");
+        doc.setFontSize(12);
+        answerText.forEach((line) => {
+          doc.text(line, marginLeft, yOffset);
+          yOffset += 20; // Adjust line spacing
+        });
+
+        // Add model answer text
+        modelAnswerText.forEach((line) => {
+          doc.text(line, marginLeft, yOffset);
+          yOffset += 20; // Adjust line spacing
+        });
+
+        // Add accuracy text
+        accuracyText.forEach((line) => {
+          doc.text(line, marginLeft, yOffset);
+          yOffset += 40; // Adjust line spacing for the next question
+        });
+
+        // Check if yOffset exceeds page height and add a new page if necessary
+        if (yOffset > 600) {
+          doc.addPage();
+          yOffset = 40;
+        }
+      });
+
+      doc.save(`Questions & Answers - ${props.topic}.pdf`);
+    } catch (error) {
+      console.error("Error fetching data or generating PDF:", error);
+    }
+  };
 
   // Calculating total active time
   const totalActiveTimeMs = Object.values(times).reduce(
@@ -260,6 +364,27 @@ function PerCollectionPro(props) {
                     ))}
                   </tbody>
                 </table>
+                <div className="flex justify-center mt-4">
+                  <button
+                    onClick={handleDownload}
+                    onMouseEnter={() => setIsHovered(true)} // Set hover state to true when mouse enters
+                    onMouseLeave={() => setIsHovered(false)}
+                    style={{
+                      width: "200px", // Set the button width
+                      margin: "15px",
+                      backgroundColor: isHovered ? "#000000" : "#0C7DFF",
+                      color: "white",
+                      borderRadius: "20px", // Rounded corners
+                      padding: "10px 20px", // Top & Bottom, Left & Right padding
+                      fontSize: "16px", // Text size
+                      border: "none", // Remove default border
+                      cursor: "pointer", // Mouse pointer on hover
+                      boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)", // Optional: Adds a subtle shadow
+                    }}
+                  >
+                    Download Q&A
+                  </button>
+                </div>
               </div>
             </div>
           </div>
