@@ -32,14 +32,14 @@ function AboutUs() {
 
 
               <div className='card'>
-                <img alt="Gold" src='gold1.png' className='card-image'></img>
+                <img alt="Gold" src='person4.jpg' className='card-image'></img>
                 <h2 className='card-title'>Aqeel</h2>
                 <p className='card-text'>Bachelor of Honors (B.Hons) degree in Software Engineering</p>
                 <p className='score'>IIT</p>
               </div>
 
               <div className='card'>
-                <img alt="Gold" src="silver.png" className='card-image'></img>
+                <img alt="Gold" src="person5.jpeg" className='card-image'></img>
                 <h2 className='card-title'>Shimar</h2>
                 <p className='card-text'>Bachelor of Honors (B.Hons) degree in Software Engineering</p>
                 <p className='score'>IIT</p>
