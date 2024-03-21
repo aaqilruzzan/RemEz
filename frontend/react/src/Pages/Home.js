@@ -9,7 +9,7 @@ import { useLoading } from "../Context/LoadingContext";
 
 function Home() {
   const [selectedFile, setSelectedFile] = useState(null); // State to hold the selected file
-  const [questionCount, setQuestionCount] = useState(0);
+  const [questionCount, setQuestionCount] = useState("");
   const Navigate = useNavigate();
   const uploadSectionRef = useRef(null);
   const { setQuestions } = useQuestions();
@@ -28,11 +28,13 @@ function Home() {
 
     const formData = new FormData();
     formData.append("file", selectedFile); // 'file' is the field name expected by your backend
+    formData.append("questionNo", questionCount);
 
     try {
       const response = await axios.post(
         "http://localhost:5000/upload",
         formData,
+
         {
           headers: {
             "Content-Type": "multipart/form-data",
@@ -105,19 +107,22 @@ function Home() {
             it's lectures, articles, or study materials, our drag-and-drop
             function makes the process smooth and hassle-free. Take the first
             step toward generating quizzes and exploring knowledge – start by
-            uploading your PDFs now! <br />
-            <br /> Select the number of questions you want to generate:
+            uploading your PDFs now!
           </p>
 
-          <div className="relative w-full lg:max-w-sm ">
+          <div className="relative w-full lg:max-w-sm">
             <select
               className="w-full p-2.5 text-gray-500 bg-white border rounded-md shadow-sm outline-none appearance-none focus:border-indigo-600"
               onChange={handleQuestionCountChange}
               value={questionCount}
             >
-              <option>3</option>
-              <option>5</option>
-              <option>10</option>
+              {/* Conditionally render the default option */}
+              {questionCount === "" && (
+                <option value="">Select Number of Questions</option>
+              )}
+              <option value="3">3</option>
+              <option value="5">5</option>
+              <option value="10">10</option>
             </select>
           </div>
 

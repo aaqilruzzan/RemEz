@@ -61,22 +61,24 @@ function PerCollectionPro(props) {
     }
 
     try {
-      // Initialize jsPDF
       const doc = new jsPDF("portrait", "px", "a4");
-      let yOffset = 20; // Start yOffset at 20 to ensure the first line of text is within page margins
+      let yOffset = 20; // Adjusted initial yOffset
 
       const pageWidth = doc.internal.pageSize.getWidth();
+      const pageHeight = doc.internal.pageSize.getHeight(); // Get page height to better manage page breaks
+      const bottomMargin = 50; // Define a bottom margin
       const marginLeft = 50;
       const marginRight = 50;
       const maxLineWidth = pageWidth - marginLeft - marginRight;
 
       doc.setTextColor("009FE3");
       doc.setFont("helvetica", "bold");
-      doc.setFontSize(22);
+      doc.setFontSize(16);
       doc.text(`Topic : ${props.topic}`, pageWidth / 2, yOffset, {
         align: "center",
       });
-      yOffset += 50;
+      yOffset += 40; // Adjusted space after title
+
       doc.setTextColor(0, 0, 0);
 
       Object.keys(questions).forEach((key) => {
@@ -90,7 +92,6 @@ function PerCollectionPro(props) {
           ? `${Math.round(accuracy[key])}%`
           : "N/A";
 
-        // Split text to ensure it fits within the page width
         let questionText = doc.splitTextToSize(
           `Question ${key}: ${question}`,
           maxLineWidth
@@ -108,44 +109,40 @@ function PerCollectionPro(props) {
           maxLineWidth
         );
 
-        // Add question text
+        // Adjust yOffset checks to include bottomMargin for adequate spacing
+        if (
+          yOffset +
+            questionText.length * 20 +
+            answerText.length * 20 +
+            modelAnswerText.length * 20 +
+            accuracyText.length * 20 +
+            40 >
+          pageHeight - bottomMargin
+        ) {
+          doc.addPage();
+          yOffset = 40; // Reset yOffset for new page
+        }
+
         doc.setFont("helvetica", "bold");
-        doc.setFontSize(16);
+        doc.setFontSize(12);
         questionText.forEach((line) => {
           doc.text(line, marginLeft, yOffset);
-          yOffset += 20; // Adjust line spacing
+          yOffset += 20;
         });
 
-        // Add answer text
         doc.setFont("helvetica", "normal");
         doc.setFontSize(12);
-        answerText.forEach((line) => {
+        answerText.concat(modelAnswerText, accuracyText).forEach((line) => {
           doc.text(line, marginLeft, yOffset);
-          yOffset += 20; // Adjust line spacing
+          yOffset += 20;
         });
 
-        // Add model answer text
-        modelAnswerText.forEach((line) => {
-          doc.text(line, marginLeft, yOffset);
-          yOffset += 20; // Adjust line spacing
-        });
-
-        // Add accuracy text
-        accuracyText.forEach((line) => {
-          doc.text(line, marginLeft, yOffset);
-          yOffset += 40; // Adjust line spacing for the next question
-        });
-
-        // Check if yOffset exceeds page height and add a new page if necessary
-        if (yOffset > 600) {
-          doc.addPage();
-          yOffset = 40;
-        }
+        yOffset += 20; // Additional space before the next question for clarity
       });
 
       doc.save(`Questions & Answers - ${props.topic}.pdf`);
     } catch (error) {
-      console.error("Error fetching data or generating PDF:", error);
+      console.error(error);
     }
   };
 
