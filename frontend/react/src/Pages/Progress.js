@@ -7,7 +7,6 @@ import SelectTopic from "../Components/SelectTopic";
 export default function ProgressTracker() {
   const [progress, setProgress] = useState("");
   const [topics, setTopics] = useState([]);
-  const [selectedTopic, setSelectedTopic] = useState("");
 
   const handleChange = (e) => {
     setProgress(e.target.value);
@@ -30,9 +29,7 @@ export default function ProgressTracker() {
   return (
     <>
       <div className="flex items-center justify-center ">
-      
         <div className="relative w-full lg:max-w-sm m-4">
-        
           <select
             className="w-full p-2.5 text-gray-500 bg-white border rounded-md shadow-sm outline-none appearance-none focus:border-indigo-600"
             onChange={handleChange}
