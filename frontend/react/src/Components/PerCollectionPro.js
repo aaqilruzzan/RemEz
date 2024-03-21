@@ -68,9 +68,9 @@ function PerCollectionPro(props) {
       Object.keys(questions).forEach((key) => {
 
       const pageWidth = doc.internal.pageSize.getWidth();
-      const marginLeft = 50;
-      const marginRight = 50;
-      const maxLineWidth = pageWidth - marginLeft - marginRight;
+      const marginLeft = 10;
+      
+      const maxLineWidth = pageWidth;
       const pageHeight = doc.internal.pageSize.getHeight() - 20; 
   
       doc.setTextColor("009FE3");
@@ -109,7 +109,6 @@ function PerCollectionPro(props) {
         doc.setFont("helvetica", "bold");
         doc.setFontSize(16);
         addTextWithPageBreak(questionText, 20);
-  
         doc.setFont("helvetica", "normal");
         doc.setFontSize(12);
         addTextWithPageBreak(answerText, 20);
