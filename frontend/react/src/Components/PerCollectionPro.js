@@ -174,6 +174,13 @@ function PerCollectionPro(props) {
 
   const noOfAnswers = Object.keys(userAnswers).length;
 
+  const highAccuracyCount = Object.values(accuracy).filter(
+    (acc) => acc >= 70
+  ).length;
+
+  const highAccuracyPercentage =
+    noOfAnswers > 0 ? Math.round((highAccuracyCount / noOfAnswers) * 100) : 0;
+
   return (
     <div class="min-h-screen bg-gray-50/50">
       <div class="p-4 xl:ml-3">
@@ -252,6 +259,26 @@ function PerCollectionPro(props) {
                   <strong class={changeInActiveTimeClass}>
                     {changeInActiveTimePercentage}
                   </strong>
+                </p>
+              </div>
+            </div>
+
+            <div class="relative flex flex-col bg-clip-border rounded-xl bg-white text-gray-700 shadow-md">
+              <div class="bg-clip-border mx-4 rounded-xl overflow-hidden shadow-lg absolute -mt-4 grid h-16 w-16 place-items-center">
+                <img src="idea.png" alt="idea" />
+              </div>
+              <div class="p-4 text-right">
+                <p class="block antialiased font-sans text-sm leading-normal font-normal text-blue-gray-600">
+                  High Accuracy Answers
+                </p>
+                <h4 class="block antialiased tracking-normal font-sans text-2xl font-semibold leading-snug text-blue-gray-900">
+                  {highAccuracyCount}/{noOfAnswers}
+                </h4>
+              </div>
+              <div class="border-t border-blue-gray-50 p-4">
+                <p class="block antialiased font-sans text-base leading-relaxed font-normal text-blue-gray-600 text-center">
+                  <strong>{highAccuracyPercentage}%</strong> of answers with
+                  high accuracy
                 </p>
               </div>
             </div>

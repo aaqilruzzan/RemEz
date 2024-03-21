@@ -26,6 +26,7 @@ function Home() {
       return;
     }
 
+    await setLoading(true);
     const formData = new FormData();
     formData.append("file", selectedFile); // 'file' is the field name expected by your backend
     formData.append("questionNo", questionCount);

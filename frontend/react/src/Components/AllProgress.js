@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { CircularProgressbar } from "react-circular-progressbar";
 import {
   Chart,
   CategoryScale,
@@ -61,6 +60,14 @@ const AllProgress = () => {
   const seconds = Math.round(averageAnswerTimeSeconds % 60); // Using Math.round to round to the nearest second
   // Format the result as a string "minutes:seconds"
   const formattedAverageTime = `${minutes}m ${seconds}s`;
+
+  const averageTimePerRoundSeconds = totalActiveTime / totalrounds;
+  // Converting average time per round into minutes and seconds
+  const minutesPerRound = Math.floor(averageTimePerRoundSeconds / 60);
+  const secondsPerRound = Math.round(averageTimePerRoundSeconds % 60); // Using Math.round to round to the nearest second
+  // Format the result as a string "Xm Ys"
+  const formattedAverageTimePerRound = `${minutesPerRound}m ${secondsPerRound}s`;
+
   // Static data for the bar chart
   const data = {
     labels: topics,
@@ -182,19 +189,19 @@ const AllProgress = () => {
           </div>
           <div class="relative flex flex-col bg-clip-border rounded-xl bg-white text-gray-700 shadow-md">
             <div class="bg-clip-border mx-4 rounded-xl overflow-hidden shadow-lg absolute -mt-4 grid h-16 w-16 place-items-center">
-              <img src="idea.png" alt="idea" />
+              <img src="time2.png" alt="time2" />
             </div>
             <div class="p-4 text-right">
               <p class="block antialiased font-sans text-sm leading-normal font-normal text-blue-gray-600">
-                Rounds Completed
+                Average Time Per Round
               </p>
               <h4 class="block antialiased tracking-normal font-sans text-2xl font-semibold leading-snug text-blue-gray-900">
-                3/5
+                {formattedAverageTimePerRound}
               </h4>
             </div>
             <div class="border-t border-blue-gray-50 p-4">
               <p class="block antialiased font-sans text-base leading-relaxed font-normal text-blue-gray-600 text-center">
-                <strong class="text-green-500">60%</strong>&nbsp;completion rate
+                Total Rounds: <strong>{totalrounds}</strong>
               </p>
             </div>
           </div>
