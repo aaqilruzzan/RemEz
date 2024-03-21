@@ -3,9 +3,19 @@ import mongoose from "mongoose";
 import cors from "cors";
 import routes from "./routes/index.js";
 import routes from "./routes/user.js";
+const workoutRoutes = require('./routes/workouts');
+const userRoutes = require('./routes/user');
 
 
 const app = express();
+
+// middleware
+app.use(express.json())
+
+app.use((req, res, next) => {
+  console.log(req.path, req.method)
+  next()
+})
 
 const corsOptions = {
   origin: function (origin, callback) {
@@ -28,6 +38,8 @@ app.options("*", cors());
 app.use(express.json());
 
 // routes
+app.use('/api/workouts', workoutRoutes);
+app.use('/api/user', userRoutes);
 app.use(routes);
 app.use('/api/user', userRouts);
 // Database connection function
