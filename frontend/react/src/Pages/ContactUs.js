@@ -1,10 +1,8 @@
 import React from 'react'
 
-function ContactUs() {
+const ContactUs = () => {
   return (
-    <div style={{textAlign:'center', paddingTop:"300px"}}>
-      ContactUs
-    </div>
+    <div></div>
   )
 }
 

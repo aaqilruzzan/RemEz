@@ -1,0 +1,115 @@
+.reminder-container {
+    display: flex;
+    flex-direction: column;
+    max-width: 500px;
+    margin: 40px auto;
+    background-color: #f8f9fa;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    box-sizing: border-box;
+    border: 1px solid #000;
+}
+
+.reminder-header {
+    color: #333;
+    margin-bottom: 2rem;
+    font-size: 2.5rem;
+    text-align: center;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+.reminder-input, form {
+    display: flex;
+    flex-direction: column;
+}
+
+.reminder-input label, .reminder-input input, button {
+    margin: 10px 0;
+}
+
+.reminder-input input, button {
+    padding: 8px;
+    border: 1px solid #b6d4fe;
+}
+
+
+
+.schedule-reminder-button {
+    background-color: #007bff;
+    color: white;
+}
+
+.schedule-reminder-button:hover {
+    background-color: #0056b3;
+}
+
+.delete-reminder-button {
+    background-color: #007bff;
+    color: white;
+}
+
+.delete-reminder-button:hover {
+    background-color: #0056b3;
+}
+
+.reminder-reminder-table {
+    width: 100%;
+    margin-top: 20px;
+    border-collapse: collapse;
+    table-layout: fixed;
+}
+
+.reminder-reminder-table th, .reminder-reminder-table td {
+    padding: 10px;
+    background-color: #e9ecef;
+    border: 1px solid #dee2e6;
+    text-align: left;
+    word-wrap: break-word;
+}
+
+.reminder-reminder-table td {
+    max-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.reminder-reminder-table td:hover {
+    white-space: normal;
+    overflow: visible;
+    cursor: pointer;
+}
+
+@media (max-width: 768px) {
+    .reminder-container {
+        width: 90%;
+        padding: 15px;
+    }
+
+    .reminder-input label, .reminder-input input, button {
+        margin: 5px 0;
+    }
+
+    .reminder-reminder-table th, .reminder-reminder-table td {
+        padding: 5px;
+    }
+
+    .reminder-reminder-table-container {
+        overflow-x: auto;
+    }
+}
+
+@media (max-width: 480px) {
+    .reminder-header .reminder-text {
+        font-size: 18px;
+    }
+
+    .reminder-input input, button {
+        padding: 10px;
+    }
+
+    .reminder-reminder-table th, .reminder-reminder-table td {
+        padding: 8px;
+    }
+};
