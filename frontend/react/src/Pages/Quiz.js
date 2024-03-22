@@ -28,6 +28,8 @@ function Quiz() {
   const { loading, setLoading } = useLoading();
 
   const API_URL = process.env.REACT_APP_BACKEND_URL || "http://localhost:8000";
+  const FLASK_API_URL =
+    process.env.REACT_APP_FLASK_URL || "http://localhost:5000";
 
   const toggleModal = () => {
     setModal(!modal);
@@ -153,7 +155,7 @@ function Quiz() {
 
     try {
       const response = await axios.post(
-        "http://localhost:5000/calculatesimilarity",
+        `${FLASK_API_URL}/calculatesimilarity`,
         {
           userAnswer: answerValue,
           modelAnswer: answers[questionId],

@@ -12,6 +12,7 @@ const corsOptions = {
       "http://localhost:3000",
       "https://rem-ez.vercel.app",
       "https://rem-ez-git-sdgp-20-achievements-ui-f-quills-projects-120d5fc2.vercel.app",
+      "https://rem-ez-git-sdgp-22-notes-and-re-9e0baf-quills-projects-120d5fc2.vercel.app",
     ];
     if (!origin || allowedOrigins.indexOf(origin) !== -1) {
       callback(null, true); // Origin is allowed
