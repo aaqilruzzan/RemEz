@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useAnswers } from "../Context/AnswersContext";
+import { useEffect } from "react";
 
 const Question = (props) => {
   const [answerSubmitted, setAnswerSubmitted] = useState(false);
@@ -7,8 +8,17 @@ const Question = (props) => {
 
   const handleAnswerSubmit = async (id) => {
     await props.handleAnswerSubmit(id);
-    setAnswerSubmitted(true);
   };
+
+  useEffect(() => {
+    console.log(
+      `Similarity Score for question ${props.id}:`,
+      props.similarityScore
+    );
+    if (props.similarityScore == 0 || props.similarityScore > 0) {
+      setAnswerSubmitted(true);
+    }
+  }, [props.similarityScore]);
 
   return (
     <>

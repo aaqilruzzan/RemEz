@@ -19,6 +19,8 @@ function Home() {
   const handleFileChange = (event) => {
     setSelectedFile(event.target.files[0]); // Update the state with the selected file
   };
+  const FLASK_API_URL =
+    process.env.REACT_APP_FLASK_URL || "http://localhost:5000";
 
   const uploadFile = async () => {
     if (!selectedFile) {
@@ -26,13 +28,14 @@ function Home() {
       return;
     }
 
+    await setLoading(true);
     const formData = new FormData();
     formData.append("file", selectedFile); // 'file' is the field name expected by your backend
     formData.append("questionNo", questionCount);
 
     try {
       const response = await axios.post(
-        "http://localhost:5000/upload",
+        `${FLASK_API_URL}/upload`,
         formData,
 
         {

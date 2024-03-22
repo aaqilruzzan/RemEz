@@ -15,6 +15,7 @@ import { faPenToSquare, faBell } from '@fortawesome/free-solid-svg-icons'
 import { useNavigate } from "react-router-dom";
 
 import { useUpload } from "../Context/PdfUploadContext";
+import { useLoading } from "../Context/LoadingContext";
 import NoPdf from "../Components/NoPdf";
 
 function Quiz() {
@@ -28,7 +29,11 @@ function Quiz() {
   const [userAnswers, setUserAnswers] = useState({});
   const [similarityScore, setSimilarityScore] = useState({});
   const { uploadedPdf } = useUpload();
+  const { loading, setLoading } = useLoading();
+
   const API_URL = process.env.REACT_APP_BACKEND_URL || "http://localhost:8000";
+  const FLASK_API_URL =
+    process.env.REACT_APP_FLASK_URL || "http://localhost:5000";
 
   const navigate = useNavigate();
 
@@ -118,6 +123,7 @@ function Quiz() {
 
     const noOfAnswers = Object.keys(userAnswers).length;
 
+    await setLoading(true);
     try {
       const response = await axios.post(`${API_URL}/savesubject`, {
         name: topic,
@@ -131,6 +137,7 @@ function Quiz() {
         totalActiveTime: totalActiveTimeSecs,
         noOfAnswers: noOfAnswers,
       });
+      setLoading(false);
       if (response.status == 201) {
         alert("Quiz submitted successfully!");
       }
@@ -139,6 +146,10 @@ function Quiz() {
       alert("Error saving subject!");
     }
   };
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
   const handleAnswerSubmit = async (questionId) => {
     const answerElement = document.getElementById(questionId);
@@ -151,93 +162,26 @@ function Quiz() {
 
     try {
       const response = await axios.post(
-        "http://localhost:5000/calculatesimilarity",
+        `${FLASK_API_URL}/calculatesimilarity`,
         {
           userAnswer: answerValue,
           modelAnswer: answers[questionId],
         }
       );
       var similarityScore = response.data.similarityScore;
+
+      // Saving the answer in the answers state object
+      setUserAnswers((prevAnswers) => ({
+        ...prevAnswers,
+        [questionId]: answerValue,
+      }));
+
+      setSimilarityScore((prevsimilarityScore) => ({
+        ...prevsimilarityScore,
+        [questionId]: similarityScore,
+      }));
     } catch (error) {
-      console.error("Error calculating similarity:", error);
-      alert("Error calculating similarity!");
-    }
-
-    // Saving the answer in the answers state object
-    setUserAnswers((prevAnswers) => ({
-      ...prevAnswers,
-      [questionId]: answerValue,
-    }));
-
-    setSimilarityScore((prevsimilarityScore) => ({
-      ...prevsimilarityScore,
-      [questionId]: similarityScore,
-    }));
-  };
-
-  const handleDownload = async () => {
-    console.log("Initiating download for topic:", topic); // Debugging log to confirm function initiation
-
-    // Ensure topic is not empty
-    if (!topic) {
-      console.error(
-        "Topic is empty. Please select a valid topic before downloading."
-      );
-      return;
-    }
-
-    try {
-      // Fetching questions and answers for the specified topic
-      const response = await fetch(
-        `http://localhost:8000/quiz/qa/${encodeURIComponent(topic)}`
-      );
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      }
-
-      const data = await response.json();
-      console.log("Data received from server:", data);
-
-      // Initialize jsPDF
-      const doc = new jsPDF("landscape", "px", "a4");
-      let yOffset = 20; // Start yOffset at 20 to ensure the first line of text is within page margins
-
-      // Iterating over each item (topic) in the fetched data
-
-      // Set font size for topic title and add topic title text
-      doc.setFontSize(16);
-      doc.text(20, yOffset, `Topic : ${topic}`);
-      yOffset += 30; // Increase yOffset for spacing before questions
-
-      // Iterating over each question and corresponding user answer within the item
-      // Assuming data[0].questions is an object where each key is a question identifier
-      Object.keys(data[0].questions).forEach((key) => {
-        // Get the question text using the key
-        const question = data[0].questions[key];
-
-        // Set font size for questions and add question text
-        doc.setFontSize(12);
-        doc.text(20, yOffset, `Question ${key}: ${question}`);
-        yOffset += 20; // Increase yOffset for spacing before user answer
-
-        // Add user answer text
-        // Assuming you have an equivalent structure for userAnswers
-        // doc.text(20, yOffset, `User Answer: ${data[0].userAnswers[key]}`);
-        // yOffset += 40; // Increase yOffset for spacing before next question or topic
-
-        // Check if yOffset exceeds page height and add a new page if necessary
-        if (yOffset > 800) {
-          // Assuming 800 as approximate max height for landscape A4
-          doc.addPage();
-          yOffset = 20; // Reset yOffset for the new page
-        }
-      });
-
-      // Save the PDF with a filename based on the topic
-      doc.save(`Questions & Answers - ${topic}.pdf`);
-    } catch (error) {
-      console.error("Error fetching data or generating PDF:", error);
+      alert("Error calculating similarity! Try again.");
     }
   };
 
@@ -310,6 +254,13 @@ function Quiz() {
                   question={questions[key]}
                   id={key}
                   handleAnswerSubmit={handleAnswerSubmit}
+                  similarityScore={
+                    similarityScore[key] == 0
+                      ? 0
+                      : similarityScore[key] > 0
+                      ? similarityScore[key]
+                      : -1
+                  }
                   number={parseInt(key, 10)}
                 />
 

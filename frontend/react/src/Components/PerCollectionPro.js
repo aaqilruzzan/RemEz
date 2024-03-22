@@ -175,14 +175,16 @@ function PerCollectionPro(props) {
 
   const noOfAnswers = Object.keys(userAnswers).length;
 
-  
-
   const handleDelete = async () => {
-    if (window.confirm("Are you sure you want to delete this topic and all associated data?")) {
+    if (
+      window.confirm(
+        "Are you sure you want to delete this topic and all associated data?"
+      )
+    ) {
       try {
         await axios.delete(`${API_URL}/deletetopic/${props.topic}`);
         alert("Topic deleted successfully");
-        
+
         window.location.reload();
       } catch (error) {
         console.error("Error deleting the topic:", error);
@@ -190,6 +192,13 @@ function PerCollectionPro(props) {
       }
     }
   };
+
+  const highAccuracyCount = Object.values(accuracy).filter(
+    (acc) => acc >= 70
+  ).length;
+
+  const highAccuracyPercentage =
+    noOfAnswers > 0 ? Math.round((highAccuracyCount / noOfAnswers) * 100) : 0;
 
   return (
     <div class="min-h-screen bg-gray-50/50">
@@ -201,12 +210,16 @@ function PerCollectionPro(props) {
                 <ol class="flex flex-wrap items-center w-full bg-opacity-60 rounded-md bg-transparent p-0 transition-all">
                   <li class="flex items-center text-blue-gray-900 antialiased font-sans text-sm font-normal leading-normal cursor-pointer transition-colors duration-300 hover:text-light-blue-500">
                     <a href="#">
-                    <p class="flex items-center antialiased font-sans text-lg leading-normal text-blue-900 font-normal opacity-50 transition-all hover:text-blue-500 hover:opacity-100">
-                      dashboard<span class="mr-2"></span><FaTrashAlt size={24} onClick={handleDelete} className="ml-2 cursor-pointer" title="Delete topic" />
-                    </p>
-                      
+                      <p class="flex items-center antialiased font-sans text-lg leading-normal text-blue-900 font-normal opacity-50 transition-all hover:text-blue-500 hover:opacity-100">
+                        dashboard<span class="mr-2"></span>
+                        <FaTrashAlt
+                          size={24}
+                          onClick={handleDelete}
+                          className="ml-2 cursor-pointer"
+                          title="Delete topic"
+                        />
+                      </p>
                     </a>
-                    
                   </li>
                 </ol>
               </nav>
@@ -271,6 +284,26 @@ function PerCollectionPro(props) {
                   <strong class={changeInActiveTimeClass}>
                     {changeInActiveTimePercentage}
                   </strong>
+                </p>
+              </div>
+            </div>
+
+            <div class="relative flex flex-col bg-clip-border rounded-xl bg-white text-gray-700 shadow-md">
+              <div class="bg-clip-border mx-4 rounded-xl overflow-hidden shadow-lg absolute -mt-4 grid h-16 w-16 place-items-center">
+                <img src="idea.png" alt="idea" />
+              </div>
+              <div class="p-4 text-right">
+                <p class="block antialiased font-sans text-sm leading-normal font-normal text-blue-gray-600">
+                  High Accuracy Answers
+                </p>
+                <h4 class="block antialiased tracking-normal font-sans text-2xl font-semibold leading-snug text-blue-gray-900">
+                  {highAccuracyCount}/{noOfAnswers}
+                </h4>
+              </div>
+              <div class="border-t border-blue-gray-50 p-4">
+                <p class="block antialiased font-sans text-base leading-relaxed font-normal text-blue-gray-600 text-center">
+                  <strong>{highAccuracyPercentage}%</strong> of answers with
+                  high accuracy
                 </p>
               </div>
             </div>

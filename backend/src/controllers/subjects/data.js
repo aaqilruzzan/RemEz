@@ -90,7 +90,6 @@ const getQuestionsAnswers = async (req, res) => {
 const getData = async (req, res) => {
   const { name } = req.params;
   try {
-    // First, find the target document based on the name
     const targetDocument = await subject.findOne({ name: name });
 
     if (!targetDocument) {
@@ -98,23 +97,19 @@ const getData = async (req, res) => {
       return;
     }
 
-    // Use aggregation to find the previous document based on the createdAt timestamp
-    // assuming 'createdAt' is the field you're using to determine order
     const prevDocument = await subject.aggregate([
-      { $match: { createdAt: { $lt: targetDocument.createdAt } } }, // Find documents created before the target document
-      { $sort: { createdAt: -1 } }, // Sort them by createdAt in descending order
-      { $limit: 1 }, // Get only the most recent one (i.e., the immediate previous)
-      { $project: { totalActiveTime: 1 } }, // Project only the totalActiveTime field
+      { $match: { createdAt: { $lt: targetDocument.createdAt } } },
+      { $sort: { createdAt: -1 } },
+      { $limit: 1 },
+      { $project: { totalActiveTime: 1 } },
     ]);
 
-    // Assuming there might not always be a previous document
     const prevTotalActiveTime =
       prevDocument.length > 0 ? prevDocument[0].totalActiveTime : null;
 
-    // Respond with the target document and the totalActiveTime of the previous document
     res.status(200).json({
-      ...targetDocument.toJSON(), // Convert the Mongoose document to a plain object
-      prevTotalActiveTime: prevTotalActiveTime, // Include the previous document's totalActiveTime
+      ...targetDocument.toJSON(),
+      prevTotalActiveTime: prevTotalActiveTime,
     });
   } catch (error) {
     res.status(404).json({ message: error.message });
@@ -123,25 +118,25 @@ const getData = async (req, res) => {
 
 const getAllProgressData = async (req, res) => {
   try {
-    // Start an aggregation pipeline
+    // Starting an aggregation pipeline
     const aggregatePipeline = [
       {
         $project: {
-          _id: 0, // Exclude the _id field
-          name: 1, // Include the name field
-          averageSimilarityScore: 1, // Include the averageSimilarityScore field
-          completedRound: 1, // Include the completedRound field for conditional counting
-          totalActiveTime: 1, // Include the totalActiveTime field
-          noOfAnswers: 1, // Include the noOfAnswers field
+          _id: 0, // Excluding the _id field
+          name: 1, // Including the name field
+          averageSimilarityScore: 1,
+          completedRound: 1,
+          totalActiveTime: 1,
+          noOfAnswers: 1,
         },
       },
       {
         $group: {
-          _id: null, // Group by null to aggregate over the entire collection
-          names: { $push: "$name" }, // Collect all names into an array
-          averageSimilarityScores: { $push: "$averageSimilarityScore" }, // Collect all averageSimilarityScores into an array
-          totalActiveTime: { $sum: "$totalActiveTime" }, // Sum all totalActiveTime values
-          noOfAnswers: { $sum: "$noOfAnswers" }, // Sum all noOfAnswers values
+          _id: null, // Grouping by null to aggregate over the entire collection
+          names: { $push: "$name" }, // Collecting all names into an array
+          averageSimilarityScores: { $push: "$averageSimilarityScore" }, // Collecting all averageSimilarityScores into an array
+          totalActiveTime: { $sum: "$totalActiveTime" }, // Summing all totalActiveTime values
+          noOfAnswers: { $sum: "$noOfAnswers" }, // Sum of all noOfAnswers values
           completedRounds: {
             // Count documents where completedRound is true
             $sum: {
