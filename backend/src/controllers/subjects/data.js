@@ -173,6 +173,26 @@ const getAllProgressData = async (req, res) => {
   }
 };
 
+
+
+const deleteTopic = async (req, res) => {
+  const topicName = req.params.name;
+  try {
+    // Ensure you correctly reference deletion across models if needed
+    // The following assumes everything is stored under the `subject` model. 
+    // If you have separate models, you need separate delete statements for each.
+    const deletionResult = await subject.deleteOne({ name: topicName });
+    if (deletionResult.deletedCount === 0) {
+      return res.status(404).json({ message: "Topic not found" });
+    }
+    res.status(200).json({ message: "Topic and all associated data deleted successfully." });
+  } catch (error) {
+    console.error("Failed to delete topic and associated data:", error);
+    res.status(500).json({ message: "Error deleting the topic and associated data." });
+  }
+};
+
+// Correctly export all functions
 export {
   saveData,
   getNames,
@@ -180,4 +200,5 @@ export {
   getQuestionsAnswers,
   getData,
   getAllProgressData,
+  deleteTopic,
 };

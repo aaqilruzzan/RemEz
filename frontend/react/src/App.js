@@ -10,11 +10,13 @@ import SignIn from "./Pages/SignIn";
 import Signup from "./Pages/Signup";
 import Progress from "./Pages/Progress";
 import Quiz from "./Pages/Quiz";
+import NotesPage from "./Pages/NotePage";
+import RemindersPage from "./Pages/ReminderPage";
+import { AnswersProvider } from "./Context/AnswersContext";
+import { QuestionsProvider } from "./Context/QuestionsContext";
 import Footer from "./Components/Footer";
 import WelcomeVideo from "./Components/WelcomeVideo";
 import MouseIcon from "./Components/MouseIcon";
-import { QuestionsProvider } from "./Context/QuestionsContext";
-import { AnswersProvider } from "./Context/AnswersContext";
 import { UploadProvider } from "./Context/PdfUploadContext";
 import { useLoading } from "./Context/LoadingContext";
 
@@ -39,6 +41,8 @@ function App() {
               <Route exact path="about-us" element={<AboutUs />} />
               <Route exact path="signin" element={<SignIn />} />
               <Route exact path="signup" element={<Signup />} />
+              <Route path="notes" element={<NotesPage />} />
+              <Route path="reminders" element={<RemindersPage />} />
             </Routes>
             <Footer />
           </UploadProvider>

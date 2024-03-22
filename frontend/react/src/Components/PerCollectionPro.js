@@ -6,6 +6,7 @@ import QuestionRow from "./questionRow";
 import axios from "axios";
 import { useLoading } from "../Context/LoadingContext";
 import { jsPDF } from "jspdf";
+import { FaTrashAlt } from "react-icons/fa";
 
 function PerCollectionPro(props) {
   const [loaded, setLoaded] = useState(false);
@@ -142,7 +143,7 @@ function PerCollectionPro(props) {
 
       doc.save(`Questions & Answers - ${props.topic}.pdf`);
     } catch (error) {
-      console.error(error);
+      console.error("Error generating PDF:", error);
     }
   };
 
@@ -174,6 +175,24 @@ function PerCollectionPro(props) {
 
   const noOfAnswers = Object.keys(userAnswers).length;
 
+  const handleDelete = async () => {
+    if (
+      window.confirm(
+        "Are you sure you want to delete this topic and all associated data?"
+      )
+    ) {
+      try {
+        await axios.delete(`${API_URL}/deletetopic/${props.topic}`);
+        alert("Topic deleted successfully");
+
+        window.location.reload();
+      } catch (error) {
+        console.error("Error deleting the topic:", error);
+        alert("Failed to delete the topic");
+      }
+    }
+  };
+
   const highAccuracyCount = Object.values(accuracy).filter(
     (acc) => acc >= 70
   ).length;
@@ -191,8 +210,14 @@ function PerCollectionPro(props) {
                 <ol class="flex flex-wrap items-center w-full bg-opacity-60 rounded-md bg-transparent p-0 transition-all">
                   <li class="flex items-center text-blue-gray-900 antialiased font-sans text-sm font-normal leading-normal cursor-pointer transition-colors duration-300 hover:text-light-blue-500">
                     <a href="#">
-                      <p class="block antialiased font-sans text-sm leading-normal text-blue-900 font-normal opacity-50 transition-all hover:text-blue-500 hover:opacity-100">
-                        dashboard
+                      <p class="flex items-center antialiased font-sans text-lg leading-normal text-blue-900 font-normal opacity-50 transition-all hover:text-blue-500 hover:opacity-100">
+                        dashboard<span class="mr-2"></span>
+                        <FaTrashAlt
+                          size={24}
+                          onClick={handleDelete}
+                          className="ml-2 cursor-pointer"
+                          title="Delete topic"
+                        />
                       </p>
                     </a>
                   </li>

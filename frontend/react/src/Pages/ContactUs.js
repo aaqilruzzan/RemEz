@@ -1,6 +1,6 @@
 import React from "react";
 
-function ContactUs() {
+const ContactUs = () => {
   return (
     <section class="bg-white ">
       <div class="py-8 lg:py-16 px-4 mx-auto max-w-screen-md">
@@ -66,6 +66,6 @@ function ContactUs() {
       </div>
     </section>
   );
-}
+};
 
 export default ContactUs;

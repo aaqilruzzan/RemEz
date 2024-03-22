@@ -10,6 +10,10 @@ import axios from "axios";
 import { jsPDF } from "jspdf";
 import { useQuestions } from "../Context/QuestionsContext";
 import { useAnswers } from "../Context/AnswersContext";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPenToSquare, faBell } from '@fortawesome/free-solid-svg-icons'
+import { useNavigate } from "react-router-dom";
+
 import { useUpload } from "../Context/PdfUploadContext";
 import { useLoading } from "../Context/LoadingContext";
 import NoPdf from "../Components/NoPdf";
@@ -30,6 +34,9 @@ function Quiz() {
   const API_URL = process.env.REACT_APP_BACKEND_URL || "http://localhost:8000";
   const FLASK_API_URL =
     process.env.REACT_APP_FLASK_URL || "http://localhost:5000";
+
+  const navigate = useNavigate();
+
 
   const toggleModal = () => {
     setModal(!modal);
@@ -180,6 +187,10 @@ function Quiz() {
 
   return (
     <>
+      <div className="fixed top-[60px] right-4 z-50 flex gap-4 p-2 bg-gray-100 rounded-lg shadow-md">
+        <FontAwesomeIcon icon={faPenToSquare} className="cursor-pointer text-lg text-gray-700 hover:text-blue-500" onClick={() => navigate("/notes")} />
+        <FontAwesomeIcon icon={faBell} className="cursor-pointer text-lg text-gray-700 hover:text-blue-500" onClick={() => navigate("/reminders")} />
+      </div>
       {!uploadedPdf && <NoPdf />}
       {showModal ? (
         <>
