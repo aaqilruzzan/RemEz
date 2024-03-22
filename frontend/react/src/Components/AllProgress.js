@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 import { CircularProgressbar } from "react-circular-progressbar";
 import {
   Chart,
@@ -10,23 +11,63 @@ import {
   Legend,
 } from "chart.js";
 import { Bar } from "react-chartjs-2";
+import { useLoading } from "../Context/LoadingContext";
 
 Chart.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
 const AllProgress = () => {
+  const [topics, setTopics] = useState([]);
+  const API_URL = process.env.REACT_APP_BACKEND_URL || "http://localhost:8000";
+  const [loaded, setLoaded] = useState(false);
+  const [averageSimilarityScores, setAverageSimilarityScores] = useState([]);
+  const [completedRounds, setCompletedRounds] = useState(0);
+  const [totalAnswerCount, setTotalAnswerCount] = useState(0);
+  const [totalActiveTime, setTotalActiveTime] = useState(0);
+  const { loading, setLoading } = useLoading();
+
+  useEffect(() => {
+    const fetchAllProgressData = async () => {
+      setLoading(true);
+      try {
+        const response = await axios.get(`${API_URL}/getallprogressdata`);
+        setTopics(response.data.names);
+        setAverageSimilarityScores(response.data.averageSimilarityScores);
+        setCompletedRounds(response.data.completedRounds);
+        setTotalAnswerCount(response.data.noOfAnswers);
+        setTotalActiveTime(response.data.totalActiveTime);
+        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching topics:", error);
+      }
+    };
+
+    fetchAllProgressData();
+  }, []);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  const totalrounds = topics.length;
+
+  const completionRate = (completedRounds / totalrounds) * 100;
+
+  const completionTailwindClass =
+    completionRate > 50 ? "text-green-500" : "text-red-500";
+
+  const averageAnswerTimeSeconds = totalActiveTime / totalAnswerCount;
+  // Converting average time into minutes and seconds
+  const minutes = Math.floor(averageAnswerTimeSeconds / 60);
+  const seconds = Math.round(averageAnswerTimeSeconds % 60); // Using Math.round to round to the nearest second
+  // Format the result as a string "minutes:seconds"
+  const formattedAverageTime = `${minutes}m ${seconds}s`;
   // Static data for the bar chart
   const data = {
-    labels: ["History", "Economics", "Medicine", "Maths", "Science"],
+    labels: topics,
     datasets: [
       {
         label: "Marks",
-        data: [
-          Math.floor(Math.random() * 100),
-          Math.floor(Math.random() * 100),
-          Math.floor(Math.random() * 100),
-          Math.floor(Math.random() * 100),
-          Math.floor(Math.random() * 100),
-        ], // Random marks for each subject
+        data: averageSimilarityScores,
         backgroundColor: [
           "rgba(255, 99, 132, 0.6)",
           "rgba(54, 162, 235, 0.6)",
@@ -68,11 +109,10 @@ const AllProgress = () => {
   };
   // A simple function to determine the grade based on the mark
   const getGrade = (mark) => {
-    if (mark >= 90) return "A";
-    if (mark >= 80) return "B";
-    if (mark >= 70) return "C";
-    if (mark >= 60) return "D";
-    return "F";
+    if (mark >= 75) return "A";
+    if (mark >= 65) return "B";
+    if (mark >= 50) return "C";
+    return "D";
   };
 
   //  a plugin to draw the text on the chart
@@ -99,9 +139,51 @@ const AllProgress = () => {
 
   return (
     <>
-      <div class="mt-12 ml-10">
+      <div class="mt-12 ml-3">
         <div class="mb-12 grid gap-y-10 gap-x-6 md:grid-cols-2 xl:grid-cols-4">
           <div class="relative flex flex-col bg-clip-border rounded-xl bg-white text-gray-700 shadow-md">
+            <div class="bg-clip-border mx-4 rounded-xl overflow-hidden shadow-lg absolute -mt-4 grid h-16 w-16 place-items-center">
+              <img src="book.png" alt="book" />
+            </div>
+            <div class="p-4 text-right">
+              <p class="block antialiased font-sans text-sm leading-normal font-normal text-blue-gray-600">
+                Rounds Completed
+              </p>
+              <h4 class="block antialiased tracking-normal font-sans text-2xl font-semibold leading-snug text-blue-gray-900">
+                {`${completedRounds}/${totalrounds}`}
+              </h4>
+            </div>
+            <div class="border-t border-blue-gray-50 p-4">
+              <p class="block antialiased font-sans text-base leading-relaxed font-normal text-blue-gray-600 text-center">
+                <strong
+                  class={completionTailwindClass}
+                >{`${completionRate} %`}</strong>
+                &nbsp;completion rate
+              </p>
+            </div>
+          </div>
+          <div class="relative flex flex-col bg-clip-border rounded-xl bg-white text-gray-700 shadow-md">
+            <div class="bg-clip-border mx-4 rounded-xl overflow-hidden shadow-lg absolute -mt-4 grid h-16 w-16 place-items-center">
+              <img src="time.png" alt="time" />
+            </div>
+            <div class="p-4 text-right">
+              <p class="block antialiased font-sans text-sm leading-normal font-normal text-blue-gray-600">
+                Average answer time per <br></br>question
+              </p>
+              <h4 class="block antialiased tracking-normal font-sans text-2xl font-semibold leading-snug text-blue-gray-900">
+                {formattedAverageTime}
+              </h4>
+            </div>
+            <div class="border-t border-blue-gray-50 p-4">
+              <p class="block antialiased font-sans text-base leading-relaxed font-normal text-blue-gray-600 text-center">
+                Total answers provided: <strong>{totalAnswerCount}</strong>
+              </p>
+            </div>
+          </div>
+          <div class="relative flex flex-col bg-clip-border rounded-xl bg-white text-gray-700 shadow-md">
+            <div class="bg-clip-border mx-4 rounded-xl overflow-hidden shadow-lg absolute -mt-4 grid h-16 w-16 place-items-center">
+              <img src="idea.png" alt="idea" />
+            </div>
             <div class="p-4 text-right">
               <p class="block antialiased font-sans text-sm leading-normal font-normal text-blue-gray-600">
                 Rounds Completed
@@ -116,34 +198,10 @@ const AllProgress = () => {
               </p>
             </div>
           </div>
-          <div class="relative flex flex-col bg-clip-border rounded-xl bg-white text-gray-700 shadow-md">
-            <div class="p-4 text-right">
-              <p class="block antialiased font-sans text-sm leading-normal font-normal text-blue-gray-600">
-                Average answer time per question
-              </p>
-              <h4 class="block antialiased tracking-normal font-sans text-2xl font-semibold leading-snug text-blue-gray-900">
-                23m 45s
-              </h4>
-            </div>
-            <div class="border-t border-blue-gray-50 p-4">
-              <p class="block antialiased font-sans text-base leading-relaxed font-normal text-blue-gray-600">
-                <strong class="text-green-500">+3%</strong>&nbsp;than the
-                previous round
-              </p>
-            </div>
-          </div>
 
           <div class="relative flex flex-col bg-clip-border rounded-xl bg-white text-gray-700 shadow-md">
-            <div class="bg-clip-border mx-4 rounded-xl overflow-hidden bg-gradient-to-tr from-orange-600 to-orange-400 text-white shadow-orange-500/40 shadow-lg absolute -mt-4 grid h-16 w-16 place-items-center">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-                fill="currentColor"
-                aria-hidden="true"
-                class="w-6 h-6 text-white"
-              >
-                <path d="M18.375 2.25c-1.035 0-1.875.84-1.875 1.875v15.75c0 1.035.84 1.875 1.875 1.875h.75c1.035 0 1.875-.84 1.875-1.875V4.125c0-1.036-.84-1.875-1.875-1.875h-.75zM9.75 8.625c0-1.036.84-1.875 1.875-1.875h.75c1.036 0 1.875.84 1.875 1.875v11.25c0 1.035-.84 1.875-1.875 1.875h-.75a1.875 1.875 0 01-1.875-1.875V8.625zM3 13.125c0-1.036.84-1.875 1.875-1.875h.75c1.036 0 1.875.84 1.875 1.875v6.75c0 1.035-.84 1.875-1.875 1.875h-.75A1.875 1.875 0 013 19.875v-6.75z"></path>
-              </svg>
+            <div class="bg-clip-border mx-4 rounded-xl overflow-hidden shadow-lg absolute -mt-4 grid h-16 w-16 place-items-center">
+              <img src="trophy.png" alt="trophy" />
             </div>
             <div class="p-4 text-right">
               <p class="block antialiased font-sans text-sm leading-normal font-normal text-blue-gray-600">

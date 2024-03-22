@@ -1,30 +1,33 @@
 import "./Home.css";
+import React from "react";
 import { useEffect, useState } from "react";
+import Achievements from "./Achievements";
+import "./Achievements.css";
 import Question from "../Components/Question";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import SpeedIcon from "@mui/icons-material/Speed";
 import axios from "axios";
-import React from "react";
+import { jsPDF } from "jspdf";
 import { useQuestions } from "../Context/QuestionsContext";
 import { useAnswers } from "../Context/AnswersContext";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPenToSquare, faBell } from '@fortawesome/free-solid-svg-icons'
 import { useNavigate } from "react-router-dom";
 
+import { useUpload } from "../Context/PdfUploadContext";
+import NoPdf from "../Components/NoPdf";
 
 function Quiz() {
   const [modal, setModal] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [topic, setTopic] = useState("");
   const [loaded, setLoaded] = useState(false);
-
   const { questions, setQuestions } = useQuestions();
   const { answers, setAnswers } = useAnswers();
-
   const [activeTime, setActiveTime] = useState({});
-
   const [userAnswers, setUserAnswers] = useState({});
   const [similarityScore, setSimilarityScore] = useState({});
+  const { uploadedPdf } = useUpload();
   const API_URL = process.env.REACT_APP_BACKEND_URL || "http://localhost:8000";
 
   const navigate = useNavigate();
@@ -46,8 +49,14 @@ function Quiz() {
   }
 
   useEffect(() => {
+    if (!uploadedPdf) {
+      return;
+    }
     // Ensuring this effect runs only after the content has loaded
-    if (!loaded) return;
+    if (!loaded) {
+      setShowModal(true);
+      return;
+    }
     let startTimer;
     let stopTimer;
 
@@ -89,11 +98,26 @@ function Quiz() {
     };
   }, [loaded]);
 
-  useEffect(() => {
-    setShowModal(true);
-  }, []);
-
   const handleQuizSubmit = async () => {
+    const averageSimilarityScore =
+      Object.values(similarityScore).reduce((a, b) => a + b, 0) /
+      Object.keys(similarityScore).length;
+
+    const completedRound =
+      Object.keys(questions).length === Object.keys(userAnswers).length
+        ? true
+        : false;
+
+    /// Calculating total active time
+    const totalActiveTimeMs = Object.values(activeTime).reduce(
+      (acc, time) => acc + time,
+      0
+    ); // Sum in milliseconds
+    console.log(totalActiveTimeMs);
+    const totalActiveTimeSecs = Math.round(totalActiveTimeMs / 1000); // Converting to seconds
+
+    const noOfAnswers = Object.keys(userAnswers).length;
+
     try {
       const response = await axios.post(`${API_URL}/savesubject`, {
         name: topic,
@@ -101,7 +125,11 @@ function Quiz() {
         questions: questions,
         userAnswers: userAnswers,
         similarityScores: similarityScore,
+        averageSimilarityScore: Math.round(averageSimilarityScore),
         systemAnswers: answers,
+        completedRound: completedRound,
+        totalActiveTime: totalActiveTimeSecs,
+        noOfAnswers: noOfAnswers,
       });
       if (response.status == 201) {
         alert("Quiz submitted successfully!");
@@ -135,7 +163,7 @@ function Quiz() {
       alert("Error calculating similarity!");
     }
 
-    // Saving the answer in the `answers` state object
+    // Saving the answer in the answers state object
     setUserAnswers((prevAnswers) => ({
       ...prevAnswers,
       [questionId]: answerValue,
@@ -147,12 +175,79 @@ function Quiz() {
     }));
   };
 
+  const handleDownload = async () => {
+    console.log("Initiating download for topic:", topic); // Debugging log to confirm function initiation
+
+    // Ensure topic is not empty
+    if (!topic) {
+      console.error(
+        "Topic is empty. Please select a valid topic before downloading."
+      );
+      return;
+    }
+
+    try {
+      // Fetching questions and answers for the specified topic
+      const response = await fetch(
+        `http://localhost:8000/quiz/qa/${encodeURIComponent(topic)}`
+      );
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      console.log("Data received from server:", data);
+
+      // Initialize jsPDF
+      const doc = new jsPDF("landscape", "px", "a4");
+      let yOffset = 20; // Start yOffset at 20 to ensure the first line of text is within page margins
+
+      // Iterating over each item (topic) in the fetched data
+
+      // Set font size for topic title and add topic title text
+      doc.setFontSize(16);
+      doc.text(20, yOffset, `Topic : ${topic}`);
+      yOffset += 30; // Increase yOffset for spacing before questions
+
+      // Iterating over each question and corresponding user answer within the item
+      // Assuming data[0].questions is an object where each key is a question identifier
+      Object.keys(data[0].questions).forEach((key) => {
+        // Get the question text using the key
+        const question = data[0].questions[key];
+
+        // Set font size for questions and add question text
+        doc.setFontSize(12);
+        doc.text(20, yOffset, `Question ${key}: ${question}`);
+        yOffset += 20; // Increase yOffset for spacing before user answer
+
+        // Add user answer text
+        // Assuming you have an equivalent structure for userAnswers
+        // doc.text(20, yOffset, `User Answer: ${data[0].userAnswers[key]}`);
+        // yOffset += 40; // Increase yOffset for spacing before next question or topic
+
+        // Check if yOffset exceeds page height and add a new page if necessary
+        if (yOffset > 800) {
+          // Assuming 800 as approximate max height for landscape A4
+          doc.addPage();
+          yOffset = 20; // Reset yOffset for the new page
+        }
+      });
+
+      // Save the PDF with a filename based on the topic
+      doc.save(`Questions & Answers - ${topic}.pdf`);
+    } catch (error) {
+      console.error("Error fetching data or generating PDF:", error);
+    }
+  };
+
   return (
     <>
       <div className="fixed top-[60px] right-4 z-50 flex gap-4 p-2 bg-gray-100 rounded-lg shadow-md">
         <FontAwesomeIcon icon={faPenToSquare} className="cursor-pointer text-lg text-gray-700 hover:text-blue-500" onClick={() => navigate("/notes")} />
         <FontAwesomeIcon icon={faBell} className="cursor-pointer text-lg text-gray-700 hover:text-blue-500" onClick={() => navigate("/reminders")} />
       </div>
+      {!uploadedPdf && <NoPdf />}
       {showModal ? (
         <>
           <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
@@ -177,7 +272,7 @@ function Quiz() {
                 <div className="relative p-6 flex-auto">
                   <input
                     type="text"
-                    class="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none bg-white text-gray-800 focus:ring-1 focus:ring-blue-500"
+                    className="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none bg-white text-gray-800 focus:ring-1 focus:ring-blue-500"
                     placeholder="Enter your topic"
                     onChange={(e) => setTopic(e.target.value)}
                   />
@@ -208,7 +303,7 @@ function Quiz() {
 
       {loaded ? (
         <>
-          <div class="container">
+          <div className="container">
             {Object.keys(questions).map((key) => (
               <React.Fragment key={key}>
                 <Question
@@ -242,7 +337,11 @@ function Quiz() {
                           Accuracy Rating
                         </div>
                         <div className="text-gray-900 text-2xl font-semibold">
-                          {similarityScore[key] ? similarityScore[key] : "--"}%
+                          {similarityScore[key] === 0
+                            ? "0%"
+                            : similarityScore[key] > 0
+                            ? `${similarityScore[key]}%`
+                            : "--%"}
                         </div>
                       </div>
                     </div>
@@ -252,19 +351,12 @@ function Quiz() {
             ))}
           </div>
 
-          <div class="main-container">
-            <div class="photo">
-              <img src="homePage3.png" alt="Your Photo" />
-            </div>
-            <div class="buttons-container">
-              <div class="button-wrapper">
+          <div className="main-container">
+            <div className="buttons-container">
+              <div className="button-wrapper">
                 <button className="btn" onClick={handleQuizSubmit}>
                   Finish Quiz
                 </button>
-              </div>
-
-              <div class="button-wrapper">
-                <button class="btn1">Download Q&A</button>
               </div>
             </div>
           </div>
@@ -286,4 +378,5 @@ function Quiz() {
     </>
   );
 }
+
 export default Quiz;

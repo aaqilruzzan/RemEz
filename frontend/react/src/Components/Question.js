@@ -41,7 +41,7 @@ const Question = (props) => {
       )}
 
       {answerSubmitted && (
-        <div className="mt-2 text-md text-gray-400">
+        <div className="mt-2 text-md text-red-400">
           {answers[props.id] ? answers[props.id] : "No answer submitted"}
         </div>
       )}

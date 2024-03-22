@@ -7,7 +7,6 @@ import SelectTopic from "../Components/SelectTopic";
 export default function ProgressTracker() {
   const [progress, setProgress] = useState("");
   const [topics, setTopics] = useState([]);
-  const [selectedTopic, setSelectedTopic] = useState("");
 
   const handleChange = (e) => {
     setProgress(e.target.value);
@@ -51,7 +50,7 @@ export default function ProgressTracker() {
       {progress === "" ? (
         <SelectTopic />
       ) : progress === "View all Progress" ? (
-        <AllProgress />
+        <AllProgress key={progress} />
       ) : (
         <PerCollectionPro key={progress} topic={progress} />
       )}
