@@ -2,27 +2,24 @@ import React, {useState} from 'react'
 import './Notes.css';
 
 // editing existing notes
-export const NotesEditForm = ({editNote, note}) => {
-    // Initialize with the current note text
-    const [value, setValue] = useState(note.note); 
+export const NotesEditForm = ({editNote, task}) => {
+  const [value, setValue] = useState(task.text); // Make sure to use task.text
 
-    //  Handle form submission
-    const handleSubmit = (e) => {
-      
-        e.preventDefault(); // prevent default action
-       
-        editNote(value, note.id); // Update the note with the new text
-      };
+  const handleSubmit = (e) => {
+      e.preventDefault(); 
+      editNote(value, task._id); // Ensure you're using task._id
+  };
+
   return (
-    // Form for editing a note
-    <form onSubmit={handleSubmit} className="NoteForm">
-      <textarea 
-          value={value} 
-          onChange={(e) => setValue(e.target.value)} 
-          className="note-input" 
-          placeholder='Update Note'
-      ></textarea>
-      <button type="submit" className='note-btn'>Update Note</button>
-    </form>
-  )
-}
+      <form onSubmit={handleSubmit} className="NoteForm">
+          <textarea 
+              value={value}
+              onChange={(e) => setValue(e.target.value)}
+              className="note-input"
+              placeholder='Update Note'
+          ></textarea>
+          <button type="submit" className='note-btn'>Update Note</button>
+      </form>
+  );
+};
+

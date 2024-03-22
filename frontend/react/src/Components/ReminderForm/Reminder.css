@@ -2,117 +2,114 @@
     display: flex;
     flex-direction: column;
     max-width: 500px;
-    margin: auto;
-    background-color: #9ca3aa;
+    margin: 40px auto;
+    background-color: #f8f9fa;
     padding: 20px;
     border-radius: 5px;
     box-shadow: 0 0 10px rgba(0,0,0,0.1);
     box-sizing: border-box;
+    border: 1px solid #000;
 }
 
-.header {
+.reminder-header {
+    color: #333;
+    margin-bottom: 2rem;
+    font-size: 2.5rem;
+    text-align: center;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+.reminder-input, form {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    gap: 9px;
-    width: 100%;
-    margin-bottom: 20px;
 }
 
-.input, form {
-    display: flex;
-    flex-direction: column;
-}
-
-.input label, .input input, button {
+.reminder-input label, .reminder-input input, button {
     margin: 10px 0;
 }
 
-.input input, button {
+.reminder-input input, button {
     padding: 8px;
+    border: 1px solid #b6d4fe;
 }
 
 
+
 .schedule-reminder-button {
-    background-color: #24292c; 
+    background-color: #007bff;
     color: white;
 }
 
 .schedule-reminder-button:hover {
-    background-color: #3a4348; 
+    background-color: #0056b3;
 }
 
-
 .delete-reminder-button {
-    background-color: #24292c; 
-    color: white; 
+    background-color: #007bff;
+    color: white;
 }
 
 .delete-reminder-button:hover {
-    background-color: #3a4348; 
+    background-color: #0056b3;
 }
 
-
-.table {
+.reminder-reminder-table {
     width: 100%;
     margin-top: 20px;
     border-collapse: collapse;
-    table-layout: fixed; /* Add this to control column widths */
+    table-layout: fixed;
 }
 
-th, td {
+.reminder-reminder-table th, .reminder-reminder-table td {
     padding: 10px;
-    background-color: rgb(148, 149, 166);
-    border: 1px solid #ddcdcd;
+    background-color: #e9ecef;
+    border: 1px solid #dee2e6;
     text-align: left;
-    word-wrap: break-word; /* Ensures text wraps within the cell */
+    word-wrap: break-word;
 }
 
-td {
-    max-width: 0; 
+.reminder-reminder-table td {
+    max-width: 0;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
 }
 
-/* Style for expanding cell content on hover */
-td:hover {
+.reminder-reminder-table td:hover {
     white-space: normal;
     overflow: visible;
     cursor: pointer;
 }
 
 @media (max-width: 768px) {
-    .container {
+    .reminder-container {
         width: 90%;
         padding: 15px;
     }
 
-    .input label, .input input, button {
+    .reminder-input label, .reminder-input input, button {
         margin: 5px 0;
     }
 
-    th, td {
+    .reminder-reminder-table th, .reminder-reminder-table td {
         padding: 5px;
     }
 
-    /* Add horizontal scrolling to the table on smaller screens */
-    .table-container {
-        overflow-x: auto; /* Allows the table to scroll horizontally */
+    .reminder-reminder-table-container {
+        overflow-x: auto;
     }
 }
 
 @media (max-width: 480px) {
-    .header .text {
+    .reminder-header .reminder-text {
         font-size: 18px;
     }
 
-    .input input, button {
+    .reminder-input input, button {
         padding: 10px;
     }
 
-    th, td {
+    .reminder-reminder-table th, .reminder-reminder-table td {
         padding: 8px;
     }
-}
-
+};

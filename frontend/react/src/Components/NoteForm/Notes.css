@@ -1,69 +1,77 @@
 .notes-container {
   display: flex;
   flex-direction: column;
-  max-width: 500px;
-  margin: auto;
-  background-color: #18181a;
-  padding: 0;
-  border-radius: 5px;
-  box-sizing: border-box;
+  max-width: 600px;
+  margin: 2rem auto;
+  background-color: #f4f4f9;
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border: 1px solid #000; /* Added black border */
 }
 
-h1 {
-  color: #fff;
-  margin-bottom: 1rem;
-  font-size: 2rem;
+
+
+.notes-header {
+  color: #333;
+  margin-bottom: 2rem;
+  font-size: 2.5rem;
+  text-align: center;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
 .NoteWrapper {
-  padding: 2rem;
-  border-radius: 5px;
-  width: 100%;
-  max-width: 600px;
-  margin: 2rem auto;
+  padding: 1rem;
+  border-radius: 8px;
 }
 
-.NoteForm {
+.NoteForm, .Note {
   width: 100%;
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
+  transition: all 0.3s ease;
 }
 
 .note-input {
   outline: none;
-  background: none;
-  border: 1px solid #8758ff;
-  padding: 0.5rem 1rem;
+  background: #fff;
+  border: 2px solid #007bff;
+  border-radius: 8px;
+  padding: 1rem;
   margin-top: 1rem;
-  margin-bottom: 2rem;
   width: 100%;
-  color: #fff;
+  color: #333;
+  font-size: 1rem;
   resize: vertical;
   overflow: auto;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
 .note-btn {
-  background: #bbb0cf;
-  color: #5a4f4f;
+  background: #007bff;
+  color: #fff;
   border: none;
-  padding: 0.55rem;
+  padding: 0.8rem 1rem;
   cursor: pointer;
-  width: 100%;
-  margin-top: 0.5rem;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  transition: background 0.3s ease;
+}
+
+.note-btn:hover {
+  background: #0056b3;
 }
 
 .Note {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: #8758ff;
+  background: #007bff;
   color: #fff;
-  padding: 0.75rem 1rem;
-  border-radius: 5px;
-  margin-bottom: 1rem;
-}
-
-.fa-trash {
-  margin-left: 0.75rem;
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .completed, .incompleted {
@@ -71,23 +79,22 @@ h1 {
   word-break: break-word;
   cursor: pointer;
   flex: 1;
+  font-size: 1rem;
 }
 
 .completed {
-  color: #c5aeff;
+  color: #d1eaff;
   text-decoration: line-through;
 }
 
 .edit-icon, .delete-icon {
   cursor: pointer;
+  margin-left: 0.75rem;
+  color: #fff;
 }
 
 @media (max-width: 768px) {
-  .note-input, .note-btn {
+  .note-input, .note-btn, .NoteWrapper {
     width: calc(100% - 2rem);
-  }
-
-  .NoteWrapper {
-    max-width: 100%;
   }
 }

@@ -4,7 +4,7 @@ import ReminderForm from "../Components/ReminderForm/Reminder"; // Adjust the pa
 const RemindersPage = () => {
   return (
     <div>
-      <h1>Set Reminders</h1>
+      
       <ReminderForm />
     </div>
   );

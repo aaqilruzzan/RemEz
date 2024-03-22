@@ -19,9 +19,11 @@ export const NotesForm = ({addNote}) => {
                 value={value} 
                 onChange={(e) => setValue(e.target.value)} 
                 className="note-input" 
-                placeholder='What is New today?' 
+                placeholder='What is the note today?' 
             ></textarea>
             <button type="submit" className='note-btn'>Add Note</button>
     </form>
   )
 }
+
+

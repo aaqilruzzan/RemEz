@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import './Reminder.css';
+import './Reminder.css'; // Make sure the CSS file name matches your file structure
 
 const Reminder = () => {
   const [reminders, setReminders] = useState([]);
@@ -9,7 +9,6 @@ const Reminder = () => {
   const [time, setTime] = useState('');
 
   useEffect(() => {
-    // Request permission for notifications on component mount
     if ("Notification" in window) {
       Notification.requestPermission().then(function(permission) {
         if (Notification.permission !== "granted") {
@@ -18,9 +17,9 @@ const Reminder = () => {
       });
     }
   }, []);
-   // Function to add a new reminder
+
   const addReminder = (e) => {
-    e.preventDefault(); // Prevent form submission
+    e.preventDefault();
     const datetimeString = `${date} ${time}`;
     const newReminder = { title, description, datetimeString };
     setReminders([...reminders, newReminder]);
@@ -34,7 +33,6 @@ const Reminder = () => {
 
     if (timeDifference > 0) {
       setTimeout(() => {
-        // Trigger notification
         new Notification(title, {
           body: description,
           requireInteraction: true,
@@ -44,17 +42,17 @@ const Reminder = () => {
       alert("The scheduled time is in the past!");
     }
   };
-  // Function to delete a reminder by its index
+
   const deleteReminder = (index) => {
     setReminders(reminders.filter((_, i) => i !== index));
   };
 
   return (
     <div className='reminder-container'>
-      <div className='header'>
-        <div className='text'>Reminder</div>
+      <div className='reminder-header'>
+        <div className='reminder-text'>Reminder</div>
       </div>
-      <form onSubmit={addReminder} className='input'>
+      <form onSubmit={addReminder} className='reminder-input'>
         <label>Title: </label>
         <input type='text' value={title} onChange={e => setTitle(e.target.value)} />
         <label>Description: </label>
@@ -64,10 +62,9 @@ const Reminder = () => {
         <label>Time: </label>
         <input type='time' value={time} onChange={e => setTime(e.target.value)} />
         <button type='submit' className='schedule-reminder-button'>Schedule Reminder</button>
-
       </form>
-      <div className="table-container">
-        <table className='table'>
+      <div className="reminder-table-container">
+        <table className='reminder-reminder-table'>
             <thead>
             <tr>
                 <th>Title</th>

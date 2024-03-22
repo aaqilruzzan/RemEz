@@ -5,7 +5,6 @@ import { NotesWrapper } from "../Components/NoteForm/NotesWrapper";
 const NotesPage = () => {
   return (
     <div>
-      <h1>Add Notes</h1>
       <NotesWrapper />
     </div>
   );
