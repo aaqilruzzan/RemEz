@@ -1,23 +1,33 @@
 import "./Home.css";
+import React from "react";
 import { useEffect, useState } from "react";
+import "./Achievements.css";
 import Question from "../Components/Question";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
+import SpeedIcon from "@mui/icons-material/Speed";
 import axios from "axios";
-import React from "react";
+import { useQuestions } from "../Context/QuestionsContext";
+import { useAnswers } from "../Context/AnswersContext";
+import { useUpload } from "../Context/PdfUploadContext";
+import { useLoading } from "../Context/LoadingContext";
+import NoPdf from "../Components/NoPdf";
+
 function Quiz() {
   const [modal, setModal] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [topic, setTopic] = useState("");
   const [loaded, setLoaded] = useState(false);
-  const [quizloaded, setQuizLoaded] = useState(false);
+  const { questions, setQuestions } = useQuestions();
+  const { answers, setAnswers } = useAnswers();
   const [activeTime, setActiveTime] = useState({});
-  const questions = {
-    1: "What is your favorite color?",
-    2: "What is your favorite food?",
-    3: "What is your favorite animal?",
-  };
   const [userAnswers, setUserAnswers] = useState({});
   const [similarityScore, setSimilarityScore] = useState({});
+  const { uploadedPdf } = useUpload();
+  const { loading, setLoading } = useLoading();
+
+  const API_URL = process.env.REACT_APP_BACKEND_URL || "http://localhost:8000";
+  const FLASK_API_URL =
+    process.env.REACT_APP_FLASK_URL || "http://localhost:5000";
 
   const toggleModal = () => {
     setModal(!modal);
@@ -35,8 +45,14 @@ function Quiz() {
   }
 
   useEffect(() => {
+    if (!uploadedPdf) {
+      return;
+    }
     // Ensuring this effect runs only after the content has loaded
-    if (!loaded) return;
+    if (!loaded) {
+      setShowModal(true);
+      return;
+    }
     let startTimer;
     let stopTimer;
 
@@ -78,19 +94,41 @@ function Quiz() {
     };
   }, [loaded]);
 
-  useEffect(() => {
-    setShowModal(true);
-  }, []);
-
   const handleQuizSubmit = async () => {
+    const averageSimilarityScore =
+      Object.values(similarityScore).reduce((a, b) => a + b, 0) /
+      Object.keys(similarityScore).length;
+
+    const completedRound =
+      Object.keys(questions).length === Object.keys(userAnswers).length
+        ? true
+        : false;
+
+    /// Calculating total active time
+    const totalActiveTimeMs = Object.values(activeTime).reduce(
+      (acc, time) => acc + time,
+      0
+    ); // Sum in milliseconds
+    console.log(totalActiveTimeMs);
+    const totalActiveTimeSecs = Math.round(totalActiveTimeMs / 1000); // Converting to seconds
+
+    const noOfAnswers = Object.keys(userAnswers).length;
+
+    await setLoading(true);
     try {
-      const response = await axios.post("http://localhost:8000/savesubject", {
+      const response = await axios.post(`${API_URL}/savesubject`, {
         name: topic,
         times: activeTime,
         questions: questions,
         userAnswers: userAnswers,
         similarityScores: similarityScore,
+        averageSimilarityScore: Math.round(averageSimilarityScore),
+        systemAnswers: answers,
+        completedRound: completedRound,
+        totalActiveTime: totalActiveTimeSecs,
+        noOfAnswers: noOfAnswers,
       });
+      setLoading(false);
       if (response.status == 201) {
         alert("Quiz submitted successfully!");
       }
@@ -99,6 +137,10 @@ function Quiz() {
       alert("Error saving subject!");
     }
   };
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
   const handleAnswerSubmit = async (questionId) => {
     const answerElement = document.getElementById(questionId);
@@ -109,22 +151,34 @@ function Quiz() {
       return;
     }
 
-    const similarityScore = Math.round(Math.random() * 100);
+    try {
+      const response = await axios.post(
+        `${FLASK_API_URL}/calculatesimilarity`,
+        {
+          userAnswer: answerValue,
+          modelAnswer: answers[questionId],
+        }
+      );
+      var similarityScore = response.data.similarityScore;
 
-    // Saving the answer in the `answers` state object
-    setUserAnswers((prevAnswers) => ({
-      ...prevAnswers,
-      [questionId]: answerValue,
-    }));
+      // Saving the answer in the answers state object
+      setUserAnswers((prevAnswers) => ({
+        ...prevAnswers,
+        [questionId]: answerValue,
+      }));
 
-    setSimilarityScore((prevsimilarityScore) => ({
-      ...prevsimilarityScore,
-      [questionId]: similarityScore,
-    }));
+      setSimilarityScore((prevsimilarityScore) => ({
+        ...prevsimilarityScore,
+        [questionId]: similarityScore,
+      }));
+    } catch (error) {
+      alert("Error calculating similarity! Try again.");
+    }
   };
 
   return (
     <>
+      {!uploadedPdf && <NoPdf />}
       {showModal ? (
         <>
           <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
@@ -149,7 +203,7 @@ function Quiz() {
                 <div className="relative p-6 flex-auto">
                   <input
                     type="text"
-                    class="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none bg-white text-gray-800 focus:ring-1 focus:ring-blue-500"
+                    className="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none bg-white text-gray-800 focus:ring-1 focus:ring-blue-500"
                     placeholder="Enter your topic"
                     onChange={(e) => setTopic(e.target.value)}
                   />
@@ -180,27 +234,53 @@ function Quiz() {
 
       {loaded ? (
         <>
-          <div class="container">
+          <div className="container">
             {Object.keys(questions).map((key) => (
               <React.Fragment key={key}>
                 <Question
                   question={questions[key]}
                   id={key}
                   handleAnswerSubmit={handleAnswerSubmit}
+                  similarityScore={
+                    similarityScore[key] == 0
+                      ? 0
+                      : similarityScore[key] > 0
+                      ? similarityScore[key]
+                      : -1
+                  }
                   number={parseInt(key, 10)}
                 />
 
                 <div className="bg-white shadow-lg rounded-lg p-6 space-y-10 mb-10">
-                  <div className="flex items-center space-x-4">
-                    <div className="p-2 bg-purple-200 rounded-full">
-                      <AccessTimeIcon />
-                    </div>
-                    <div>
-                      <div className="text-gray-600 text-sm">
-                        Total Time Spent
+                  <div className="flex items-center justify-evenly space-x-4">
+                    <div className="flex justify-center gap-2">
+                      <div className="p-2 bg-purple-200 rounded-full ">
+                        <AccessTimeIcon />
                       </div>
-                      <div className="text-gray-900 text-2xl font-semibold">
-                        {Math.round((activeTime[key] || 0) / 1000)} seconds
+                      <div>
+                        <div className="text-gray-600 text-sm">
+                          Total Time Spent
+                        </div>
+                        <div className="text-gray-900 text-2xl font-semibold">
+                          {Math.round((activeTime[key] || 0) / 1000)} seconds
+                        </div>
+                      </div>
+                    </div>
+                    <div className="flex justify-center gap-2">
+                      <div className="p-2 bg-purple-200 rounded-full">
+                        <SpeedIcon />
+                      </div>
+                      <div>
+                        <div className="text-gray-600 text-sm">
+                          Accuracy Rating
+                        </div>
+                        <div className="text-gray-900 text-2xl font-semibold">
+                          {similarityScore[key] === 0
+                            ? "0%"
+                            : similarityScore[key] > 0
+                            ? `${similarityScore[key]}%`
+                            : "--%"}
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -209,19 +289,12 @@ function Quiz() {
             ))}
           </div>
 
-          <div class="main-container">
-            <div class="photo">
-              <img src="homePage3.png" alt="Your Photo" />
-            </div>
-            <div class="buttons-container">
-              <div class="button-wrapper">
+          <div className="main-container">
+            <div className="buttons-container">
+              <div className="button-wrapper">
                 <button className="btn" onClick={handleQuizSubmit}>
                   Finish Quiz
                 </button>
-              </div>
-
-              <div class="button-wrapper">
-                <button class="btn1">Download Q&A</button>
               </div>
             </div>
           </div>
@@ -243,4 +316,5 @@ function Quiz() {
     </>
   );
 }
+
 export default Quiz;
