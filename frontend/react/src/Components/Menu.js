@@ -1,4 +1,4 @@
-import React from 'react'
+import React from "react";
 import "./Menu.css";
 import { Link, NavLink } from "react-router-dom";
 function Menu() {
@@ -12,23 +12,23 @@ function Menu() {
             </NavLink>
           </li>
           <li className="NavbarElement">
+            <NavLink className="link" to="/quiz">
+              Quiz
+            </NavLink>
+          </li>
+          <li className="NavbarElement">
+            <NavLink className="link" to="/progress">
+              Track Progress
+            </NavLink>
+          </li>
+          <li className="NavbarElement">
             <NavLink className="link" to="/about-us">
               About Us
             </NavLink>
           </li>
           <li className="NavbarElement">
-            <NavLink className="link"to="/contact-us">
+            <NavLink className="link" to="/contact-us">
               Contact Us
-            </NavLink>
-          </li>
-          <li className="NavbarElement">
-            <NavLink className="link" to="/sign-in">
-              Sign In
-            </NavLink>
-          </li>
-          <li className="Navbutton">
-            <NavLink className="linkbtn" to="/sign-up">
-              Sign Up
             </NavLink>
           </li>
         </ul>
@@ -37,4 +37,4 @@ function Menu() {
   );
 }
 
-export default Menu
+export default Menu;
