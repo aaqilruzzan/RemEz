@@ -1,18 +1,18 @@
 import React, { useState } from "react";
-import { Link, useHistory } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom"; // Import useNavigate instead of useHistory
 import { useLogin } from "../hooks/useLogin";   
 
 function SignIn() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const { login, error, isLoading } = useLogin();
-  const history = useHistory(); 
+  const navigate = useNavigate(); // Use useNavigate here
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     await login(email, password);
     if (!error) {
-      history.push('/'); 
+      navigate('/'); // Use navigate function here
     }
   }
 

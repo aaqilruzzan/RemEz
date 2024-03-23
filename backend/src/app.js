@@ -1,21 +1,21 @@
 import express from "express";
 import mongoose from "mongoose";
 import cors from "cors";
-import routes from "./routes/index.js";
-import routes from "./routes/user.js";
-const workoutRoutes = require('./routes/workouts');
-const userRoutes = require('./routes/user');
+// Import routes
+import indexRoutes from "./routes/index.js";
+
+
+
 
 
 const app = express();
 
-// middleware
-app.use(express.json())
-
+// Middleware
+app.use(express.json());
 app.use((req, res, next) => {
-  console.log(req.path, req.method)
-  next()
-})
+  console.log(req.path, req.method);
+  next();
+});
 
 const corsOptions = {
   origin: function (origin, callback) {
@@ -35,13 +35,9 @@ const corsOptions = {
 app.use(cors(corsOptions));
 app.options("*", cors());
 
-app.use(express.json());
+// Routes
 
-// routes
-app.use('/api/workouts', workoutRoutes);
-app.use('/api/user', userRoutes);
-app.use(routes);
-app.use('/api/user', userRouts);
+
 // Database connection function
 async function connectDatabase() {
   const connectionParams = {
@@ -50,7 +46,7 @@ async function connectDatabase() {
   };
   try {
     await mongoose.connect(
-      "mongodb+srv://REMEZ:REMEZ@cluster01.qrulfpd.mongodb.net/?retryWrites=true&w=majority",
+      "your_mongodb_connection_string_here",
       connectionParams
     );
     console.log("Database connected successfully");
