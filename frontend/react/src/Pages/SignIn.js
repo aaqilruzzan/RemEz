@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import axios from "axios";
 import { useAuthContext } from "../hooks/useAuthContext";
 
@@ -9,9 +9,13 @@ function SignIn() {
   const { user, dispatch } = useAuthContext();
   const navigate = useNavigate();
   const API_URL = process.env.REACT_APP_BACKEND_URL || "http://localhost:8000";
-  if (user) {
-    navigate("/");
-  }
+
+  useEffect(() => {
+    if (user) {
+      navigate("/");
+    }
+  }, []);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {

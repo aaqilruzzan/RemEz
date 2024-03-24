@@ -1,38 +1,12 @@
 .welcome-video-container {
-  box-sizing: border-box;
+  border: border-box;
   display: flex;
   justify-content: center;
   align-items: center;
   overflow: hidden;
-  width: 65%;
-  height: 65%;
-  margin: auto;
 }
 
-@media (min-width: 1200px) {
-  .welcome-video-container {
-    width: 60%;
-    height: 60%;
-  }
-}
-
-@media (min-width: 992px) and (max-width: 1199px) {
-  .welcome-video-container {
-    width: 70%;
-    height: 70%;
-  }
-}
-
-@media (min-width: 768px) and (max-width: 991px) {
-  .welcome-video-container {
-    width: 80%;
-    height: 80%;
-  }
-}
-
-@media (max-width: 767px) {
-  .welcome-video-container {
-    width: 95%;
-    height: 50%;
-  }
+.welcome-video-container video {
+  width: 70%;
+  height: 70%;
 }

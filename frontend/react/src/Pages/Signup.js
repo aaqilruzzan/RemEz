@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import { useAuthContext } from "../hooks/useAuthContext";
@@ -12,9 +12,11 @@ function SignUp() {
   const { user, dispatch } = useAuthContext();
   const API_URL = process.env.REACT_APP_BACKEND_URL || "http://localhost:8000";
   const navigate = useNavigate();
-  if (user) {
-    navigate("/");
-  }
+  useEffect(() => {
+    if (user) {
+      navigate("/");
+    }
+  }, []);
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
