@@ -38,7 +38,7 @@ const Question = (props) => {
           disabled={answerSubmitted}
         ></textarea>
       </div>
-      {!answerSubmitted && ( // Render the button only if the answer is not yet submitted
+      {!answerSubmitted && ( // Rendering the button only if the answer is not yet submitted
         <div className="button-wrapper">
           <button
             key={props.id}

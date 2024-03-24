@@ -1,104 +1,96 @@
-.card{
-    
-    border: 1px solid hsl(0, 0%, 80%);
-    border-radius: 10px;
-    box-shadow: 5px 5px 5px hsla(0,0%,0%,0.1);
-    padding:30px;
-    margin:20px;
-    text-align: center;
-    max-width: 350px;
-    transition: transform 0.6s ease-in-out;
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-    
+.card {
+  border: 1px solid hsl(0, 0%, 80%);
+  border-radius: 10px;
+  box-shadow: 5px 5px 5px hsla(0, 0%, 0%, 0.1);
+  padding: 30px;
+  margin: 20px;
+  text-align: center;
+  max-width: 350px;
+  transition: transform 0.6s ease-in-out;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
 }
 
-.main1{
-    background-image: url("../../public/shapes3.png");
+.main1 {
+  background-image: url("../../public/shapes3.png");
 }
 
-.main{
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    padding: 1% 4% 0% 4%;
-    
+.main {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  padding: 1% 4% 0% 4%;
 }
 
-h3{
-    text-align: center;
-    margin-top: 4%;
-    margin-bottom: 10px;
-    font-size: 25px;
-    font-weight: bold;
-   
+h3 {
+  text-align: center;
+  margin-top: 4%;
+  margin-bottom: 10px;
+  font-size: 25px;
+  font-weight: bold;
 }
 
-.card .card-image{
-    
-    max-width: 60%;
-    height:auto;
-    border-radius: 50%;
-    margin-bottom: 12px;
-    align-items: center;
+.card .card-image {
+  max-width: 60%;
+  height: auto;
+  border-radius: 50%;
+  margin-bottom: 12px;
+  align-items: center;
 }
 
-.card .card-title{
-    font-family: Arial, Helvetica, sans-serif;
-    margin:0;
-    color: rgb(20, 20, 20);
+.card .card-title {
+  font-family: Arial, Helvetica, sans-serif;
+  margin: 0;
+  color: rgb(20, 20, 20);
 }
-.card .card-text{
-    font-family: Arial, Helvetica, sans-serif;
-    color: rgb(83, 76, 76);
-    margin:10px;
-}
-
-.card .score{
-    color: black;
-    font-weight:800;
-    margin:10px;
+.card .card-text {
+  font-family: Arial, Helvetica, sans-serif;
+  color: rgb(83, 76, 76);
+  margin: 10px;
 }
 
-.main .card:hover{
-    background-color: #5cdfc0;  /*#8cf6dd*/
-    transform: translateY(-20px);
-    
+.card .score {
+  color: black;
+  font-weight: 800;
+  margin: 10px;
+}
+
+.main .card:hover {
+  background-color: #5cdfc0;
+  transform: translateY(-20px);
 }
 .button-link {
-    margin-top: 25px;
-    display: inline-block;
-    padding: 9px 18px;
-    background-color: #E7ECFF; /* Blue color, change as needed */
-    color: #0c79ff;
-    text-decoration: none;
-    border-radius: 50px;
-    font-size: 14px;
-    transition: background-color 0.3s, color 0.3s;
-  }
-  
-  .button-link:hover {
-    background-color: transparent;
-    color: rgb(255, 255, 255);
-    border: none;
-    font-weight: bold;
-  }
-
-
-.main2{
-    
-    background-image: url("../../public/shapes3.png");
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    padding: 5% 20% 5% 20%;
+  margin-top: 25px;
+  display: inline-block;
+  padding: 9px 18px;
+  background-color: #e7ecff;
+  color: #0c79ff;
+  text-decoration: none;
+  border-radius: 50px;
+  font-size: 14px;
+  transition: background-color 0.3s, color 0.3s;
 }
-.main-contents{
-    font-size:15px;
-    font-weight: bold;
-    border: 2px solid black;
-    margin:20px ;
-    padding: 5%;
-    background-color: #ffffff;
+
+.button-link:hover {
+  background-color: transparent;
+  color: rgb(255, 255, 255);
+  border: none;
+  font-weight: bold;
+}
+
+.main2 {
+  background-image: url("../../public/shapes3.png");
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 5% 20% 5% 20%;
+}
+.main-contents {
+  font-size: 15px;
+  font-weight: bold;
+  border: 2px solid black;
+  margin: 20px;
+  padding: 5%;
+  background-color: #ffffff;
 }

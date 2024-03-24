@@ -147,10 +147,10 @@ const getAllProgressData = async (req, res) => {
       },
     ];
 
-    // Execute the aggregation pipeline
+    // Executing the aggregation pipeline
     const [result] = await subject.aggregate(aggregatePipeline);
 
-    // Destructure the result to extract the arrays and the count
+    // Destructuring the result to extract the arrays and the count
     const {
       names,
       averageSimilarityScores,
@@ -159,7 +159,6 @@ const getAllProgressData = async (req, res) => {
       noOfAnswers,
     } = result || {};
 
-    // Send the response with the collected data
     res.status(200).json({
       names,
       averageSimilarityScores,
@@ -168,27 +167,28 @@ const getAllProgressData = async (req, res) => {
       noOfAnswers,
     });
   } catch (error) {
-    // Handle any errors that occur during the process
     res.status(404).json({ message: error.message });
   }
 };
-
-
 
 const deleteTopic = async (req, res) => {
   const topicName = req.params.name;
   try {
     // Ensure you correctly reference deletion across models if needed
-    // The following assumes everything is stored under the `subject` model. 
+    // The following assumes everything is stored under the `subject` model.
     // If you have separate models, you need separate delete statements for each.
     const deletionResult = await subject.deleteOne({ name: topicName });
     if (deletionResult.deletedCount === 0) {
       return res.status(404).json({ message: "Topic not found" });
     }
-    res.status(200).json({ message: "Topic and all associated data deleted successfully." });
+    res
+      .status(200)
+      .json({ message: "Topic and all associated data deleted successfully." });
   } catch (error) {
     console.error("Failed to delete topic and associated data:", error);
-    res.status(500).json({ message: "Error deleting the topic and associated data." });
+    res
+      .status(500)
+      .json({ message: "Error deleting the topic and associated data." });
   }
 };
 

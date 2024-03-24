@@ -1,6 +1,5 @@
 import { createContext, useReducer, useEffect } from "react";
 
-
 export const AuthContext = createContext();
 
 // reducer function to set the user state based on the action type
@@ -24,7 +23,7 @@ export const AuthContextProvider = ({ children }) => {
     user: null,
   });
 
-  // get the user object from local storage if it exists on mount
+  // getting the user object from local storage if it exists on mount
 
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem("user"));

@@ -1,6 +1,4 @@
-// controllers/Notes/notesController.js
-
-import Note from '../../models/note.js';
+import Note from "../../models/note.js";
 
 export const createNote = async (req, res) => {
   try {
@@ -22,10 +20,10 @@ export const getNotes = async (req, res) => {
 };
 
 export const updateNote = async (req, res) => {
-  console.log("Update request body:", req.body); // Temporary logging
   try {
-    const updatedNote = await Note.findByIdAndUpdate(req.params.id, req.body, { new: true });
-    console.log("Updated note:", updatedNote); // Temporary logging
+    const updatedNote = await Note.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+    });
     if (!updatedNote) {
       return res.status(404).send("No note with that id found");
     }
@@ -35,12 +33,10 @@ export const updateNote = async (req, res) => {
   }
 };
 
-
-
 export const deleteNote = async (req, res) => {
   try {
     await Note.findByIdAndDelete(req.params.id);
-    res.json({ message: 'Note successfully deleted' });
+    res.json({ message: "Note successfully deleted" });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

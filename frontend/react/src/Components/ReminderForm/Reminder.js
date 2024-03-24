@@ -1,16 +1,16 @@
-import React, { useState, useEffect } from 'react';
-import './Reminder.css'; // Make sure the CSS file name matches your file structure
+import React, { useState, useEffect } from "react";
+import "./Reminder.css";
 
 const Reminder = () => {
   const [reminders, setReminders] = useState([]);
-  const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
-  const [date, setDate] = useState('');
-  const [time, setTime] = useState('');
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [date, setDate] = useState("");
+  const [time, setTime] = useState("");
 
   useEffect(() => {
     if ("Notification" in window) {
-      Notification.requestPermission().then(function(permission) {
+      Notification.requestPermission().then(function (permission) {
         if (Notification.permission !== "granted") {
           alert("Please allow notification access!");
         }
@@ -48,41 +48,66 @@ const Reminder = () => {
   };
 
   return (
-    <div className='reminder-container'>
-      <div className='reminder-header'>
-        <div className='reminder-text'>Reminder</div>
+    <div className="reminder-container">
+      <div className="reminder-header">
+        <div className="reminder-text">Reminder</div>
       </div>
-      <form onSubmit={addReminder} className='reminder-input'>
+      <form onSubmit={addReminder} className="reminder-input">
         <label>Title: </label>
-        <input type='text' value={title} onChange={e => setTitle(e.target.value)} />
+        <input
+          type="text"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+        />
         <label>Description: </label>
-        <input type='text' value={description} onChange={e => setDescription(e.target.value)} />
+        <input
+          type="text"
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+        />
         <label>Date: </label>
-        <input type='date' value={date} onChange={e => setDate(e.target.value)} />
+        <input
+          type="date"
+          value={date}
+          onChange={(e) => setDate(e.target.value)}
+        />
         <label>Time: </label>
-        <input type='time' value={time} onChange={e => setTime(e.target.value)} />
-        <button type='submit' className='schedule-reminder-button'>Schedule Reminder</button>
+        <input
+          type="time"
+          value={time}
+          onChange={(e) => setTime(e.target.value)}
+        />
+        <button type="submit" className="schedule-reminder-button">
+          Schedule Reminder
+        </button>
       </form>
       <div className="reminder-table-container">
-        <table className='reminder-reminder-table'>
-            <thead>
+        <table className="reminder-reminder-table">
+          <thead>
             <tr>
-                <th>Title</th>
-                <th>Description</th>
-                <th>Date & Time</th>
-                <th>Action</th>
+              <th>Title</th>
+              <th>Description</th>
+              <th>Date & Time</th>
+              <th>Action</th>
             </tr>
-            </thead>
-            <tbody>
+          </thead>
+          <tbody>
             {reminders.map((reminder, index) => (
-                <tr key={index}>
+              <tr key={index}>
                 <td>{reminder.title}</td>
                 <td>{reminder.description}</td>
                 <td>{reminder.datetimeString}</td>
-                <td><button onClick={() => deleteReminder(index)} className='delete-reminder-button'>Delete</button></td>
-                </tr>
+                <td>
+                  <button
+                    onClick={() => deleteReminder(index)}
+                    className="delete-reminder-button"
+                  >
+                    Delete
+                  </button>
+                </td>
+              </tr>
             ))}
-            </tbody>
+          </tbody>
         </table>
       </div>
     </div>

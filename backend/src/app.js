@@ -17,9 +17,9 @@ const corsOptions = {
       "https://rem-ez-git-sdgp-22-notes-and-re-9e0baf-quills-projects-120d5fc2.vercel.app",
     ];
     if (!origin || allowedOrigins.indexOf(origin) !== -1) {
-      callback(null, true); // Origin is allowed
+      callback(null, true);
     } else {
-      callback(new Error("Not allowed by CORS")); // Origin is not allowed
+      callback(new Error("Not allowed by CORS"));
     }
   },
   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
@@ -51,7 +51,6 @@ async function connectDatabase() {
   }
 }
 
-// Connect to database
 connectDatabase();
 
 const PORT = process.env.PORT || 8000;

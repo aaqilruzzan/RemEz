@@ -1,10 +1,9 @@
 import React from "react";
-import ReminderForm from "../Components/ReminderForm/Reminder"; // Adjust the path as necessary
+import ReminderForm from "../Components/ReminderForm/Reminder";
 
 const RemindersPage = () => {
   return (
     <div>
-      
       <ReminderForm />
     </div>
   );

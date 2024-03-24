@@ -19,18 +19,17 @@ function Home() {
   const { loading, setLoading } = useLoading();
   const { user } = useAuthContext();
   const handleFileChange = (event) => {
-    setSelectedFile(event.target.files[0]); // Update the state with the selected file
+    setSelectedFile(event.target.files[0]); // Updating the state with the selected file
   };
   const FLASK_API_URL =
     process.env.REACT_APP_FLASK_URL || "http://localhost:5000";
 
-    useEffect(() => {
-      // if the user is not authenticated, redirect to /login
-      if (!user) {
-        Navigate("/signin");
-      }
-      
-    }, []);
+  useEffect(() => {
+    // if the user is not authenticated, redirect to /signin
+    if (!user) {
+      Navigate("/signin");
+    }
+  }, []);
 
   const uploadFile = async () => {
     if (!selectedFile) {
@@ -40,7 +39,7 @@ function Home() {
 
     await setLoading(true);
     const formData = new FormData();
-    formData.append("file", selectedFile); // 'file' is the field name expected by your backend
+    formData.append("file", selectedFile);
     formData.append("questionNo", questionCount);
 
     try {
@@ -72,7 +71,7 @@ function Home() {
   }
 
   const scrollToUpload = () => {
-    uploadSectionRef.current.scrollIntoView({ behavior: "smooth" }); // Step 3: Use scrollIntoView to navigate
+    uploadSectionRef.current.scrollIntoView({ behavior: "smooth" });
   };
 
   const handleQuestionCountChange = (event) => {
@@ -129,7 +128,7 @@ function Home() {
               onChange={handleQuestionCountChange}
               value={questionCount}
             >
-              {/* Conditionally render the default option */}
+              {/* Conditionally rendering the default option */}
               {questionCount === "" && (
                 <option value="">Select Number of Questions</option>
               )}

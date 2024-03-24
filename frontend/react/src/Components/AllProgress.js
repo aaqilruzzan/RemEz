@@ -57,15 +57,15 @@ const AllProgress = () => {
   const averageAnswerTimeSeconds = totalActiveTime / totalAnswerCount;
   // Converting average time into minutes and seconds
   const minutes = Math.floor(averageAnswerTimeSeconds / 60);
-  const seconds = Math.round(averageAnswerTimeSeconds % 60); // Using Math.round to round to the nearest second
-  // Format the result as a string "minutes:seconds"
+  const seconds = Math.round(averageAnswerTimeSeconds % 60);
+  // Formatting the result as a string "minutes:seconds"
   const formattedAverageTime = `${minutes}m ${seconds}s`;
 
   const averageTimePerRoundSeconds = totalActiveTime / totalrounds;
   // Converting average time per round into minutes and seconds
   const minutesPerRound = Math.floor(averageTimePerRoundSeconds / 60);
-  const secondsPerRound = Math.round(averageTimePerRoundSeconds % 60); // Using Math.round to round to the nearest second
-  // Format the result as a string "Xm Ys"
+  const secondsPerRound = Math.round(averageTimePerRoundSeconds % 60);
+  // Formatting the result as a string "Xm Ys"
   const formattedAverageTimePerRound = `${minutesPerRound}m ${secondsPerRound}s`;
 
   // Static data for the bar chart
@@ -98,7 +98,7 @@ const AllProgress = () => {
         categoryPercentage: 0.1, // Determines the percentage of the available width each category should be within the sample width.
       },
       y: {
-        beginAtZero: true, // Ensures that the y-axis starts at 0
+        beginAtZero: true, // Ensuring that the y-axis starts at 0
       },
     },
     legend: {

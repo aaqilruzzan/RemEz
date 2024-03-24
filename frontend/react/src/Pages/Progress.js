@@ -16,7 +16,7 @@ export default function ProgressTracker() {
     setProgress(e.target.value);
   };
 
-  // if the user is not authenticated, redirect to /login
+  // if the user is not authenticated, redirecting to /signin
   const API_URL = process.env.REACT_APP_BACKEND_URL || "http://localhost:8000";
   useEffect(() => {
     if (!user) {

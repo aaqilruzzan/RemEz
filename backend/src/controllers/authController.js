@@ -1,13 +1,13 @@
-import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
-import validator from 'validator';
-import user from '../models/user.js'; // Adjust the path according to your project structure. Note the '.js' extension might be needed depending on your environment setup
-import dotenv from 'dotenv';
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+import validator from "validator";
+import user from "../models/user.js";
+import dotenv from "dotenv";
 dotenv.config();
 
 // Helper function to create a token
 const createToken = (_id) => {
-  return jwt.sign({ _id }, process.env.SECRET, { expiresIn: '1d' });
+  return jwt.sign({ _id }, process.env.SECRET, { expiresIn: "1d" });
 };
 
 // Controller function to register users
@@ -81,7 +81,10 @@ const loginUser = async (req, res) => {
       return;
     }
 
-    const validPassword = await bcrypt.compare(req.body.password, login.password);
+    const validPassword = await bcrypt.compare(
+      req.body.password,
+      login.password
+    );
 
     if (!validPassword) {
       res.status(400).json({

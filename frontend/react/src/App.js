@@ -1,5 +1,10 @@
 import React, { useState } from "react";
-import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  useLocation,
+} from "react-router-dom";
 import Navbar from "./Components/Navbar";
 import Footer from "./Components/Footer";
 import Menu from "./Components/Menu";
@@ -25,12 +30,15 @@ function Layout() {
   const { loading } = useLoading();
   const [clicked, isClicked] = useState(false);
 
-  // Decide whether to show Navbar and Footer based on the current location
-  const showNavbarAndFooter = location.pathname !== "/signin" && location.pathname !== "/signup";
+  // Deciding whether to show Navbar and Footer based on the current location
+  const showNavbarAndFooter =
+    location.pathname !== "/signin" && location.pathname !== "/signup";
 
   return (
     <>
-      {showNavbarAndFooter && <Navbar clicked={clicked} isClicked={isClicked} />}
+      {showNavbarAndFooter && (
+        <Navbar clicked={clicked} isClicked={isClicked} />
+      )}
       {clicked ? <Menu /> : null}
       {loading && <WelcomeVideo />}
       <MouseIcon />

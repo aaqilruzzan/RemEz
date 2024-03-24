@@ -4,15 +4,13 @@ import { useAuthContext } from "../hooks/useAuthContext";
 import { useEffect } from "react";
 
 const ContactUs = () => {
-
   const Navigate = useNavigate();
   const { user } = useAuthContext();
   useEffect(() => {
-    // if the user is not authenticated, redirect to /login
+    // if the user is not authenticated, redirect to /signin
     if (!user) {
       Navigate("/signin");
     }
-    
   }, []);
   return (
     <section class="bg-white ">

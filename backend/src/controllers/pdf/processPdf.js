@@ -20,7 +20,6 @@ const handlePdfUpload = (req, res) => {
       return res.status(500).json({ status: "error", message: err.message });
     }
 
-    // Save PDF details to MongoDB
     try {
       const { title } = req.body;
       const fileName = req.file.filename;

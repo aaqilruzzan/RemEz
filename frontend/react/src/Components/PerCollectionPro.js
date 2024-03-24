@@ -51,9 +51,7 @@ function PerCollectionPro(props) {
   }
 
   const handleDownload = async () => {
-    console.log("Initiating download for topic:", props.topic); // Debugging log to confirm function initiation
-
-    // Ensure topic is not empty
+    // Ensuring topic is not empty
     if (!props.topic) {
       console.error(
         "Topic is empty. Please select a valid topic before downloading."
@@ -63,11 +61,11 @@ function PerCollectionPro(props) {
 
     try {
       const doc = new jsPDF("portrait", "px", "a4");
-      let yOffset = 20; // Adjusted initial yOffset
+      let yOffset = 20; // Adjusting initial yOffset
 
       const pageWidth = doc.internal.pageSize.getWidth();
-      const pageHeight = doc.internal.pageSize.getHeight(); // Get page height to better manage page breaks
-      const bottomMargin = 50; // Define a bottom margin
+      const pageHeight = doc.internal.pageSize.getHeight(); // Getting page height to better manage page breaks
+      const bottomMargin = 50; // Defining a bottom margin
       const marginLeft = 50;
       const marginRight = 50;
       const maxLineWidth = pageWidth - marginLeft - marginRight;
@@ -78,7 +76,7 @@ function PerCollectionPro(props) {
       doc.text(`Topic : ${props.topic}`, pageWidth / 2, yOffset, {
         align: "center",
       });
-      yOffset += 40; // Adjusted space after title
+      yOffset += 40; // Adjusting space after title
 
       doc.setTextColor(0, 0, 0);
 
@@ -110,7 +108,7 @@ function PerCollectionPro(props) {
           maxLineWidth
         );
 
-        // Adjust yOffset checks to include bottomMargin for adequate spacing
+        // Adjusting yOffset checks to include bottomMargin for adequate spacing
         if (
           yOffset +
             questionText.length * 20 +
@@ -121,7 +119,7 @@ function PerCollectionPro(props) {
           pageHeight - bottomMargin
         ) {
           doc.addPage();
-          yOffset = 40; // Reset yOffset for new page
+          yOffset = 40;
         }
 
         doc.setFont("helvetica", "bold");
@@ -242,7 +240,6 @@ function PerCollectionPro(props) {
               </div>
               <div class="border-t border-blue-gray-50 p-4">
                 <p class="block antialiased font-sans text-base leading-relaxed font-normal text-blue-gray-600 text-center">
-                  {/* <strong class="text-green-500">Passed</strong>&nbsp;, Grade: S */}
                   {averageAccuracy >= 75 ? (
                     <>
                       <strong className="text-green-500">Passed</strong>
@@ -416,7 +413,7 @@ function PerCollectionPro(props) {
                 <div className="flex justify-center mt-4">
                   <button
                     onClick={handleDownload}
-                    onMouseEnter={() => setIsHovered(true)} // Set hover state to true when mouse enters
+                    onMouseEnter={() => setIsHovered(true)} // Setting hover state to true when mouse enters
                     onMouseLeave={() => setIsHovered(false)}
                     style={{
                       width: "200px", // Set the button width
@@ -428,7 +425,7 @@ function PerCollectionPro(props) {
                       fontSize: "16px", // Text size
                       border: "none", // Remove default border
                       cursor: "pointer", // Mouse pointer on hover
-                      boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)", // Optional: Adds a subtle shadow
+                      boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)",
                     }}
                   >
                     Download Q&A
