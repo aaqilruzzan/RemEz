@@ -1,9 +1,10 @@
 .welcome-video-container {
-  border: border-box;
+  box-sizing: border-box;
   display: flex;
   justify-content: center;
   align-items: center;
   overflow: hidden;
   height: 80vh;
   width: 100%;
+  margin: auto;
 }
