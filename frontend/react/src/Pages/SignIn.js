@@ -7,7 +7,7 @@ function SignIn() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const { user, dispatch } = useAuthContext();
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
   const API_URL = process.env.REACT_APP_BACKEND_URL || "http://localhost:8000";
   if (user) {
     navigate("/");
@@ -30,10 +30,7 @@ function SignIn() {
       alert("User Logged in Sucsessfully");
       dispatch({ type: "LOGIN", payload: response.data });
     } catch (err) {
-      console.error(
-        "Login failed:",
-        err.response ? err.response.data : err.message
-      );
+      alert(err.response.data.message);
     }
   };
 

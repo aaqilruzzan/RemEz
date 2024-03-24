@@ -1,14 +1,14 @@
-import React, { useState } from 'react';
-import axios from 'axios';
-import { Link } from 'react-router-dom';
-import { useAuthContext } from '../hooks/useAuthContext';
-import { useNavigate } from 'react-router-dom';
+import React, { useState } from "react";
+import axios from "axios";
+import { Link } from "react-router-dom";
+import { useAuthContext } from "../hooks/useAuthContext";
+import { useNavigate } from "react-router-dom";
 
 function SignUp() {
   // useState hooks for name, email, and password
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const { user, dispatch } = useAuthContext();
   const API_URL = process.env.REACT_APP_BACKEND_URL || "http://localhost:8000";
   const navigate = useNavigate();
@@ -18,7 +18,11 @@ function SignUp() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(`${API_URL}/register`, { name, email, password });
+      const response = await axios.post(`${API_URL}/register`, {
+        name,
+        email,
+        password,
+      });
       localStorage.setItem(
         "user",
         JSON.stringify({
@@ -27,12 +31,10 @@ function SignUp() {
           email: response.data.email,
         })
       );
-      alert("User registerd Sucsessfully")
-      dispatch({ type: 'LOGIN', payload: response.data });
-      
-      
+      alert("User registerd Sucsessfully");
+      dispatch({ type: "LOGIN", payload: response.data });
     } catch (err) {
-      console.error('Registration failed:', err);
+      alert(err.response.data.message);
     }
   };
   return (
@@ -56,14 +58,13 @@ function SignUp() {
           </p>
 
           <div>
-
             <label for="name" class="sr-only">
               Name
             </label>
 
             <div class="relative">
-              <input 
-                value = {name}
+              <input
+                value={name}
                 onChange={(e) => setName(e.target.value)}
                 type="text"
                 class="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm"
@@ -79,7 +80,7 @@ function SignUp() {
 
             <div class="relative">
               <input
-                value = {email}
+                value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 type="email"
                 class="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm"
@@ -112,7 +113,7 @@ function SignUp() {
 
             <div class="relative">
               <input
-                value = {password}
+                value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 type="password"
                 class="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm"
