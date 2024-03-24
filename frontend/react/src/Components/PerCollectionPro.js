@@ -303,7 +303,7 @@ function PerCollectionPro(props) {
               <div class="border-t border-blue-gray-50 p-4">
                 <p class="block antialiased font-sans text-base leading-relaxed font-normal text-blue-gray-600 text-center">
                   <strong>{highAccuracyPercentage}%</strong> of answers with
-                  high accuracy
+                  high accuracy (69%+)
                 </p>
               </div>
             </div>
