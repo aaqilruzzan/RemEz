@@ -14,7 +14,7 @@ function SignIn() {
     if (user) {
       navigate("/");
     }
-  }, []);
+  }, [user]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();

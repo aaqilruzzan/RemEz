@@ -16,7 +16,7 @@ function SignUp() {
     if (user) {
       navigate("/");
     }
-  }, []);
+  }, [user]);
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
