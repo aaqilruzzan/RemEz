@@ -11,6 +11,8 @@ import { useAnswers } from "../Context/AnswersContext";
 import { useUpload } from "../Context/PdfUploadContext";
 import { useLoading } from "../Context/LoadingContext";
 import NoPdf from "../Components/NoPdf";
+import { useNavigate } from "react-router";
+import { useAuthContext } from "../hooks/useAuthContext";
 
 function Quiz() {
   const [modal, setModal] = useState(false);
@@ -24,6 +26,8 @@ function Quiz() {
   const [similarityScore, setSimilarityScore] = useState({});
   const { uploadedPdf } = useUpload();
   const { loading, setLoading } = useLoading();
+  const Navigate = useNavigate();
+  const { user } = useAuthContext();
 
   const API_URL = process.env.REACT_APP_BACKEND_URL || "http://localhost:8000";
   const FLASK_API_URL =
@@ -45,6 +49,9 @@ function Quiz() {
   }
 
   useEffect(() => {
+    if (!user) {
+      Navigate("/signin");
+    }
     if (!uploadedPdf) {
       return;
     }

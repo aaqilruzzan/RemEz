@@ -1,4 +1,5 @@
 import { Router } from "express";
+import { loginUser,registerUser } from "../controllers/authController.js";
 import { handlePdfUpload } from "../controllers/pdf/processPdf.js";
 import {
   saveData,
@@ -31,4 +32,6 @@ router.delete("/notes/:id", deleteNote);
 router.get("/getdata/:name", getData);
 router.get("/getallprogressdata", getAllProgressData);
 router.delete("/deletetopic/:name", deleteTopic);
+router.post('/register', registerUser);
+router.post('/login', loginUser);
 export default router;

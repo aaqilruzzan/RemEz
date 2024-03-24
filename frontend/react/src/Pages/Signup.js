@@ -1,9 +1,42 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from 'react';
+import axios from 'axios';
+import { Link } from 'react-router-dom';
+import { useAuthContext } from '../hooks/useAuthContext';
+import { useNavigate } from 'react-router-dom';
 
 function SignUp() {
+  // useState hooks for name, email, and password
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const { user, dispatch } = useAuthContext();
+  const API_URL = process.env.REACT_APP_BACKEND_URL || "http://localhost:8000";
+  const navigate = useNavigate();
+  if (user) {
+    navigate("/");
+  }
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post(`${API_URL}/register`, { name, email, password });
+      localStorage.setItem(
+        "user",
+        JSON.stringify({
+          name: response.data.name,
+          token: response.data.token,
+          email: response.data.email,
+        })
+      );
+      alert("User registerd Sucsessfully")
+      dispatch({ type: 'LOGIN', payload: response.data });
+      
+      
+    } catch (err) {
+      console.error('Registration failed:', err);
+    }
+  };
   return (
-    <div class="mx-auto max-w-screen-xl px-4 py-16 sm:px-6 lg:px-8">
+    <div class="mx-auto max-w-screen-xl px-4 py-32 sm:px-6 lg:px-8">
       <div class="mx-auto max-w-lg">
         <h1 class="text-center text-2xl font-bold text-indigo-600 sm:text-3xl">
           Get Started!
@@ -14,6 +47,7 @@ function SignUp() {
         </p>
 
         <form
+          onSubmit={handleSubmit}
           action="#"
           class="mb-0 mt-6 space-y-4 rounded-lg p-4 shadow-lg sm:p-6 lg:p-8"
         >
@@ -22,12 +56,15 @@ function SignUp() {
           </p>
 
           <div>
+
             <label for="name" class="sr-only">
               Name
             </label>
 
             <div class="relative">
-              <input
+              <input 
+                value = {name}
+                onChange={(e) => setName(e.target.value)}
                 type="text"
                 class="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm"
                 placeholder="Enter name"
@@ -42,6 +79,8 @@ function SignUp() {
 
             <div class="relative">
               <input
+                value = {email}
+                onChange={(e) => setEmail(e.target.value)}
                 type="email"
                 class="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm"
                 placeholder="Enter email"
@@ -73,6 +112,8 @@ function SignUp() {
 
             <div class="relative">
               <input
+                value = {password}
+                onChange={(e) => setPassword(e.target.value)}
                 type="password"
                 class="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm"
                 placeholder="Enter password"
@@ -104,6 +145,7 @@ function SignUp() {
           </div>
 
           <button
+            onClick={handleSubmit}
             type="submit"
             class="block w-full rounded-lg bg-indigo-600 px-5 py-3 text-sm font-medium text-white"
           >
@@ -112,7 +154,7 @@ function SignUp() {
 
           <p class="text-center text-sm text-gray-500">
             Have an account?{" "}
-            <Link to="/sign-in" className="underline decoration-gray-700">
+            <Link to="/signin" className="underline decoration-gray-700">
               Sign in
             </Link>
           </p>

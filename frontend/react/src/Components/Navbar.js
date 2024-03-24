@@ -6,12 +6,22 @@ import { ImCross } from "react-icons/im";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBell, faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
+import { useAuthContext } from "../hooks/useAuthContext";
 
 function Navbar({ clicked, isClicked }) {
   const navigate = useNavigate();
+  const { user, dispatch } = useAuthContext();
   const handleClicked = () => {
     isClicked(!clicked);
     console.log("clicked");
+  };
+  const logOut = () => {
+    // remove user from storage
+    localStorage.removeItem("user");
+
+    // dispatch logout action
+    dispatch({ type: "LOGOUT" });
+    navigate("/signin");
   };
   return (
     <div className="Nav">
@@ -46,10 +56,8 @@ function Navbar({ clicked, isClicked }) {
             Contact Us
           </NavLink>
         </li>
-        <li className="NavButton">
-          <NavLink to="/sign-up" className="Link">
-            Log Out
-          </NavLink>
+        <li className="NavButton" onClick={logOut}>
+          Log Out
         </li>
         <li>
           <div className="fixed top-[60px] right-4 z-50 flex gap-4 p-2 bg-gray-100 rounded-lg shadow-md">

@@ -1,6 +1,19 @@
 import React from "react";
+import { useNavigate } from "react-router";
+import { useAuthContext } from "../hooks/useAuthContext";
+import { useEffect } from "react";
 
 const ContactUs = () => {
+
+  const Navigate = useNavigate();
+  const { user } = useAuthContext();
+  useEffect(() => {
+    // if the user is not authenticated, redirect to /login
+    if (!user) {
+      Navigate("/signin");
+    }
+    
+  }, []);
   return (
     <section class="bg-white ">
       <div class="py-8 lg:py-16 px-4 mx-auto max-w-screen-md">

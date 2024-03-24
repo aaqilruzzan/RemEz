@@ -1,7 +1,7 @@
-import "./App.css";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import React, { useState } from "react";
+import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
 import Navbar from "./Components/Navbar";
-import React, { useState, useEffect } from "react";
+import Footer from "./Components/Footer";
 import Menu from "./Components/Menu";
 import Home from "./Pages/Home";
 import ContactUs from "./Pages/ContactUs";
@@ -14,37 +14,49 @@ import NotesPage from "./Pages/NotePage";
 import RemindersPage from "./Pages/ReminderPage";
 import { AnswersProvider } from "./Context/AnswersContext";
 import { QuestionsProvider } from "./Context/QuestionsContext";
-import Footer from "./Components/Footer";
 import WelcomeVideo from "./Components/WelcomeVideo";
 import MouseIcon from "./Components/MouseIcon";
 import { UploadProvider } from "./Context/PdfUploadContext";
 import { useLoading } from "./Context/LoadingContext";
+import "./App.css";
+
+function Layout() {
+  const location = useLocation();
+  const { loading } = useLoading();
+  const [clicked, isClicked] = useState(false);
+
+  // Decide whether to show Navbar and Footer based on the current location
+  const showNavbarAndFooter = location.pathname !== "/signin" && location.pathname !== "/signup";
+
+  return (
+    <>
+      {showNavbarAndFooter && <Navbar clicked={clicked} isClicked={isClicked} />}
+      {clicked ? <Menu /> : null}
+      {loading && <WelcomeVideo />}
+      <MouseIcon />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="quiz" element={<Quiz />} />
+        <Route path="progress" element={<Progress />} />
+        <Route path="contact-us" element={<ContactUs />} />
+        <Route path="about-us" element={<AboutUs />} />
+        <Route path="signin" element={<SignIn />} />
+        <Route path="signup" element={<Signup />} />
+        <Route path="notes" element={<NotesPage />} />
+        <Route path="reminders" element={<RemindersPage />} />
+      </Routes>
+      {showNavbarAndFooter && <Footer />}
+    </>
+  );
+}
 
 function App() {
-  const [clicked, isClicked] = useState(false);
-  const { loading } = useLoading();
-
   return (
     <Router>
       <QuestionsProvider>
         <AnswersProvider>
           <UploadProvider>
-            <Navbar clicked={clicked} isClicked={isClicked} />
-            {clicked ? <Menu /> : null}
-            {loading && <WelcomeVideo />}
-            <MouseIcon />
-            <Routes>
-              <Route exact path="" element={<Home />} />
-              <Route exact path="quiz" element={<Quiz />} />
-              <Route exact path="progress" element={<Progress />} />
-              <Route exact path="contact-us" element={<ContactUs />} />
-              <Route exact path="about-us" element={<AboutUs />} />
-              <Route exact path="signin" element={<SignIn />} />
-              <Route exact path="signup" element={<Signup />} />
-              <Route path="notes" element={<NotesPage />} />
-              <Route path="reminders" element={<RemindersPage />} />
-            </Routes>
-            <Footer />
+            <Layout />
           </UploadProvider>
         </AnswersProvider>
       </QuestionsProvider>

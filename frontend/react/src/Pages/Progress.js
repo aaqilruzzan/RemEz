@@ -3,17 +3,26 @@ import PerCollectionPro from "../Components/PerCollectionPro";
 import AllProgress from "../Components/AllProgress";
 import axios from "axios";
 import SelectTopic from "../Components/SelectTopic";
+import { useAuthContext } from "../hooks/useAuthContext";
+import { useNavigate } from "react-router";
 
 export default function ProgressTracker() {
   const [progress, setProgress] = useState("");
   const [topics, setTopics] = useState([]);
+  const { user } = useAuthContext();
+  const Navigate = useNavigate();
 
   const handleChange = (e) => {
     setProgress(e.target.value);
   };
 
+  // if the user is not authenticated, redirect to /login
   const API_URL = process.env.REACT_APP_BACKEND_URL || "http://localhost:8000";
   useEffect(() => {
+    if (!user) {
+      Navigate("/signin");
+    }
+
     const fetchTopics = async () => {
       try {
         const response = await axios.get(`${API_URL}/getnames`);

@@ -1,7 +1,20 @@
 import React from 'react'
 import './AboutUs.css';
+import { useAuthContext } from "../hooks/useAuthContext";
+import { useEffect } from "react";
+import { useNavigate } from 'react-router-dom';
 
 function AboutUs() {
+
+  const Navigate = useNavigate();
+  const { user } = useAuthContext();
+  useEffect(() => {
+    // if the user is not authenticated, redirect to /login
+    if (!user) {
+      Navigate("/signin");
+    }
+    
+  }, []);
   return (
     <>
           <div className='main1'>
