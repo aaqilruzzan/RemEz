@@ -6,6 +6,7 @@ import { useQuestions } from "../Context/QuestionsContext";
 import { useAnswers } from "../Context/AnswersContext";
 import { useUpload } from "../Context/PdfUploadContext";
 import { useLoading } from "../Context/LoadingContext";
+import { useAuthContext } from "../hooks/useAuthContext";
 
 function Home() {
   const [selectedFile, setSelectedFile] = useState(null); // State to hold the selected file
@@ -16,11 +17,20 @@ function Home() {
   const { setAnswers } = useAnswers();
   const { setUploadedPdf } = useUpload();
   const { loading, setLoading } = useLoading();
+  const { user } = useAuthContext();
   const handleFileChange = (event) => {
     setSelectedFile(event.target.files[0]); // Update the state with the selected file
   };
   const FLASK_API_URL =
     process.env.REACT_APP_FLASK_URL || "http://localhost:5000";
+
+    useEffect(() => {
+      // if the user is not authenticated, redirect to /login
+      if (!user) {
+        Navigate("/signin");
+      }
+      
+    }, []);
 
   const uploadFile = async () => {
     if (!selectedFile) {
