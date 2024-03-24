@@ -49,7 +49,7 @@ const AllProgress = () => {
 
   const totalrounds = topics.length;
 
-  const completionRate = (completedRounds / totalrounds) * 100;
+  const completionRate = Math.round((completedRounds / totalrounds) * 100);
 
   const completionTailwindClass =
     completionRate > 50 ? "text-green-500" : "text-red-500";
