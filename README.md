@@ -2,12 +2,12 @@ RemEz: AI-Powered Question and Answer System
 The project, RemEz, aims to address a significant gap in AI-powered Question and Answer (Q&A) systems. It provides a comprehensive solution that not only generates descriptive questions and answers but also evaluates user responses through a similarity score against the correct answers for descriptive questions. This innovative approach significantly enhances the learning experience, offering users a unique blend of convenience, insight, and reliability.
 
 Deployed Project Website
-RemEz
+https://rem-ez.vercel.app/
 
 AI Repository
-GitHub - RemEz AI
+https://github.com/aaqilruzzan/RemEz-AI
 
-Current Features
+Current Features - 
 PDF Upload and Generation: Users can upload PDFs to generate descriptive Q&A based on the content, facilitating an interactive learning process.
 
 User Interaction for Answer Verification: The system allows users to enter answers, providing feedback on the accuracy of the response and the time taken, which is crucial for refining study habits.
