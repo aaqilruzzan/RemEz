@@ -386,14 +386,14 @@ function PerCollectionPro(props) {
                     onMouseEnter={() => setIsHovered(true)} // Set hover state to true when mouse enters
                     onMouseLeave={() => setIsHovered(false)}
                     style={{
-                      width: "200px", // Set the button width
+                      width: "200px", 
                       margin: "15px",
                       backgroundColor: isHovered ? "#000000" : "#0C7DFF",
                       color: "white",
-                      borderRadius: "20px", // Rounded corners
-                      padding: "10px 20px", // Top & Bottom, Left & Right padding
-                      fontSize: "16px", // Text size
-                      border: "none", // Remove default border
+                      borderRadius: "20px", 
+                      padding: "10px 20px", 
+                      fontSize: "16px", 
+                      border: "none", 
                       cursor: "pointer", // Mouse pointer on hover
                       boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)", // Optional: Adds a subtle shadow
                     }}
