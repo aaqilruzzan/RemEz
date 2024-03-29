@@ -182,11 +182,11 @@
 
 .question textarea:hover,
 .question textarea:active {
-  border-color: rgb(9, 124, 247);
+  border-color: rgb(9, 124, 246);
 }
 .question textarea:focus {
   outline: none;
-  border-color: rgb(9, 124, 247);
+  border-color: rgb(9, 124, 246);
 }
 
 /*under quiz hub*/

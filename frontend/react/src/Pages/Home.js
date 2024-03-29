@@ -116,7 +116,7 @@ function Home() {
               onChange={handleQuestionCountChange}
               value={questionCount}
             >
-              {/* Conditionally render the default option */}
+              
               {questionCount === "" && (
                 <option value="">Select Number of Questions</option>
               )}
